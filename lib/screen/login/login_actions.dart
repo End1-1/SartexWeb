@@ -2,21 +2,21 @@ import 'dart:convert';
 import 'dart:html';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:sartex/MainBloc/states.dart';
 import 'package:uuid/uuid.dart';
 
-import '../utils/consts.dart';
-import '../utils/http_sql.dart';
-import '../utils/prefs.dart';
-import '../utils/translator.dart';
+import '../../utils/consts.dart';
+import '../../utils/http_sql.dart';
+import '../../utils/prefs.dart';
+import '../../utils/translator.dart';
+import 'login_states.dart';
 
-abstract class MainBlocAction {
+abstract class LoginAction {
   Future<void> proccesing();
 
-  SartexAppState state = SartexAppStateDone();
+  LoginState state = LoginStateDone();
 }
 
-class BlocStartApp extends MainBlocAction {
+class LoginActionStartApp extends LoginAction {
   @override
   Future<void> proccesing() async {
     if (prefs.getString(key_session_id) != null &&
@@ -24,15 +24,15 @@ class BlocStartApp extends MainBlocAction {
       Map<String, dynamic> response = await HttpSqlQuery.get(
           'select * from Sesions where sesion_id=\'${prefs.getString(key_session_id)!}\'');
       if (!response.containsKey(key_error)) {
-        state = SartexAppStateLoginComplete();
+        state = LoginStateLoginComplete();
         return;
       }
     }
-    state = SartexAppStateDone();
+    state = LoginStateDone();
   }
 }
 
-class BlocAuth extends MainBlocAction {
+class LoginActionAuth extends LoginAction {
   final String _username;
   final String _password;
   late String errorString = '';
@@ -41,7 +41,7 @@ class BlocAuth extends MainBlocAction {
 
   String get password => _password;
 
-  BlocAuth(this._username, this._password);
+  LoginActionAuth(this._username, this._password);
 
   @override
   Future<void> proccesing() async {
@@ -90,6 +90,6 @@ class BlocAuth extends MainBlocAction {
     await prefs.setString(
         key_full_name, '${userData['lastName']} ${userData['firstName']}');
 
-    state = SartexAppStateLoginComplete();
+    state = LoginStateLoginComplete();
   }
 }

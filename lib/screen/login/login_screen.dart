@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../MainBloc/actions.dart';
-import '../../MainBloc/mainbloc.dart';
-import '../../MainBloc/states.dart';
+import 'login_actions.dart';
 import '../../utils/consts.dart';
 import '../../utils/translator.dart';
 import '../../widgets/loading_indicator.dart';
+import 'login_bloc.dart';
+import 'login_states.dart';
 
 class SartexLogin extends StatelessWidget {
   const SartexLogin({super.key});
@@ -15,7 +15,7 @@ class SartexLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => MainBloc(SartexAppStateStarting()),
+        create: (_) => LoginBloc(LoginStateStarting()),
         child: _SartexLogin());
   }
 }
@@ -27,14 +27,14 @@ class _SartexLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocListener<MainBloc, SartexAppState>(
+        body: BlocListener<LoginBloc, LoginState>(
             listener: (context, state) {
-              if (state is SartexAppStateLoginComplete) {
+              if (state is LoginStateLoginComplete) {
                 Navigator.pushNamedAndRemoveUntil(
                     context, route_dashboard, (route) => false);
               }
             },
-            child: BlocBuilder<MainBloc, SartexAppState>(
+            child: BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, state) {
               return Align(
                   alignment: Alignment.center,
@@ -58,12 +58,12 @@ class _SartexLogin extends StatelessWidget {
                           ),
                           Padding(
                               padding: const EdgeInsets.only(top: 5),
-                              child: state is SartexAppStateLoadingData
+                              child: state is LoginStateLoading
                                   ? const SartexLoadingIndicator()
                                   : ElevatedButton(
                                       onPressed: () {
-                                        BlocProvider.of<MainBloc>(context)
-                                            .mapEventToState(BlocAuth(
+                                        BlocProvider.of<LoginBloc>(context)
+                                            .mapEventToState(LoginActionAuth(
                                                 _emailController.text.trim(),
                                                 _passwordController.text
                                                     .trim()));

@@ -20,9 +20,6 @@ class Dashboard extends StatelessWidget {
 }
 
 class _SartexDashboardScreen extends StatelessWidget {
-  bool _hideMenu = true;
-  bool _hideDirectory = true;
-  bool _hideLanguage = true;
   VoidCallback? _onMenuAnimationEnd;
 
   @override
@@ -77,7 +74,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                             },
                                             duration:
                                             const Duration(milliseconds: 200),
-                                            width: _hideMenu ? 60 : 240,
+                                            width: state.expandMenu ? 240 : 60,
                                             height:
                                             MediaQuery
                                                 .of(context)
@@ -89,10 +86,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                     children: [
                                                       SvgButton(
                                                           onTap: () {
-                                                            setState(() {
-                                                              _hideMenu =
-                                                              !_hideMenu;
-                                                            });
+                                                            BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(!state.expandMenu, false, false));
                                                           },
                                                           assetPath:
                                                           'svg/dashboard.svg'),
@@ -106,9 +100,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                     children: [
                                                       SvgButton(
                                                           onTap: () {
-                                                            setState(() {
-                                                              _hideMenu = true;
-                                                            });
+                                                            BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                           },
                                                           assetPath:
                                                           'svg/management.svg'),
@@ -122,9 +114,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                     children: [
                                                       SvgButton(
                                                           onTap: () {
-                                                            setState(() {
-                                                              _hideMenu = true;
-                                                            });
+                                                            BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                           },
                                                           assetPath: 'svg/tv.svg'),
                                                       TextMouseButton(
@@ -135,10 +125,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                   Row(
                                                     children: [
                                                       SvgButton(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              _hideMenu = true;
-                                                            });
+                                                          onTap: () {BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                           },
                                                           assetPath:
                                                           'svg/document.svg'),
@@ -152,9 +139,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                     children: [
                                                       SvgButton(
                                                           onTap: () {
-                                                            setState(() {
-                                                              _hideMenu = true;
-                                                            });
+                                                            BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                           },
                                                           assetPath: 'svg/truck.svg'),
                                                       TextMouseButton(
@@ -167,9 +152,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                     children: [
                                                       SvgButton(
                                                           onTap: () {
-                                                            setState(() {
-                                                              _hideMenu = true;
-                                                            });
+                                                            BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                           },
                                                           assetPath:
                                                           'svg/calendar.svg'),
@@ -183,9 +166,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                     children: [
                                                       SvgButton(
                                                           onTap: () {
-                                                            setState(() {
-                                                              _hideMenu = true;
-                                                            });
+                                                            BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                           },
                                                           assetPath: 'svg/qrcode.svg'),
                                                       TextMouseButton(
@@ -198,9 +179,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                     children: [
                                                       SvgButton(
                                                           onTap: () {
-                                                            setState(() {
-                                                              _hideMenu = true;
-                                                            });
+                                                            BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                           },
                                                           assetPath:
                                                           'svg/storehouse.svg'),
@@ -213,9 +192,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                   Row(children: [
                                                     SvgButton(
                                                         onTap: () {
-                                                          setState(() {
-                                                            _hideMenu = true;
-                                                          });
+                                                          BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                         },
                                                         assetPath: 'svg/reports.svg'),
                                                     TextMouseButton(
@@ -227,33 +204,12 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                     children: [
                                                       SvgButton(
                                                           onTap: () {
-                                                            if (!_hideMenu) {
-                                                              setState(() {
-                                                                _hideDirectory =
-                                                                true;
-                                                                _hideMenu =
-                                                                true;
-                                                              });
-                                                              return;
-                                                            }
-                                                            _onMenuAnimationEnd =
-                                                                () {
-                                                              setState(() {
-                                                                _hideDirectory =
-                                                                false;
-                                                              });
-                                                            };
-                                                            setState(() {
-                                                              _hideMenu = false;
-                                                            });
+                                                            BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(!state.expandMenu, !state.expandMenu, false));
                                                           },
                                                           assetPath: 'svg/folder.svg'),
                                                       TextMouseButton(
                                                           onTap: () {
-                                                            setState(() {
-                                                              _hideDirectory =
-                                                              !_hideDirectory;
-                                                            });
+                                                            BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(state.expandMenu, !state.expandDirectory, false));
                                                           },
                                                           caption: L.tr(
                                                               'Directory'))
@@ -261,8 +217,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                   ),
                                                   AnimatedContainer(
                                                       height:
-                                                      _hideDirectory ? 0 : 40 *
-                                                          7,
+                                                      state.expandDirectory ? 40 * 7: 0,
                                                       duration: const Duration(
                                                           milliseconds: 200),
                                                       child: SingleChildScrollView(
@@ -278,82 +233,47 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                           children: [
                                                             TextMouseButton(
                                                                 onTap: () {
-                                                                  setState(() {
-                                                                    _hideDirectory =
-                                                                    true;
-                                                                    _hideMenu =
-                                                                    true;
-                                                                  });
+                                                                  BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                                 },
                                                                 caption: L.tr(
                                                                     'Users')),
                                                             TextMouseButton(
                                                                 onTap: () {
-                                                                  setState(() {
-                                                                    _hideDirectory =
-                                                                    true;
-                                                                    _hideMenu =
-                                                                    true;
-                                                                  });
+                                                                  BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                                 },
                                                                 caption: L
                                                                     .tr(
                                                                     'Departments')),
                                                             TextMouseButton(
                                                                 onTap: () {
-                                                                  setState(() {
-                                                                    _hideDirectory =
-                                                                    true;
-                                                                    _hideMenu =
-                                                                    true;
-                                                                  });
+                                                                  BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                                 },
                                                                 caption:
                                                                 L.tr(
                                                                     'Products')),
                                                             TextMouseButton(
                                                                 onTap: () {
-                                                                  setState(() {
-                                                                    _hideDirectory =
-                                                                    true;
-                                                                    _hideMenu =
-                                                                    true;
-                                                                  });
+                                                                  BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                                 },
                                                                 caption: L.tr(
                                                                     'Products states')),
                                                             TextMouseButton(
                                                                 onTap: () {
-                                                                  setState(() {
-                                                                    _hideDirectory =
-                                                                    true;
-                                                                    _hideMenu =
-                                                                    true;
-                                                                  });
+                                                                  BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                                 },
                                                                 caption:
                                                                 L.tr(
                                                                     'Partners')),
                                                             TextMouseButton(
                                                                 onTap: () {
-                                                                  setState(() {
-                                                                    _hideDirectory =
-                                                                    true;
-                                                                    _hideMenu =
-                                                                    true;
-                                                                  });
+                                                                  BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                                 },
                                                                 caption: L
                                                                     .tr(
                                                                     'Permissions')),
                                                             TextMouseButton(
                                                                 onTap: () {
-                                                                  setState(() {
-                                                                    _hideDirectory =
-                                                                    true;
-                                                                    _hideMenu =
-                                                                    true;
-                                                                  });
+                                                                  BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                                 },
                                                                 caption: L.tr(
                                                                     'Units'))
@@ -364,33 +284,12 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                     children: [
                                                       SvgButton(
                                                           onTap: () {
-                                                            if (!_hideMenu) {
-                                                              setState(() {
-                                                                _hideLanguage =
-                                                                true;
-                                                                _hideMenu =
-                                                                true;
-                                                              });
-                                                              return;
-                                                            }
-                                                            _onMenuAnimationEnd =
-                                                                () {
-                                                              setState(() {
-                                                                _hideLanguage =
-                                                                false;
-                                                              });
-                                                            };
-                                                            setState(() {
-                                                              _hideMenu = false;
-                                                            });
+                                                            BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(!state.expandMenu, false, !state.expandMenu));
                                                           },
                                                           assetPath: 'svg/earth.svg'),
                                                       TextMouseButton(
                                                           onTap: () {
-                                                            setState(() {
-                                                              _hideLanguage =
-                                                              !_hideLanguage;
-                                                            });
+                                                            BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(state.expandMenu, false, !state.expandLanguage));
                                                           },
                                                           caption: L.tr(
                                                               'Language'))
@@ -398,8 +297,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                   ),
                                                   AnimatedContainer(
                                                       height:
-                                                      _hideLanguage ? 0 : 40 *
-                                                          2,
+                                                      state.expandLanguage ? 40 * 2 : 0,
                                                       duration: const Duration(
                                                           milliseconds: 200),
                                                       child: SingleChildScrollView(
@@ -415,24 +313,14 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                           children: [
                                                             TextMouseButton(
                                                                 onTap: () {
-                                                                  setState(() {
-                                                                    _hideLanguage =
-                                                                    true;
-                                                                    _hideMenu =
-                                                                    true;
-                                                                  });
+                                                                  BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                                 },
                                                                 caption:
                                                                 L.tr(
                                                                     'Armenian')),
                                                             TextMouseButton(
                                                                 onTap: () {
-                                                                  setState(() {
-                                                                    _hideLanguage =
-                                                                    true;
-                                                                    _hideMenu =
-                                                                    true;
-                                                                  });
+                                                                  BlocProvider.of<DashboardBloc>(context).eventToState(DashboardActionMenu(false, false, false));
                                                                 },
                                                                 caption: L.tr(
                                                                     'Italy')),

@@ -20,7 +20,7 @@ DataUser _$DataUserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$DataUser {
-  int get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String get branch => throw _privateConstructorUsedError;
   String get active => throw _privateConstructorUsedError;
   String get department => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $DataUserCopyWith<$Res> {
       _$DataUserCopyWithImpl<$Res, DataUser>;
   @useResult
   $Res call(
-      {int id,
+      {String id,
       String branch,
       String active,
       String department,
@@ -80,7 +80,7 @@ class _$DataUserCopyWithImpl<$Res, $Val extends DataUser>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       branch: null == branch
           ? _value.branch
           : branch // ignore: cast_nullable_to_non_nullable
@@ -125,7 +125,7 @@ abstract class _$$_DataUserCopyWith<$Res> implements $DataUserCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int id,
+      {String id,
       String branch,
       String active,
       String department,
@@ -161,7 +161,7 @@ class __$$_DataUserCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       branch: null == branch
           ? _value.branch
           : branch // ignore: cast_nullable_to_non_nullable
@@ -216,7 +216,7 @@ class _$_DataUser with DiagnosticableTreeMixin implements _DataUser {
       _$$_DataUserFromJson(json);
 
   @override
-  final int id;
+  final String id;
   @override
   final String branch;
   @override
@@ -297,7 +297,7 @@ class _$_DataUser with DiagnosticableTreeMixin implements _DataUser {
 
 abstract class _DataUser implements DataUser {
   const factory _DataUser(
-      {required final int id,
+      {required final String id,
       required final String branch,
       required final String active,
       required final String department,
@@ -310,7 +310,7 @@ abstract class _DataUser implements DataUser {
   factory _DataUser.fromJson(Map<String, dynamic> json) = _$_DataUser.fromJson;
 
   @override
-  int get id;
+  String get id;
   @override
   String get branch;
   @override
@@ -330,5 +330,156 @@ abstract class _DataUser implements DataUser {
   @override
   @JsonKey(ignore: true)
   _$$_DataUserCopyWith<_$_DataUser> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+DataUserList _$DataUserListFromJson(Map<String, dynamic> json) {
+  return _DataUserList.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DataUserList {
+  List<DataUser> get users => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DataUserListCopyWith<DataUserList> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DataUserListCopyWith<$Res> {
+  factory $DataUserListCopyWith(
+          DataUserList value, $Res Function(DataUserList) then) =
+      _$DataUserListCopyWithImpl<$Res, DataUserList>;
+  @useResult
+  $Res call({List<DataUser> users});
+}
+
+/// @nodoc
+class _$DataUserListCopyWithImpl<$Res, $Val extends DataUserList>
+    implements $DataUserListCopyWith<$Res> {
+  _$DataUserListCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? users = null,
+  }) {
+    return _then(_value.copyWith(
+      users: null == users
+          ? _value.users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<DataUser>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_DataUserListCopyWith<$Res>
+    implements $DataUserListCopyWith<$Res> {
+  factory _$$_DataUserListCopyWith(
+          _$_DataUserList value, $Res Function(_$_DataUserList) then) =
+      __$$_DataUserListCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({List<DataUser> users});
+}
+
+/// @nodoc
+class __$$_DataUserListCopyWithImpl<$Res>
+    extends _$DataUserListCopyWithImpl<$Res, _$_DataUserList>
+    implements _$$_DataUserListCopyWith<$Res> {
+  __$$_DataUserListCopyWithImpl(
+      _$_DataUserList _value, $Res Function(_$_DataUserList) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? users = null,
+  }) {
+    return _then(_$_DataUserList(
+      users: null == users
+          ? _value._users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<DataUser>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_DataUserList with DiagnosticableTreeMixin implements _DataUserList {
+  const _$_DataUserList({required final List<DataUser> users}) : _users = users;
+
+  factory _$_DataUserList.fromJson(Map<String, dynamic> json) =>
+      _$$_DataUserListFromJson(json);
+
+  final List<DataUser> _users;
+  @override
+  List<DataUser> get users {
+    if (_users is EqualUnmodifiableListView) return _users;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_users);
+  }
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'DataUserList(users: $users)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'DataUserList'))
+      ..add(DiagnosticsProperty('users', users));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_DataUserList &&
+            const DeepCollectionEquality().equals(other._users, _users));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_users));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_DataUserListCopyWith<_$_DataUserList> get copyWith =>
+      __$$_DataUserListCopyWithImpl<_$_DataUserList>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_DataUserListToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DataUserList implements DataUserList {
+  const factory _DataUserList({required final List<DataUser> users}) =
+      _$_DataUserList;
+
+  factory _DataUserList.fromJson(Map<String, dynamic> json) =
+      _$_DataUserList.fromJson;
+
+  @override
+  List<DataUser> get users;
+  @override
+  @JsonKey(ignore: true)
+  _$$_DataUserListCopyWith<_$_DataUserList> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,4 +1,10 @@
+import 'dart:convert';
+
+import 'package:sartex/data/data_user.dart';
+import 'package:sartex/data/sql.dart';
 import 'package:sartex/screen/dashboard/dashboard_state.dart';
+import 'package:sartex/utils/http_sql.dart';
+import 'package:sartex/utils/translator.dart';
 
 import '../../data/dataset.dart';
 
@@ -8,9 +14,15 @@ abstract class DashboardAction {
   DashboardState get state => _state;
   set state(s) => _state = s;
 
+  Future<void> proceedAction();
+
 }
 
 class DashboardActionDefault extends DashboardAction {
+  @override
+  Future<void> proceedAction() async {
+
+  }
 
 }
 
@@ -25,8 +37,8 @@ class DashboardActionMenu extends DashboardAction {
   }
 
   @override
-  DashboardState getState() {
-    return DashboardStateDefault();
+  Future<void> proceedAction() async {
+
   }
 
 }
@@ -38,9 +50,13 @@ class DashboardActionLoadData extends DashboardActionMenu {
   }
 
   @override
-  DashboardState getState() {
-    DataSet dataSet = DataSet();
-    dataSet.load(state.locationName);
-    return DashboardStateDataReady();
+  Future<void> proceedAction() async {
+    String s = await HttpSqlQuery.postString({'sl':Sql.sqlList[state.locationName]});
+    //HANDLE ERROR
+    switch (state.locationName) {
+      case locUsers:
+        state.data = DataUserList.fromJson({'users': jsonDecode(s)}).users;
+        break;
+    }
   }
 }

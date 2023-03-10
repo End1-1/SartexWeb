@@ -7,7 +7,24 @@ import 'consts.dart';
 class HttpSqlQuery {
   static const String _user = 's6100';
 
-  static Future<List<Map<String,dynamic>>> get(String query) async {
+  static Future<String> getString(String query) async {
+    return '';
+  }
+
+  static Future<String> postString(Map<String, dynamic> body) async {
+    try {
+      body['user'] = _user;
+      body['sl'] = 'j,Vasil,Vasil_2023,sql,${body['sl']}';
+      print('HTTP query: ${body}');
+      http.Response response = await http.post(server_uri, body: body);
+      print(utf8.decode(response.bodyBytes));
+      return utf8.decode(response.bodyBytes);
+    } catch (e) {
+      return 'error: ${e.toString()}';
+    }
+  }
+
+  static Future<List<dynamic>> get(String query) async {
     try {
       print('HTTP query: $query');
       http.Response response = await http.get(Uri.parse(
@@ -19,13 +36,10 @@ class HttpSqlQuery {
     }
   }
 
-  static Future<List<Map<String, dynamic>>> post(Map<String, dynamic> body) async {
+  static Future<List<dynamic>> post(Map<String, dynamic> body) async {
     try {
-      body['user'] = _user;
-      body['sl'] = 'j,Vasil,Vasil_2023,sql,${body['sl']}';
-      print('HTTP query: ${body}');
-      http.Response response = await http.post(server_uri, body: body);
-      return jsonDecode(response.body);
+      String r = await postString(body);
+      return jsonDecode(r);
     } catch (e) {
       return []..add(<String, dynamic>{key_error: e.toString()});
     }

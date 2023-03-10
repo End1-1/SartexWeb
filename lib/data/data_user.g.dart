@@ -7,7 +7,7 @@ part of 'data_user.dart';
 // **************************************************************************
 
 _$_DataUser _$$_DataUserFromJson(Map<String, dynamic> json) => _$_DataUser(
-      id: json['id'] as int,
+      id: json['id'] as String,
       branch: json['branch'] as String,
       active: json['active'] as String,
       department: json['department'] as String,
@@ -29,4 +29,16 @@ Map<String, dynamic> _$$_DataUserToJson(_$_DataUser instance) =>
       'lastName': instance.lastName,
       'middleName': instance.middleName,
       'position': instance.position,
+    };
+
+_$_DataUserList _$$_DataUserListFromJson(Map<String, dynamic> json) =>
+    _$_DataUserList(
+      users: (json['users'] as List<dynamic>)
+          .map((e) => DataUser.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$_DataUserListToJson(_$_DataUserList instance) =>
+    <String, dynamic>{
+      'users': instance.users,
     };

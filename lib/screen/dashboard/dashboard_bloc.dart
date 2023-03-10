@@ -4,14 +4,10 @@ import 'package:sartex/screen/dashboard/dashboard_actions.dart';
 import 'dashboard_state.dart';
 
 class DashboardBloc extends Bloc<DashboardAction, DashboardState> {
-
-
-
-
   DashboardBloc(super.initialState);
 
   Future<void> eventToState(DashboardAction a) async {
+    await a.proceedAction();
     emit(a.state);
   }
-
 }

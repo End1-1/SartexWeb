@@ -19,5 +19,9 @@ const key_user_position = 'key_user_position';
 const key_user_role = 'key_user_role';
 const key_full_name = "key_full_name";
 
-const color_header_background = Color(0xff08004d);
-const color_menu_background = Color(0xff08004d);
+const color_header_background = Color(0xff302d38);
+const color_menu_background = Color(0xff302d38);
+const color_datagrid_odd = Color(0xffffffff);
+const color_datagrid_even = Color(0xffdae0ff);
+const color_table_header = Color(0xff777777);
+const color_table_header_border = Color(0xff362c2c);

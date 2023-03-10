@@ -21,7 +21,7 @@ class LoginActionStartApp extends LoginAction {
   Future<void> proccesing() async {
     if (prefs.getString(key_session_id) != null &&
         prefs.getString(key_session_id)!.isNotEmpty) {
-      List<Map<String, dynamic>> response = await HttpSqlQuery.get(
+      List<dynamic> response = await HttpSqlQuery.get(
           'select * from Sesions where sesion_id=\'${prefs.getString(key_session_id)!}\'');
       if (response.isNotEmpty && !response[0].containsKey(key_error)) {
         state = LoginStateLoginComplete();
@@ -61,7 +61,7 @@ class LoginActionAuth extends LoginAction {
           'select * from Users where email=\'$_username\' and password=\'$_password\''
     };
 
-    List<Map<String, dynamic>> userData = await HttpSqlQuery.post(map);
+    List<dynamic> userData = await HttpSqlQuery.post(map);
     if (userData.isEmpty) {
       errorString += '${L.tr('Invalid username or password')}\n';
       state = SartexAppStateError(errorString);
@@ -79,7 +79,7 @@ class LoginActionAuth extends LoginAction {
         'insert into Sesions (sesion_id, user_id, created, status) values '
         '(\'${uuid}\', ${userData[0]['id']}, current_timestamp(), 1);'
         'select * from Sesions where sesion_id=\'$uuid\'';
-    List<Map<String,dynamic>> reply = await HttpSqlQuery.post(map);
+    List<dynamic> reply = await HttpSqlQuery.post(map);
     if (reply.isNotEmpty && reply[0].containsKey(key_error)) {
       state = SartexAppStateError(map[key_error]);
       return;

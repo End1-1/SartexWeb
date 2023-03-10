@@ -1,9 +1,13 @@
 import '../../utils/translator.dart';
 
+const locUsers = 'Users';
+const locDefault = 'Welcome!';
+
 abstract class DashboardState {
+
   late String _locationName;
   String get locationName => _locationName;
-  set locationName(v) => _locationName = v;
+  set locationName(v) => _locationName = L.tr(v);
 
   bool _expandMenu = false;
   bool get expandMenu => _expandMenu;
@@ -17,11 +21,13 @@ abstract class DashboardState {
   bool get expandLanguage => _expandLanguage;
   set expandLanguage(v) => _expandLanguage = v;
 
+  dynamic data;
+
 }
 
 class DashboardStateDefault extends DashboardState {
   DashboardStateDefault() {
-    locationName = L.tr("Welcome!");
+    locationName = locDefault;
   }
 }
 

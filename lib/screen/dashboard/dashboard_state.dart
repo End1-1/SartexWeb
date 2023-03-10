@@ -31,3 +31,7 @@ class DashboardStateLoadData extends DashboardState {
     locationName = currentLocationName;
   }
 }
+
+class DashboardStateDataReady extends DashboardState {
+
+}

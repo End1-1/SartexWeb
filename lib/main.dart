@@ -3,9 +3,12 @@ import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/utils/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'data/sql.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   prefs = await SharedPreferences.getInstance();
+  await Sql.init();
   runApp(const MyApp());
 }
 

@@ -1,0 +1,3 @@
+{
+"Users":"select id, branch, active, department, email, firstName, lastName, middleName, position, role from Users"
+}

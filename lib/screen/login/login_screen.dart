@@ -23,9 +23,11 @@ class SartexLogin extends StatelessWidget {
 class _SartexLogin extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
+    _focusNode.requestFocus();
     return Scaffold(
         body: BlocListener<LoginBloc, LoginState>(
             listener: (context, state) {
@@ -47,6 +49,7 @@ class _SartexLogin extends StatelessWidget {
                               ? SizedBox(height: 50, child: Text(state.errorString!))
                               : const SizedBox(height: 50),
                           TextFormField(
+                            focusNode: _focusNode,
                             controller: _emailController,
                             decoration:
                                 InputDecoration(labelText: L.tr("Email")),

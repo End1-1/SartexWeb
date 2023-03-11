@@ -1,3 +1,8 @@
 {
-"Users":"select id, branch, active, department, email, firstName, lastName, middleName, position, role from Users"
+"Users":"select id, branch, active, department, email, firstName, lastName, middleName, position, role from Users",
+"department":"select id,branch,department,patasxanatu,short_name, type from department",
+"Products":"select id,branch,country,model, modelCode,name,size_standart,type from Products",
+"Sizes":"select id,code,country,name,size01,size02,size03,size04,size05,size06,size07,size08,size09,size10,coalesce(size11, '') as size11 from Sizes",
+"Parthners":"select id, coalesce(branch, '') as branch, country, name, type from Parthners",
+"productStatuses":"select id,coalesce(branch, '')as branch, checkStatus,prod_status from productStatuses"
 }

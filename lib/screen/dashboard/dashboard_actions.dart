@@ -6,7 +6,11 @@ import 'package:sartex/screen/dashboard/dashboard_state.dart';
 import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/utils/translator.dart';
 
-import '../../data/dataset.dart';
+import '../../data/data_department.dart';
+import '../../data/data_partner.dart';
+import '../../data/data_product.dart';
+import '../../data/data_product_status.dart';
+import '../../data/data_sizes.dart';
 
 abstract class DashboardAction {
 
@@ -56,6 +60,21 @@ class DashboardActionLoadData extends DashboardActionMenu {
     switch (state.locationName) {
       case locUsers:
         state.data = DataUserList.fromJson({'users': jsonDecode(s)}).users;
+        break;
+      case locDepartement:
+        state.data = DataDepartmentList.fromJson({'departments': jsonDecode(s)}).departments;
+        break;
+      case locProducts:
+        state.data = ProductList.fromJson({'products': jsonDecode(s)}).products;
+        break;
+      case locSizes:
+        state.data = SizeList.fromJson({'sizes': jsonDecode(s)}).sizes;
+        break;
+      case locPathners:
+        state.data = PartnerList.fromJson({'partners': jsonDecode(s)}).partners;
+        break;
+      case locProductStatuses:
+        state.data = ProductStatusList.fromJson({'productStatuses': jsonDecode(s)}).productStatuses;
         break;
     }
   }

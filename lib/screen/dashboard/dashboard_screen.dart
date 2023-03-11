@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:sartex/data/data_partner.dart';
+import 'package:sartex/data/data_product_status.dart';
 import 'package:sartex/data/data_user.dart';
 import 'package:sartex/screen/dashboard/dashboard_model.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sartex/utils/consts.dart';
 
+import '../../data/data_department.dart';
+import '../../data/data_product.dart';
+import '../../data/data_sizes.dart';
 import '../../data/sartex_datagridsource.dart';
 import '../../utils/prefs.dart';
 import '../../utils/translator.dart';
@@ -24,11 +29,12 @@ class Dashboard extends StatelessWidget {
 }
 
 class _SartexDashboardScreen extends StatelessWidget {
-  DashboardModel _model = DashboardModel(EmptyDataSource());
+  DashboardModel? _model;
   DashboardState _dashboardState = DashboardStateDefault();
 
   @override
   Widget build(BuildContext context) {
+    _model ??= DashboardModel(EmptyDataSource(context: context));
     return Scaffold(
         body: BlocListener<DashboardBloc, DashboardState>(
             listener: (context, state) {
@@ -36,13 +42,31 @@ class _SartexDashboardScreen extends StatelessWidget {
         if (_dashboardState.locationName != state.locationName) {
           switch (state.locationName) {
             case locUsers:
-              _model = DashboardModel(UserDataSource(userData: state.data));
+              _model = DashboardModel(UserDataSource(context: context, userData: state.data));
+              break;
+            case locDepartement:
+              _model =
+                  DashboardModel(DepartmentDataSource(context: context, depData: state.data));
+              break;
+            case locProducts:
+              _model =
+                  DashboardModel(ProductsDatasource(context: context, productData: state.data));
+              break;
+            case locSizes:
+              _model = DashboardModel(SizeDatasource(context: context, sizeData: state.data));
+              break;
+            case locPathners:
+              _model =
+                  DashboardModel(PartnerDatasource(context: context, partnerData: state.data));
+              break;
+            case locProductStatuses:
+              _model = DashboardModel(ProductStatusDatasource(context: context, productStatuses: state.data));
               break;
             default:
               break;
           }
         } else {
-          _model.datasource.data.addAll(state.data);
+          _model!.datasource.data.addAll(state.data);
         }
         _dashboardState = state;
       }
@@ -235,7 +259,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                     context)
                                                 .eventToState(
                                                     DashboardActionLoadData(
-                                                        'Users'));
+                                                        locUsers));
                                           },
                                           caption: L.tr('Users')),
                                       TextMouseButton(
@@ -243,8 +267,8 @@ class _SartexDashboardScreen extends StatelessWidget {
                                             BlocProvider.of<DashboardBloc>(
                                                     context)
                                                 .eventToState(
-                                                    DashboardActionMenu(
-                                                        false, false, false));
+                                                    DashboardActionLoadData(
+                                                        locDepartement));
                                           },
                                           caption: L.tr('Departments')),
                                       TextMouseButton(
@@ -252,17 +276,17 @@ class _SartexDashboardScreen extends StatelessWidget {
                                             BlocProvider.of<DashboardBloc>(
                                                     context)
                                                 .eventToState(
-                                                    DashboardActionMenu(
-                                                        false, false, false));
+                                                    DashboardActionLoadData(
+                                                        locProducts));
                                           },
                                           caption: L.tr('Products')),
                                       TextMouseButton(
                                           onTap: () {
                                             BlocProvider.of<DashboardBloc>(
-                                                    context)
+                                                context)
                                                 .eventToState(
-                                                    DashboardActionMenu(
-                                                        false, false, false));
+                                                DashboardActionLoadData(
+                                                    locProductStatuses));
                                           },
                                           caption: L.tr('Products states')),
                                       TextMouseButton(
@@ -270,8 +294,8 @@ class _SartexDashboardScreen extends StatelessWidget {
                                             BlocProvider.of<DashboardBloc>(
                                                     context)
                                                 .eventToState(
-                                                    DashboardActionMenu(
-                                                        false, false, false));
+                                                    DashboardActionLoadData(
+                                                        locPathners));
                                           },
                                           caption: L.tr('Partners')),
                                       TextMouseButton(
@@ -288,8 +312,8 @@ class _SartexDashboardScreen extends StatelessWidget {
                                             BlocProvider.of<DashboardBloc>(
                                                     context)
                                                 .eventToState(
-                                                    DashboardActionMenu(
-                                                        false, false, false));
+                                                    DashboardActionLoadData(
+                                                        locSizes));
                                           },
                                           caption: L.tr('Units'))
                                     ],
@@ -358,8 +382,13 @@ class _SartexDashboardScreen extends StatelessWidget {
   Widget _dashboardDataChild(String location) {
     switch (location) {
       case locUsers:
+      case locDepartement:
+      case locProducts:
+      case locSizes:
+      case locPathners:
+      case locProductStatuses:
         return SfDataGrid(
-            source: _model.datasource, columns: _model.datasource.columns);
+            source: _model!.datasource, columns: _model!.datasource.columns);
     }
     return Align(
       alignment: Alignment.center,

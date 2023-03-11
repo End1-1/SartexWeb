@@ -2,6 +2,11 @@ import '../../utils/translator.dart';
 
 const locUsers = 'Users';
 const locDefault = 'Welcome!';
+const locDepartement = 'department';
+const locProducts = 'Products';
+const locSizes = 'Sizes';
+const locPathners = 'Parthners';
+const locProductStatuses = "productStatuses";
 
 abstract class DashboardState {
 

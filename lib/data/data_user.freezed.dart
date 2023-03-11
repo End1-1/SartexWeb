@@ -200,7 +200,7 @@ class __$$_DataUserCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DataUser with DiagnosticableTreeMixin implements _DataUser {
+class _$_DataUser implements _DataUser {
   const _$_DataUser(
       {required this.id,
       required this.branch,
@@ -235,24 +235,8 @@ class _$_DataUser with DiagnosticableTreeMixin implements _DataUser {
   final String position;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'DataUser(id: $id, branch: $branch, active: $active, department: $department, email: $email, firstName: $firstName, lastName: $lastName, middleName: $middleName, position: $position)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'DataUser'))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('branch', branch))
-      ..add(DiagnosticsProperty('active', active))
-      ..add(DiagnosticsProperty('department', department))
-      ..add(DiagnosticsProperty('email', email))
-      ..add(DiagnosticsProperty('firstName', firstName))
-      ..add(DiagnosticsProperty('lastName', lastName))
-      ..add(DiagnosticsProperty('middleName', middleName))
-      ..add(DiagnosticsProperty('position', position));
   }
 
   @override
@@ -415,7 +399,7 @@ class __$$_DataUserListCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DataUserList with DiagnosticableTreeMixin implements _DataUserList {
+class _$_DataUserList implements _DataUserList {
   const _$_DataUserList({required final List<DataUser> users}) : _users = users;
 
   factory _$_DataUserList.fromJson(Map<String, dynamic> json) =>
@@ -430,16 +414,8 @@ class _$_DataUserList with DiagnosticableTreeMixin implements _DataUserList {
   }
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'DataUserList(users: $users)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'DataUserList'))
-      ..add(DiagnosticsProperty('users', users));
   }
 
   @override

@@ -10,6 +10,9 @@ abstract class SartexDataGridSource extends DataGridSource {
   final List<dynamic> data = [];
   final List<DataGridRow> rows = [];
   final List<GridColumn> columns = [];
+  final BuildContext context;
+
+  SartexDataGridSource({required this.context});
 
   void addRows(List<dynamic> d);
 
@@ -41,25 +44,45 @@ abstract class SartexDataGridSource extends DataGridSource {
         decoration: BoxDecoration(color: getBackgroundColor()),
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8.0),
-        child: e.value.toString() == 'editdata'
+        child: e.columnName == 'editdata'
             ? Row(children: [
                 MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: InkWell(
-                        onTap: () {}, child: SvgPicture.asset('svg/edit.svg', width: 36, height: 36,))),
+                        onTap: (){editData(e.value);}, child: SvgPicture.asset('svg/edit.svg', width: 36, height: 36,))),
                 MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: InkWell(
-                        onTap: () {},
+                        onTap: () {removeData(e.value);},
                         child: SvgPicture.asset('svg/delete.svg', width: 36, height: 36,)))
               ])
             : Text(e.value.toString()),
       );
     }).toList());
   }
+
+  Widget getEditWidget(String id) {
+    return Column(children: [Container(width: 200, height: 200, alignment: Alignment.center, child: const Text("Unimplemented", style: TextStyle(fontSize: 28))),
+    TextButton(onPressed: (){ Navigator.pop(context);}, child: Text(L.tr('Close')))]);
+  }
+
+  Widget removeData(String id) {
+    return Column(children: [Container(width: 200, height: 200, alignment: Alignment.center, child: const Text("Unimplemented", style: TextStyle(fontSize: 28))),
+      TextButton(onPressed: (){ Navigator.pop(context);}, child: Text(L.tr('Close')))]);
+  }
+
+  void editData(String id) {
+    showDialog(context: context, builder: (BuildContext context) {
+      return SimpleDialog(children: [
+        getEditWidget(id)
+      ],);
+    });
+  }
 }
 
 class EmptyDataSource extends SartexDataGridSource {
+  EmptyDataSource({required super.context});
+
   @override
   void addRows(List<dynamic> d) {}
 }

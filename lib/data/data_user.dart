@@ -6,6 +6,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../utils/consts.dart';
 import '../utils/translator.dart';
+import '../widgets/edit_widget.dart';
 
 part 'data_user.freezed.dart';
 
@@ -37,8 +38,7 @@ class DataUserList with _$DataUserList {
 }
 
 class UserDataSource extends SartexDataGridSource {
-  UserDataSource({required List<DataUser> userData}) {
-    data.addAll(userData);
+  UserDataSource({required super.context, required List<DataUser> userData}) {
     addRows(userData);
     addColumn('edit', 'Edit', 100);
     addColumn('id', 'Id', 40);
@@ -55,7 +55,7 @@ class UserDataSource extends SartexDataGridSource {
   void addRows(List<dynamic> d) {
     data.addAll(d);
     rows.addAll(d.map<DataGridRow>((e) => DataGridRow(cells: [
-          DataGridCell(columnName: 'editdata', value: 'editdata'),
+          DataGridCell(columnName: 'editdata', value: e.id),
           DataGridCell(columnName: 'id', value: e.id),
           DataGridCell(columnName: 'branch', value: e.branch),
           DataGridCell(columnName: 'active', value: e.active),
@@ -65,5 +65,92 @@ class UserDataSource extends SartexDataGridSource {
           DataGridCell(columnName: 'email', value: e.email),
           DataGridCell(columnName: 'position', value: e.position)
         ])));
+  }
+
+  @override
+  Widget getEditWidget(String id) {
+    return UserEditWidget(user: data.where((e) => e.id == id).first);
+  }
+}
+
+class UserEditWidget extends EditWidget {
+  late DataUser user;
+  final TextEditingController _tecFirstName = TextEditingController();
+  final TextEditingController _tecLastName = TextEditingController();
+  final TextEditingController _tecMiddleName = TextEditingController();
+  final TextEditingController _tecEmail = TextEditingController();
+  final TextEditingController _tecPassword = TextEditingController();
+
+  UserEditWidget({required this.user, super.key}) {
+    _tecFirstName.text = user.firstName;
+    _tecLastName.text = user.lastName;
+    _tecMiddleName.text = user.middleName;
+    _tecEmail.text = user.email;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child:
+                Text(L.tr('First name'), style: const TextStyle(fontSize: 18))),
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextFormField(
+              controller: _tecFirstName,
+            )),
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child:
+                Text(L.tr('Last name'), style: const TextStyle(fontSize: 18))),
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextFormField(
+              controller: _tecLastName,
+            )),
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text(L.tr('Middle name'),
+                style: const TextStyle(fontSize: 18))),
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextFormField(
+              controller: _tecMiddleName,
+            )),
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text(L.tr('Email'), style: const TextStyle(fontSize: 18))),
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextFormField(
+              controller: _tecEmail,
+            )),
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child:
+                Text(L.tr('Password'), style: const TextStyle(fontSize: 18))),
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextFormField(
+              controller: _tecPassword,
+            )),
+    Padding(padding: const EdgeInsets.all(10), child: Row(
+      children: [
+        TextButton(onPressed: (){save(context, user);}, child: Text(L.tr('Save'), style: const TextStyle())),
+        TextButton(onPressed: (){Navigator.pop(context);}, child: Text(L.tr('Cancel'), style: const TextStyle())),
+      ],
+    ))
+    ],
+    );
+  }
+
+  @override
+  void save(context, object) {
+    user = user.copyWith(firstName: _tecFirstName.text);
+    Navigator.pop(context);
   }
 }

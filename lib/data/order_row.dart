@@ -100,7 +100,7 @@ class OrderRowDatasource extends SartexDataGridSource {
   void addRows(List d) {
     data.addAll(d);
     rows.addAll(d.map<DataGridRow>((e) => DataGridRow(cells: [
-        DataGridCell(columnName: 'editdata', value: e.id),
+        DataGridCell(columnName: 'editdata', value: e.IDPatver),
         DataGridCell(columnName: 'id', value: e.id),
         DataGridCell(columnName: 'branch', value: e.branch),
         DataGridCell(columnName: 'date', value: e.date),

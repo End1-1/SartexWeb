@@ -7,5 +7,7 @@ class OrderDocBloc extends Bloc<OrderDocEvent, OrderDocState> {
   OrderDocBloc(super.initialState) {
     on<OrderDocBrandChanged> ((event, emit) => emit(OrderDocStateBrand()));
     on<OrderDocShortChanged> ((event, emit) => emit(OrderDocStateShort()));
+    on<OrderDocNewRow> ((event, emit) => emit(OrderDocStateNewRow()));
+    on<OrderDocLoaded> ((event, emit) => emit(OrderDocStateLoaded()));
   }
 }

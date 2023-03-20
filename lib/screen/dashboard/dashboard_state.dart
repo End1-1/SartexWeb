@@ -6,7 +6,8 @@ const locDepartement = 'department';
 const locProducts = 'Products';
 const locSizes = 'Sizes';
 const locPathners = 'Parthners';
-const locProductStatuses = "productStatuses";
+const locProductStatuses = 'productStatuses';
+const locOrders = 'patver_data';
 
 abstract class DashboardState {
 

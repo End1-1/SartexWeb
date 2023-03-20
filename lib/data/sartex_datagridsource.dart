@@ -11,6 +11,16 @@ abstract class SartexDataGridSource extends DataGridSource {
   final List<DataGridRow> rows = [];
   final List<GridColumn> columns = [];
   final BuildContext context;
+  final Widget editPic = SvgPicture.asset(
+    'svg/edit.svg',
+    width: 36,
+    height: 36,
+  );
+  final Widget delePic = SvgPicture.asset(
+    'svg/delete.svg',
+    width: 36,
+    height: 36,
+  );
 
   SartexDataGridSource({required this.context});
 
@@ -49,12 +59,17 @@ abstract class SartexDataGridSource extends DataGridSource {
                 MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: InkWell(
-                        onTap: (){editData(e.value);}, child: SvgPicture.asset('svg/edit.svg', width: 36, height: 36,))),
+                        onTap: () {
+                          editData(e.value);
+                        },
+                        child: editPic)),
                 MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: InkWell(
-                        onTap: () {removeData(e.value);},
-                        child: SvgPicture.asset('svg/delete.svg', width: 36, height: 36,)))
+                        onTap: () {
+                          removeData(e.value);
+                        },
+                        child: delePic))
               ])
             : Text(e.value.toString()),
       );
@@ -62,21 +77,54 @@ abstract class SartexDataGridSource extends DataGridSource {
   }
 
   Widget getEditWidget(String id) {
-    return Column(children: [Container(width: 200, height: 200, alignment: Alignment.center, child: const Text("Unimplemented", style: TextStyle(fontSize: 28))),
-    TextButton(onPressed: (){ Navigator.pop(context);}, child: Text(L.tr('Close')))]);
+    return Column(children: [
+      Container(
+          width: 200,
+          height: 200,
+          alignment: Alignment.center,
+          child: const Text("Unimplemented", style: TextStyle(fontSize: 28))),
+      TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text(L.tr('Close')))
+    ]);
   }
 
   Widget removeData(String id) {
-    return Column(children: [Container(width: 200, height: 200, alignment: Alignment.center, child: const Text("Unimplemented", style: TextStyle(fontSize: 28))),
-      TextButton(onPressed: (){ Navigator.pop(context);}, child: Text(L.tr('Close')))]);
+    return Column(children: [
+      Container(
+          width: 200,
+          height: 200,
+          alignment: Alignment.center,
+          child: const Text("Unimplemented", style: TextStyle(fontSize: 28))),
+      TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text(L.tr('Close')))
+    ]);
   }
 
   void editData(String id) {
-    showDialog(context: context, builder: (BuildContext context) {
-      return SimpleDialog(children: [
-        getEditWidget(id)
-      ],);
-    });
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            children: [getEditWidget(id)],
+          );
+        });
+  }
+
+  void newData() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            children: [getEditWidget('')],
+          );
+        });
   }
 }
 

@@ -11,6 +11,7 @@ import '../../data/data_partner.dart';
 import '../../data/data_product.dart';
 import '../../data/data_product_status.dart';
 import '../../data/data_sizes.dart';
+import '../../data/order_row.dart';
 
 abstract class DashboardAction {
 
@@ -75,6 +76,9 @@ class DashboardActionLoadData extends DashboardActionMenu {
         break;
       case locProductStatuses:
         state.data = ProductStatusList.fromJson({'productStatuses': jsonDecode(s)}).productStatuses;
+        break;
+      case locOrders:
+        state.data = OrderRowList.fromJson({'list': jsonDecode(s)}).list;
         break;
     }
   }

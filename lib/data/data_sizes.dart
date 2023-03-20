@@ -35,8 +35,8 @@ class SizeList with _$SizeList {
 }
 
 class SizeDatasource extends SartexDataGridSource {
-  SizeDatasource({required super.context, required List<Size> sizeData}){
-    addRows(sizeData);
+  SizeDatasource({required super.context, required List data}){
+    addRows(data);
     addColumn('edit', 'Edit', 100);
     addColumn('id', 'Id', 40);
     addColumn('code', 'Code', 100);

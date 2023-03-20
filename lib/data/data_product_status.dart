@@ -26,8 +26,8 @@ class ProductStatusList with _$ProductStatusList {
 }
 
 class ProductStatusDatasource extends SartexDataGridSource {
-  ProductStatusDatasource({required super.context, required List<ProductStatus> productStatuses}) {
-    addRows(productStatuses);
+  ProductStatusDatasource({required super.context, required List data}) {
+    addRows(data);
     addColumn('edit', 'Edit', 100);
     addColumn('id', 'Id', 40);
     addColumn('branch', 'Branch', 100);

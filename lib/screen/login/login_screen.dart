@@ -49,6 +49,7 @@ class _SartexLogin extends StatelessWidget {
                               ? SizedBox(height: 50, child: Text(state.errorString!))
                               : const SizedBox(height: 50),
                           TextFormField(
+                            autofocus: true,
                             focusNode: _focusNode,
                             controller: _emailController,
                             decoration:

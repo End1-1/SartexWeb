@@ -24,12 +24,25 @@ class HttpSqlQuery {
     }
   }
 
+  static Future<String> postSave(Map<String, dynamic> body) async {
+    try {
+      body['user'] = _user;
+      body['sl'] = 'j,Vasil,Vasil_2023,save,${body['sl']}';
+      print('HTTP query: ${body}');
+      http.Response response = await http.post(server_uri, body: body);
+      print(utf8.decode(response.bodyBytes));
+      return utf8.decode(response.bodyBytes);
+    } catch (e) {
+      return 'error: ${e.toString()}';
+    }
+  }
+
   static Future<List<dynamic>> get(String query) async {
     try {
       print('HTTP query: $query');
       http.Response response = await http.get(Uri.parse(
           '$server_http_address/?user=$_user&sl=j,Vasil,Vasil_2023,sql,$query'));
-      print(response.body);
+      print(utf8.decode(response.bodyBytes));
       return jsonDecode(response.body);
     } catch (e) {
       return []..add(<String, dynamic>{key_error: e.toString()});
@@ -43,5 +56,40 @@ class HttpSqlQuery {
     } catch (e) {
       return []..add(<String, dynamic>{key_error: e.toString()});
     }
+  }
+
+  static Future<List<String>> listOf(String table, String column) async {
+    var query = 'select $column from $table order by 1';
+    http.Response response = await http.get(Uri.parse(
+        '$server_http_address/?user=$_user&sl=j,Vasil,Vasil_2023,sql,$query'));
+    print(utf8.decode(response.bodyBytes));
+    List<String> l = [];
+    jsonDecode(utf8.decode(response.bodyBytes)).forEach((k) {
+      k.forEach((k1, v1) => l.add(v1));
+    });
+    return l;
+  }
+
+  static Future<List<String>> listOfQuery(String query) async {
+    http.Response response = await http.get(Uri.parse(
+        '$server_http_address/?user=$_user&sl=j,Vasil,Vasil_2023,sql,$query'));
+    print(utf8.decode(response.bodyBytes));
+    List<String> l = [];
+    jsonDecode(utf8.decode(response.bodyBytes)).forEach((k) {
+      k.forEach((k1, v1) => l.add(v1));
+    });
+    return l;
+  }
+
+  static Future<List<String>> listDistinctOf(String table, String column) async {
+    var query = 'select distinct($column) from $table order by 1';
+    http.Response response = await http.get(Uri.parse(
+        '$server_http_address/?user=$_user&sl=j,Vasil,Vasil_2023,sql,$query'));
+    print(utf8.decode(response.bodyBytes));
+    List<String> l = [];
+    jsonDecode(utf8.decode(response.bodyBytes)).forEach((k) {
+      k.forEach((k1, v1) => l.add(v1));
+    });
+    return l;
   }
 }

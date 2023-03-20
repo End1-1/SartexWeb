@@ -25,8 +25,8 @@ class PartnerList with _$PartnerList {
 }
 
 class PartnerDatasource extends SartexDataGridSource {
-  PartnerDatasource({required super.context, required List<Partner> partnerData}) {
-    addRows(partnerData);
+  PartnerDatasource({required super.context, required List data}) {
+    addRows(data);
     addColumn('edit', 'Edit', 100);
     addColumn('id', 'Id', 40);
     addColumn('branch', 'Branch', 100);

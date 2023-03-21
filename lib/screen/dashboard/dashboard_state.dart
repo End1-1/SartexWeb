@@ -8,12 +8,13 @@ const locSizes = 'Sizes';
 const locPathners = 'Parthners';
 const locProductStatuses = 'productStatuses';
 const locOrders = 'patver_data';
+const locLanguageEditor = 'Language editor';
 
 abstract class DashboardState {
 
   late String _locationName;
   String get locationName => _locationName;
-  set locationName(v) => _locationName = L.tr(v);
+  set locationName(v) => _locationName = v;
 
   bool _expandMenu = false;
   bool get expandMenu => _expandMenu;

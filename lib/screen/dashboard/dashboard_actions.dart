@@ -83,3 +83,13 @@ class DashboardActionLoadData extends DashboardActionMenu {
     }
   }
 }
+
+class DashboardActionLanguageEditor extends DashboardActionMenu {
+
+  DashboardActionLanguageEditor(String location) : super(false, false, false, locationName: location);
+
+  @override
+  Future<void> proceedAction() async {
+  }
+
+}

@@ -5,6 +5,7 @@ import 'package:sartex/data/data_product_status.dart';
 import 'package:sartex/data/data_user.dart';
 import 'package:sartex/data/order_row.dart';
 import 'package:sartex/screen/dashboard/dashboard_model.dart';
+import 'package:sartex/screen/language_editor/language_screen.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sartex/utils/consts.dart';
@@ -81,13 +82,13 @@ class _SartexDashboardScreen extends StatelessWidget {
         Container(
             height: 40,
             width: double.infinity,
-            decoration: const BoxDecoration(color: color_header_background),
+            decoration: const BoxDecoration(gradient: bg_gradient),
             child: Row(
               children: [
                 Text(prefs.getString(key_user_branch)!,
                     style: const TextStyle(color: Colors.white, fontSize: 20)),
                 const VerticalDivider(width: 30, color: Colors.transparent,),
-                Text(state.locationName,
+                Text(L.tr(state.locationName),
                     style: const TextStyle(color: Colors.white, fontSize: 20)),
                 _appendButton(context, state.locationName),
                 Expanded(child: Container()),
@@ -104,7 +105,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
               AnimatedContainer(
-                  color: color_menu_background,
+                  decoration: const BoxDecoration(gradient: bg_gradient),
                   duration: const Duration(milliseconds: 200),
                   width: state.expandMenu ? 240 : 60,
                   height: MediaQuery.of(context).size.height,
@@ -357,7 +358,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                               ],
                             ),
                             AnimatedContainer(
-                                height: state.expandLanguage ? 40 * 2 : 0,
+                                height: state.expandLanguage ? 40 * 3 : 0,
                                 duration: const Duration(milliseconds: 200),
                                 child: SingleChildScrollView(
                                   child: Column(
@@ -366,6 +367,14 @@ class _SartexDashboardScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
+                                      TextMouseButton(
+                                          onTap: () {
+                                            BlocProvider.of<DashboardBloc>(
+                                                context)
+                                                .eventToState(
+                                                DashboardActionLanguageEditor(locLanguageEditor));
+                                          },
+                                          caption: L.tr('Editor')),
                                       TextMouseButton(
                                           onTap: () {
                                             BlocProvider.of<DashboardBloc>(
@@ -384,6 +393,7 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                         false, false, false));
                                           },
                                           caption: L.tr('Italy')),
+
                                     ],
                                   ),
                                 )),
@@ -405,6 +415,8 @@ class _SartexDashboardScreen extends StatelessWidget {
       case locOrders:
         return SfDataGrid(
             source: _model!.datasource, columns: _model!.datasource.columns);
+      case locLanguageEditor:
+        return LanguageScreen();
     }
     return Align(
       alignment: Alignment.center,

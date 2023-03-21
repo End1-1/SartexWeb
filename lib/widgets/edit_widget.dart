@@ -66,12 +66,15 @@ abstract class EditWidget extends StatelessWidget {
         padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
         child: Row(
           children: [
-            TextButton(
+            OutlinedButton(
+              style: outlined_button_style,
                 onPressed: () {
                   save(context, getTable(), o);
                 },
                 child: Text(L.tr('Save'), style: const TextStyle())),
-            TextButton(
+            const SizedBox(width: 20),
+            OutlinedButton(
+                style: outlined_button_style,
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -97,6 +100,7 @@ abstract class EditWidget extends StatelessWidget {
         child: SizedBox(
             width: 300,
             child: TextFormField(
+              decoration: text_form_field_decoration,
               onChanged: onChange,
               onTap: onTap ??
                   (list == null

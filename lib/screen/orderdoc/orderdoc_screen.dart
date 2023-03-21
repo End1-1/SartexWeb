@@ -188,8 +188,7 @@ class OrderDocScreen extends EditWidget {
                                 '?',
                                 '?',
                                 '?'
-                              ],
-                          color_header_background);
+                              ]);
                     }),
                 Expanded(
                   child: BlocBuilder<OrderDocBloc, OrderDocState>(
@@ -207,11 +206,12 @@ class OrderDocScreen extends EditWidget {
   }
 
   Widget _detailsHeader(
-      BuildContext context, List<String> values, Color backgroundColor) {
+      BuildContext context, List<String> values) {
     const double rowheight = 45;
     const TextStyle ts = TextStyle(color: Colors.white, fontSize: 18);
     const Border border =
         Border.fromBorderSide(BorderSide(color: Colors.black26));
+    const decoration = BoxDecoration(gradient: bg_gradient, border: border);
     List<Widget> r = [];
     for (int i = 0; i < columnWidths.length; i++) {
       switch (i) {
@@ -219,7 +219,7 @@ class OrderDocScreen extends EditWidget {
           r.add(Container(
               height: rowheight,
               width: columnWidths[i],
-              decoration: BoxDecoration(color: backgroundColor, border: border),
+              decoration: decoration,
               child: Align(
                   alignment: Alignment.center,
                   child: Text(L.tr('Type'), style: ts))));
@@ -228,7 +228,7 @@ class OrderDocScreen extends EditWidget {
           r.add(Container(
               height: rowheight,
               width: columnWidths[i],
-              decoration: BoxDecoration(color: backgroundColor, border: border),
+              decoration: decoration,
               child: Align(
                   alignment: Alignment.center,
                   child: Text(L.tr('Color'), style: ts))));
@@ -246,7 +246,7 @@ class OrderDocScreen extends EditWidget {
           r.add(Container(
               height: rowheight,
               width: columnWidths[i],
-              decoration: BoxDecoration(color: backgroundColor, border: border),
+              decoration: decoration,
               child: Align(
                   alignment: Alignment.center,
                   child: Text(values[i - 2], style: ts))));
@@ -255,7 +255,7 @@ class OrderDocScreen extends EditWidget {
           r.add(Container(
               height: rowheight,
               width: columnWidths[i],
-              decoration: BoxDecoration(color: backgroundColor, border: border),
+              decoration: decoration,
               child: Align(
                   alignment: Alignment.center,
                   child: Text(L.tr('Total'), style: ts))));
@@ -264,7 +264,7 @@ class OrderDocScreen extends EditWidget {
           r.add(Container(
               height: rowheight,
               width: columnWidths[i],
-              decoration: BoxDecoration(color: backgroundColor, border: border),
+              decoration: decoration,
               child: Align(
                   alignment: Alignment.center,
                   child: SvgButton(
@@ -673,9 +673,14 @@ class OrderDocScreen extends EditWidget {
                             height: rowheight,
                             child: SvgButton(
                                 onTap: () {
-                                  _model.details.insert(
-                                      i + 1, or.copyWith(action: 'cancel'));
-                                  _model.rowEditMode = i + 1;
+                                  if (or.id.isEmpty) {
+                                    _model.details.removeAt(i);
+                                    _model.rowEditMode = -1;
+                                  } else {
+                                    _model.details.insert(
+                                        i + 1, or.copyWith(action: 'cancel'));
+                                    _model.rowEditMode = i + 1;
+                                  }
                                   BlocProvider.of<OrderDocBloc>(context)
                                       .add(OrderDocNewRow());
                                 },
@@ -706,6 +711,33 @@ class OrderDocScreen extends EditWidget {
     if (_model.orderIdController.text.isEmpty) {
       error.add(L.tr('Order id cannot be empty'));
     }
+    if (_model.customerController.text.isEmpty) {
+      error.add(L.tr('Select customer'));
+    }
+    if (_model.executorController.text.isEmpty) {
+      error.add(L.tr('Select executor'));
+    }
+    if (_model.brandController.text.isEmpty) {
+      error.add(L.tr('Select brand'));
+    }
+    if (_model.modelController.text.isEmpty) {
+      error.add(L.tr('Select model'));
+    }
+    if (error.isNotEmpty) {
+      showDialog(
+          context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+              children: [
+                for (var s in error) Padding(padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
+                    child: Text(s, style: const TextStyle(fontSize: 18))),
+                const SizedBox(height: 30),
+                Padding(padding: const EdgeInsets.fromLTRB(30, 5, 30, 5),
+          child: OutlinedButton(style: outlined_button_style, onPressed: (){Navigator.pop(context);}, child: Text(L.tr('Close'))))
+              ]);
+        });
+      return;
+    }
     _model.rowEditMode = -1;
     for (var e in _model.details) {
       OrderRow or = e.copyWith(
@@ -730,6 +762,13 @@ class OrderDocScreen extends EditWidget {
       }
       HttpSqlQuery.get(sql);
     }
+    showDialog(context: context, builder: (context) {
+      return SimpleDialog(
+        children: [
+          Padding(padding: const EdgeInsets.all(40), child: Text(L.tr('Saved'), style: const TextStyle(fontSize: 18)))
+        ],
+      );
+    });
     Navigator.pop(context, 1);
   }
 

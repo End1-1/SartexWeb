@@ -112,7 +112,7 @@ abstract class EditWidget extends StatelessWidget {
                             valueOfList(context, list, textEditingController);
                           }
                         }),
-              readOnly: list != null || onTap != null,
+              readOnly: list != null || onTap != null || !enabled,
               controller: textEditingController,
             ))));
     return l;

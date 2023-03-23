@@ -69,16 +69,15 @@ class OrderDocScreen extends EditWidget {
                     listener: (context, state) {
                       if (_model.details.isNotEmpty) {
                         _model.brandController.removeListener(() { });
-                        _model.shortCodeController.removeListener(() { });
+                        _model.modelCodController.removeListener(() { });
                         final OrderRow or = _model.details.first;
                         _model.orderIdController.text = or.PatverN ?? '???';
                         _model.dateCreateController.text = DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(or.date ?? DateFormat('yyyy-MM-dd').format(DateTime.now())));
                         _model.dateForController.text = DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(or.PatverDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now())));
                         _model.brandController.text = or.brand ?? '';
-                        _model.shortCodeController.text = or.ModelCod ?? '';
+                        _model.modelCodController.text = or.ModelCod ?? '';
                         _model.modelController.text = or.Model ?? '';
                         _model.sizeStandartController.text = or.size_standart ?? '';
-                        _model.customerController.text = or.Patviratu ?? '';
                         _model.executorController.text = or.Katarox ?? '';
                         _model.countryController.text = or.country ?? '';
                         bloc.add(OrderDocNewRow());
@@ -91,43 +90,38 @@ class OrderDocScreen extends EditWidget {
                       context: context,
                       title: 'Order num',
                       textEditingController: _model.orderIdController,
-                  enabled: _model.orderId!.isNotEmpty),
+                  enabled: _model.orderId!.isEmpty),
                   textFieldColumn(
                       context: context,
                       title: 'Create date',
                       textEditingController: _model.dateCreateController,
-                      enabled: _model.orderId!.isNotEmpty,
-                      onTap: () {
+                      enabled: _model.orderId!.isEmpty,
+                      onTap: _model.orderId!.isEmpty ? () {
                         _changeDate(context, _model.dateCreateController);
-                      }),
+                      } : null),
                   textFieldColumn(
                       context: context,
                       title: 'Execute date',
                       textEditingController: _model.dateForController,
-                      enabled: _model.orderId!.isNotEmpty,
-                      onTap: () {
+                      enabled: _model.orderId!.isEmpty,
+                      onTap: _model.orderId!.isEmpty ? () {
                         _changeDate(context, _model.dateForController);
-                      })
+                      } : null,
+                  )
                 ]),
                 Row(
                   children: [
                     textFieldColumn(
                         context: context,
-                        title: 'Customer',
-                        textEditingController: _model.customerController,
-                        enabled: _model.orderId!.isNotEmpty,
-                        list: _model.datasource.customers),
-                    textFieldColumn(
-                        context: context,
                         title: 'Executor',
                         textEditingController: _model.executorController,
-                        enabled: _model.orderId!.isNotEmpty,
+                        enabled: _model.orderId!.isEmpty,
                         list: _model.datasource.executors),
                     textFieldColumn(
                         context: context,
                         title: 'Country',
                         textEditingController: _model.countryController,
-                        enabled: _model.orderId!.isNotEmpty),
+                        enabled: _model.orderId!.isEmpty),
                   ],
                 ),
                 Row(
@@ -138,43 +132,43 @@ class OrderDocScreen extends EditWidget {
                       textEditingController: _model.brandController
                         ..addListener(_model.orderId!.isEmpty ? () {
                           bloc.add(OrderDocBrandChanged());
-                        } : (){}),
-                      list: _model.datasource.shortCodeOfBrand.keys.toList(),
-                        enabled: _model.orderId!.isNotEmpty,
+                        } : (){print('NO BRAND LISTENER');}),
+                      list: _model.orderId!.isEmpty ? _model.datasource.shortCodeOfBrand.keys.toList() : null,
+                        enabled: _model.orderId!.isEmpty,
                     ),
                     BlocBuilder<OrderDocBloc, OrderDocState>(
                         buildWhen: (previos, current) =>
                             current is OrderDocStateBrand,
                         builder: (context, state) {
-                          _model.shortCodeController.clear();
+                          _model.modelCodController.clear();
                           return textFieldColumn(
                               context: context,
-                              title: 'Short code',
-                              textEditingController: _model.shortCodeController
+                              title: 'Model code',
+                              textEditingController: _model.modelCodController
                                 ..addListener(_model.orderId!.isEmpty ? () {
                                   bloc.add(OrderDocShortChanged());
                                 } : (){}),
-                              list: _model
-                                  .shortCodeOf(_model.brandController.text),
-                              enabled: _model.orderId!.isNotEmpty);
+                              list: _model.orderId!.isEmpty ? _model
+                                  .shortCodeOf(_model.brandController.text) : null,
+                              enabled: _model.orderId!.isEmpty);
                         }),
                     BlocListener<OrderDocBloc, OrderDocState>(
                         listenWhen: (previose, current) =>
                             current is OrderDocStateShort,
                         listener: (context, state) {
-                          if (_model.shortCodeController.text.isEmpty) {
+                          if (_model.modelCodController.text.isEmpty) {
                             _model.modelController.clear();
                             _model.sizeStandartController.clear();
                           } else {
                             _model.modelController.text = _model
                                 .datasource
                                 .modelAndSizeOfShort[
-                                    _model.shortCodeController.text]!
+                                    _model.modelCodController.text]!
                                 .elementAt(0);
                             _model.sizeStandartController.text = _model
                                 .datasource
                                 .modelAndSizeOfShort[
-                                    _model.shortCodeController.text]!
+                                    _model.modelCodController.text]!
                                 .elementAt(1);
                           }
                         },
@@ -304,11 +298,11 @@ class OrderDocScreen extends EditWidget {
                           PatverDate: _model.dateCreateController.text,
                           parent_id: '0',
                           Katarox: _model.executorController.text,
-                          Patviratu: _model.customerController.text,
+                          Patviratu: '',
                           Model: _model.modelController.text,
-                          ModelCod: _model.shortCodeController.text,
+                          ModelCod: _model.modelCodController.text,
                           brand: _model.brandController.text,
-                          short_code: _model.shortCodeController.text,
+                          short_code: '',
                           size_standart: _model.sizeStandartController.text,
                           country: _model.countryController.text,
                           variant_prod: '',
@@ -768,9 +762,6 @@ class OrderDocScreen extends EditWidget {
     if (_model.orderIdController.text.isEmpty) {
       error.add(L.tr('Order id cannot be empty'));
     }
-    if (_model.customerController.text.isEmpty) {
-      error.add(L.tr('Select customer'));
-    }
     if (_model.executorController.text.isEmpty) {
       error.add(L.tr('Select executor'));
     }
@@ -797,12 +788,9 @@ class OrderDocScreen extends EditWidget {
     }
     _model.rowEditMode = -1;
     for (var e in _model.details) {
-      if (e.id.isNotEmpty) {
-        continue;
-      }
       OrderRow or = e.copyWith(
           brand: _model.brandController.text,
-          Patviratu: _model.customerController.text,
+          Patviratu: '',
           date: DateFormat('yyyy-MM-dd').format(
               DateFormat('dd/MM/yyyy').parse(_model.dateCreateController.text)),
           PatverDate: DateFormat('yyyy-MM-dd').format(
@@ -810,7 +798,7 @@ class OrderDocScreen extends EditWidget {
           IDPatver: uuid,
           Katarox: _model.executorController.text,
           Model: _model.modelController.text,
-          ModelCod: _model.shortCodeController.text,
+          ModelCod: _model.modelCodController.text,
           size_standart: _model.sizeStandartController.text);
       String sql = '';
       Map<String, dynamic> s = or.toJson();

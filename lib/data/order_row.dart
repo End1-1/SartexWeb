@@ -55,7 +55,6 @@ class OrderRowList with _$OrderRowList {
 }
 
 class OrderRowDatasource extends SartexDataGridSource {
-  late List<String> customers;
   late List<String> executors;
   late List<String> brands;
   final Map<String, List<String>> shortCodeOfBrand = {};
@@ -84,7 +83,6 @@ class OrderRowDatasource extends SartexDataGridSource {
     addColumn('execmust', 'Need execute', 100);
     addColumn('execdate', 'Execute date', 100);
     addColumn('status', 'Status', 100);
-    HttpSqlQuery.listOfQuery("select name from Parthners where type='Հաճախորդ'").then((value) => customers = value);
     HttpSqlQuery.listOfQuery("select name from Parthners where type='Արտադրող'").then((value) => executors = value);
     HttpSqlQuery.listDistinctOf('Products', 'brand');
     HttpSqlQuery.get('select brand, modelCode, model, size_standart  from Products').then((value) => value.forEach((e) {

@@ -26,11 +26,10 @@ class OrderDocModel {
   final TextEditingController orderIdController = TextEditingController();
   final TextEditingController dateCreateController = TextEditingController(text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
   final TextEditingController dateForController = TextEditingController(text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
-  final TextEditingController customerController = TextEditingController();
   final TextEditingController executorController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
   final TextEditingController brandController = STextEditingController();
-  final TextEditingController shortCodeController = STextEditingController();
+  final TextEditingController modelCodController = STextEditingController();
   final TextEditingController modelController = TextEditingController();
   final TextEditingController sizeStandartController = TextEditingController();
   final List<TextEditingController> detailsControllers = [

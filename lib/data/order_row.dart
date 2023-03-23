@@ -41,7 +41,9 @@ class OrderRow with _$OrderRow {
     required String? Size08,
     required String? Size09,
     required String? Size10,
-    required String? Total
+    required String? Total,
+    required String? discarded,
+    required String? appended
 }) = _OrderRow;
   factory OrderRow.fromJson(Map<String, dynamic> json) => _$OrderRowFromJson(json);
 }
@@ -67,13 +69,14 @@ class OrderRowDatasource extends SartexDataGridSource {
     addColumn('branch', 'Branch', 100);
     addColumn('date', 'Date', 100);
     addColumn('patvern', 'NN', 100);
-    addColumn('patviratu', 'Customer', 100);
+    addColumn('patviratu', 'Customer', 120);
     addColumn('brand', 'Brand', 100);
     addColumn('model', 'Model', 100);
     addColumn('modelcod', 'Model code', 100);
-    addColumn('executor', 'Executor', 100);
-    addColumn('total', 'Total', 100);
-    addColumn('end', 'End', 100);
+    addColumn('executor', 'Executor', 110);
+    addColumn('+', '+', 50);
+    addColumn('-', '-', 50);
+    addColumn('-', 'Total', 110);
     addColumn('executed', 'Executed', 100);
     addColumn('executed persent', 'Executed %', 100);
     addColumn('remain', 'Remain', 100);
@@ -110,8 +113,9 @@ class OrderRowDatasource extends SartexDataGridSource {
         DataGridCell(columnName: 'model', value: e.Model),
         DataGridCell(columnName: 'modelcod', value: e.ModelCod),
         DataGridCell(columnName: 'executor', value: e.Katarox),
+        DataGridCell(columnName: '+', value: e.appended),
+        DataGridCell(columnName: '-', value: e.discarded),
         DataGridCell(columnName: 'total', value: e.Total),
-        DataGridCell(columnName: 'end', value: 'HARCNEL'),
         DataGridCell(columnName: 'executed', value: 'HARCNEL'),
         DataGridCell(columnName: 'executed percent', value: 'HARCNEL'),
         DataGridCell(columnName: 'Remain', value: 'HARCNEL'),

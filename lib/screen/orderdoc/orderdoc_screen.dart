@@ -64,6 +64,28 @@ class OrderDocScreen extends EditWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                BlocListener<OrderDocBloc, OrderDocState>(
+                    listenWhen: (previos, current) => current is OrderDocStateLoaded,
+                    listener: (context, state) {
+                      if (_model.details.isNotEmpty) {
+                        _model.brandController.removeListener(() { });
+                        _model.shortCodeController.removeListener(() { });
+                        final OrderRow or = _model.details.first;
+                        _model.orderIdController.text = or.PatverN ?? '???';
+                        _model.dateCreateController.text = DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(or.date ?? DateFormat('yyyy-MM-dd').format(DateTime.now())));
+                        _model.dateForController.text = DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(or.PatverDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now())));
+                        _model.brandController.text = or.brand ?? '';
+                        _model.shortCodeController.text = or.ModelCod ?? '';
+                        _model.modelController.text = or.Model ?? '';
+                        _model.sizeStandartController.text = or.size_standart ?? '';
+                        _model.customerController.text = or.Patviratu ?? '';
+                        _model.executorController.text = or.Katarox ?? '';
+                        _model.countryController.text = or.country ?? '';
+                        bloc.add(OrderDocNewRow());
+                        bloc.add(OrderDocShortChanged());
+                      }
+                    },
+                    child: Container()),
                 Row(children: [
                   textFieldColumn(
                       context: context,
@@ -114,9 +136,9 @@ class OrderDocScreen extends EditWidget {
                       context: context,
                       title: 'Brand',
                       textEditingController: _model.brandController
-                        ..addListener(() {
+                        ..addListener(_model.orderId!.isEmpty ? () {
                           bloc.add(OrderDocBrandChanged());
-                        }),
+                        } : (){}),
                       list: _model.datasource.shortCodeOfBrand.keys.toList(),
                         enabled: _model.orderId!.isNotEmpty,
                     ),
@@ -129,34 +151,13 @@ class OrderDocScreen extends EditWidget {
                               context: context,
                               title: 'Short code',
                               textEditingController: _model.shortCodeController
-                                ..addListener(() {
+                                ..addListener(_model.orderId!.isEmpty ? () {
                                   bloc.add(OrderDocShortChanged());
-                                }),
+                                } : (){}),
                               list: _model
                                   .shortCodeOf(_model.brandController.text),
                               enabled: _model.orderId!.isNotEmpty);
                         }),
-                    BlocListener<OrderDocBloc, OrderDocState>(
-                      listenWhen: (previos, current) => current is OrderDocStateLoaded,
-                        listener: (context, state) {
-                        if (_model.details.isNotEmpty) {
-                          _model.brandController.removeListener(() { });
-                          _model.shortCodeController.removeListener(() { });
-                          final OrderRow or = _model.details.first;
-                          _model.orderIdController.text = or.PatverN ?? '???';
-                          _model.dateCreateController.text = DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(or.date ?? DateFormat('yyyy-MM-dd').format(DateTime.now())));
-                          _model.dateForController.text = DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(or.PatverDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now())));
-                          _model.brandController.text = or.brand ?? '';
-                          _model.shortCodeController.text = or.ModelCod ?? '';
-                          _model.modelController.text = or.Model ?? '';
-                          _model.sizeStandartController.text = or.size_standart ?? '';
-                          _model.customerController.text = or.Patviratu ?? '';
-                          _model.executorController.text = or.Katarox ?? '';
-                          _model.countryController.text = or.country ?? '';
-                          bloc.add(OrderDocNewRow());
-                        }
-                    },
-                        child: Container()),
                     BlocListener<OrderDocBloc, OrderDocState>(
                         listenWhen: (previose, current) =>
                             current is OrderDocStateShort,
@@ -323,7 +324,9 @@ class OrderDocScreen extends EditWidget {
                           Size08: '',
                           Size09: '',
                           Size10: '',
-                          Total: '0'));
+                          Total: '0',
+                      discarded: '',
+                      appended: ''));
                       _model.rowEditMode = _model.details.length - 1;
                       BlocProvider.of<OrderDocBloc>(context)
                           .add(OrderDocNewRow());
@@ -394,6 +397,7 @@ class OrderDocScreen extends EditWidget {
         switch (j) {
           case 0:
             onerow.add(Container(
+              alignment: Alignment.center,
                 padding: padding,
                 height: rowheight,
                 width: columnWidths[j],
@@ -411,6 +415,7 @@ class OrderDocScreen extends EditWidget {
             break;
           case 1:
             onerow.add(Container(
+                alignment: Alignment.center,
                 padding: padding,
                 height: rowheight,
                 width: columnWidths[j],
@@ -427,6 +432,7 @@ class OrderDocScreen extends EditWidget {
             break;
           case 2:
             onerow.add(Container(
+                alignment: Alignment.center,
                 padding: padding,
                 height: rowheight,
                 width: columnWidths[j],
@@ -448,6 +454,7 @@ class OrderDocScreen extends EditWidget {
             break;
           case 3:
             onerow.add(Container(
+                alignment: Alignment.center,
                 padding: padding,
                 height: rowheight,
                 width: columnWidths[j],
@@ -470,6 +477,7 @@ class OrderDocScreen extends EditWidget {
             break;
           case 4:
             onerow.add(Container(
+                alignment: Alignment.center,
                 padding: padding,
                 height: rowheight,
                 width: columnWidths[j],
@@ -492,6 +500,7 @@ class OrderDocScreen extends EditWidget {
             break;
           case 5:
             onerow.add(Container(
+                alignment: Alignment.center,
                 padding: padding,
                 height: rowheight,
                 width: columnWidths[j],
@@ -514,6 +523,7 @@ class OrderDocScreen extends EditWidget {
             break;
           case 6:
             onerow.add(Container(
+                alignment: Alignment.center,
                 padding: padding,
                 height: rowheight,
                 width: columnWidths[j],
@@ -536,6 +546,7 @@ class OrderDocScreen extends EditWidget {
             break;
           case 7:
             onerow.add(Container(
+                alignment: Alignment.center,
                 padding: padding,
                 height: rowheight,
                 width: columnWidths[j],
@@ -558,6 +569,7 @@ class OrderDocScreen extends EditWidget {
             break;
           case 8:
             onerow.add(Container(
+                alignment: Alignment.center,
                 padding: padding,
                 height: rowheight,
                 width: columnWidths[j],
@@ -580,6 +592,7 @@ class OrderDocScreen extends EditWidget {
             break;
           case 9:
             onerow.add(Container(
+                alignment: Alignment.center,
                 padding: padding,
                 height: rowheight,
                 width: columnWidths[j],
@@ -602,6 +615,7 @@ class OrderDocScreen extends EditWidget {
             break;
           case 10:
             onerow.add(Container(
+                alignment: Alignment.center,
                 padding: padding,
                 height: rowheight,
                 width: columnWidths[j],
@@ -624,6 +638,7 @@ class OrderDocScreen extends EditWidget {
             break;
           case 11:
             onerow.add(Container(
+                alignment: Alignment.center,
                 padding: padding,
                 height: rowheight,
                 width: columnWidths[j],
@@ -648,6 +663,7 @@ class OrderDocScreen extends EditWidget {
             onerow.add(BlocBuilder<OrderDocBloc, OrderDocState>(
               builder: (context, state) {
                 return Container(
+                    alignment: Alignment.center,
                     padding: padding,
                     height: rowheight,
                     width: columnWidths[j],
@@ -659,6 +675,7 @@ class OrderDocScreen extends EditWidget {
           case 13:
             if (i == _model.rowEditMode) {
               onerow.add(Container(
+                  alignment: Alignment.center,
                   padding: padding,
                   height: rowheight,
                   width: columnWidths[j],
@@ -674,6 +691,7 @@ class OrderDocScreen extends EditWidget {
                   )));
             } else {
               onerow.add(Container(
+                  alignment: Alignment.center,
                   padding: padding,
                   height: rowheight,
                   width: columnWidths[j],
@@ -696,8 +714,8 @@ class OrderDocScreen extends EditWidget {
                             height: rowheight,
                             child: SvgButton(
                                 onTap: () {
-                                  OrderRow r = or.copyWith(id:'', Size01:'', Size02: '', Size03: '', Size04: '', Size05: '', Size06: '', Size07:'', Size08:'', Size09:'', Size10: '');
-                                  _model.details.insert(i, r);
+                                  OrderRow r = or.copyWith(id:'', Size01:'', Size02: '', Size03: '', Size04: '', Size05: '', Size06: '', Size07:'', Size08:'', Size09:'', Size10: '', parent_id: or.id);
+                                  _model.details.insert(i + 1, r);
                                   _model.rowEditMode = i + 1;
                                   BlocProvider.of<OrderDocBloc>(context)
                                       .add(OrderDocNewRow());
@@ -728,12 +746,11 @@ class OrderDocScreen extends EditWidget {
         }
       }
       l.add(Padding(
-          padding: const EdgeInsets.only(left: 10),
+          padding: const EdgeInsets.only(bottom: 2),
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: onerow)));
-      l.add(const Divider(height: 2, color: Colors.transparent));
     }
 
     return l;

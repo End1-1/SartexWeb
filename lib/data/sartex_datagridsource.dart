@@ -38,7 +38,7 @@ abstract class SartexDataGridSource extends DataGridSource {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             alignment: Alignment.center,
             child: Text(L.tr(label),
-                style: const TextStyle(color: Colors.white)))));
+                style: const TextStyle(color: Colors.white, fontSize: 13)))));
   }
 
   @override
@@ -71,7 +71,7 @@ abstract class SartexDataGridSource extends DataGridSource {
                         },
                         child: delePic))
               ])
-            : Text(e.value.toString()),
+            : Text(e.value.toString(), style: datagrid_text_style),
       );
     }).toList());
   }

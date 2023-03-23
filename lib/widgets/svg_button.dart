@@ -18,7 +18,7 @@ class SvgButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(5),
         child: MouseRegion(
             cursor: SystemMouseCursors.click,
             child: InkWell(

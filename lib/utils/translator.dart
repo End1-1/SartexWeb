@@ -25,14 +25,14 @@ class Translator {
   Map<String, TranslatorItem> items = {};
   String language = '';
   String tr(String s) {
-    if (!items.containsKey(s.toLowerCase())) {
+    if (!items.containsKey(s)) {
       items[s.toLowerCase()] = TranslatorItem(key: s, am: s, it: s);
     }
     switch (language) {
       case key_language_am:
-        return items[s.toLowerCase()]?.am ?? s;
+        return items[s]?.am ?? s;
       case key_language_it:
-        return items[s.toLowerCase()]?.it ?? s;
+        return items[s]?.it ?? s;
       default:
         return s;
     }

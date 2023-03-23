@@ -67,7 +67,7 @@ abstract class EditWidget extends StatelessWidget {
         child: Row(
           children: [
             OutlinedButton(
-              style: outlined_button_style,
+                style: outlined_button_style,
                 onPressed: () {
                   save(context, getTable(), o);
                 },
@@ -90,7 +90,8 @@ abstract class EditWidget extends StatelessWidget {
       required VoidCallback? onTap,
       ValueChanged<String>? onChange,
       List<String>? list,
-      int width = 200}) {
+      int width = 200,
+      bool enabled = true}) {
     final List<Widget> l = [];
     l.add(Padding(
         padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -102,6 +103,7 @@ abstract class EditWidget extends StatelessWidget {
             child: TextFormField(
               decoration: text_form_field_decoration,
               onChanged: onChange,
+              enabled: enabled,
               onTap: onTap ??
                   (list == null
                       ? null
@@ -122,6 +124,7 @@ abstract class EditWidget extends StatelessWidget {
       required TextEditingController textEditingController,
       List<String>? list,
       int width = 200,
+      bool enabled = true,
       VoidCallback? onTap,
       ValueChanged<String>? onChange}) {
     return Column(

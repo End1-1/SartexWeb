@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:sartex/data/order_row.dart';
+import 'package:sartex/utils/http_sql.dart';
 
 import '../../utils/text_editing_controller.dart';
 import 'orderdoc_bloc.dart';
@@ -12,13 +15,8 @@ class OrderDocModel {
   OrderDocModel();
 
   String? _orderId;
-  String? get orderId => _orderId;
-  set orderId (x) {
-    _orderId = x;
-    if (_orderId == null) {
-      return;
-    }
-  }
+  String? get orderId => _orderId ?? '';
+  set orderId (x) => _orderId = x;
 
   late OrderRowDatasource datasource;
 
@@ -27,7 +25,7 @@ class OrderDocModel {
 
   final TextEditingController orderIdController = TextEditingController();
   final TextEditingController dateCreateController = TextEditingController(text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
-  final TextEditingController dateForContrller = TextEditingController(text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
+  final TextEditingController dateForController = TextEditingController(text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
   final TextEditingController customerController = TextEditingController();
   final TextEditingController executorController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
@@ -52,6 +50,15 @@ class OrderDocModel {
 
   List<String> shortCodeOf(String brand) {
     return datasource.shortCodeOfBrand[brand] ?? [];
+  }
+
+  Future<void> loadOrder() async {
+    await HttpSqlQuery.postString({'sl' : "select * from patver_data where IDPatver='$_orderId'"}).then((value) {
+      OrderRowList orl = OrderRowList.fromJson({'list' : jsonDecode(value)});
+      for (var e in orl.list) {
+        details.add(e);
+      }
+    });
   }
 
   void countTotalOfDetailsRow(int r) {

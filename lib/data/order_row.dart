@@ -63,7 +63,7 @@ class OrderRowDatasource extends SartexDataGridSource {
   OrderRowDatasource({required super.context, required List data}) {
     addRows(data);
     addColumn('edit', 'Edit', 100);
-    addColumn('id', 'Id', 40);
+    addColumn('id', 'Id', 60);
     addColumn('branch', 'Branch', 100);
     addColumn('date', 'Date', 100);
     addColumn('patvern', 'NN', 100);

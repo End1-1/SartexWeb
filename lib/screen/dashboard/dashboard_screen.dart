@@ -443,7 +443,7 @@ class _SartexDashboardScreen extends StatelessWidget {
             ],);
           });
         },
-        assetPath: 'svg/plus.svg');
+        assetPath: 'svg/plusfolder.svg');
     }
     return Container();
   }

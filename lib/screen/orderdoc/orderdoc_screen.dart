@@ -357,9 +357,9 @@ class OrderDocScreen extends EditWidget {
         final BoxDecoration boxDecoration =
             BoxDecoration(color: bgcolor, border: border);
         if (i == _model.rowEditMode) {
-          _model.detailsControllers[0].text = or.Model!;
+          _model.detailsControllers[0].text = or.variant_prod!;
           _model.detailsControllers[0].selection = TextSelection.fromPosition(
-              TextPosition(offset: or.Model!.length));
+              TextPosition(offset: or.variant_prod!.length));
           _model.detailsControllers[1].text = or.Colore!;
           _model.detailsControllers[1].selection = TextSelection.fromPosition(
               TextPosition(offset: or.Colore!.length));
@@ -405,13 +405,13 @@ class OrderDocScreen extends EditWidget {
                 child: _model.rowEditMode == i
                     ? TextFormField(
                         onChanged: (text) {
-                          _model.details[i] = or.copyWith(Model: text);
+                          _model.details[i] = or.copyWith(variant_prod: text);
                           BlocProvider.of<OrderDocBloc>(context)
                               .add(OrderDocNewRow());
                         },
                         controller: _model.detailsControllers[j],
                       )
-                    : Text(or.Model!, textAlign: TextAlign.center, style: ts)));
+                    : Text(or.variant_prod!, textAlign: TextAlign.center, style: ts)));
             break;
           case 1:
             onerow.add(Container(
@@ -714,7 +714,7 @@ class OrderDocScreen extends EditWidget {
                             height: rowheight,
                             child: SvgButton(
                                 onTap: () {
-                                  OrderRow r = or.copyWith(id:'', Size01:'', Size02: '', Size03: '', Size04: '', Size05: '', Size06: '', Size07:'', Size08:'', Size09:'', Size10: '', parent_id: or.id);
+                                  OrderRow r = or.copyWith(id:'', Size01:'', Size02: '', Size03: '', Size04: '', Size05: '', Size06: '', Size07:'', Size08:'', Size09:'', Size10: '', parent_id: or.id, variant_prod: or.variant_prod);
                                   _model.details.insert(i + 1, r);
                                   _model.rowEditMode = i + 1;
                                   BlocProvider.of<OrderDocBloc>(context)
@@ -732,7 +732,7 @@ class OrderDocScreen extends EditWidget {
                                   } else {
                                     _model.details.insert(
                                         i + 1, or.copyWith(action: 'cancel', parent_id: or.id, Size01: '', Size02: '', Size03: '', Size04: '', Size05: '',
-                                    Size06: '', Size07: '', Size08: '', Size09:'', Size10: ''));
+                                    Size06: '', Size07: '', Size08: '', Size09:'', Size10: '', variant_prod: or.variant_prod));
                                     _model.rowEditMode = i + 1;
                                   }
                                   BlocProvider.of<OrderDocBloc>(context)
@@ -813,12 +813,14 @@ class OrderDocScreen extends EditWidget {
           ModelCod: _model.shortCodeController.text,
           size_standart: _model.sizeStandartController.text);
       String sql = '';
+      Map<String, dynamic> s = or.toJson();
+      s.remove('appended');
+      s.remove('discarded');
       if (or.id.isEmpty) {
-        Map<String, dynamic> s = or.toJson();
         s.remove('id');
         sql = Sql.insert('patver_data', s);
       } else {
-        sql = Sql.update('patver_data', or.toJson());
+        sql = Sql.update('patver_data', s);
       }
       await HttpSqlQuery.get(sql);
       int index = _model.details.indexOf(e);

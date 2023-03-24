@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:sartex/data/order_row.dart';
 import 'package:sartex/utils/http_sql.dart';
 
+import '../../data/sql.dart';
 import '../../utils/text_editing_controller.dart';
 import 'orderdoc_bloc.dart';
 import 'orderdoc_event.dart';
@@ -52,7 +53,7 @@ class OrderDocModel {
   }
 
   Future<void> loadOrder() async {
-    await HttpSqlQuery.postString({'sl' : "select * from patver_data where IDPatver='$_orderId'"}).then((value) {
+    await HttpSqlQuery.postString({'sl' : "${Sql.sqlList['open_patver_data']} where IDPatver='$_orderId'"}).then((value) {
       OrderRowList orl = OrderRowList.fromJson({'list' : jsonDecode(value)});
       for (var e in orl.list) {
         details.add(e);

@@ -29,6 +29,10 @@ mixin _$DataUser {
   String get lastName => throw _privateConstructorUsedError;
   String get middleName => throw _privateConstructorUsedError;
   String get position => throw _privateConstructorUsedError;
+  String? get role => throw _privateConstructorUsedError;
+  String? get tabelNumber => throw _privateConstructorUsedError;
+  String? get user_id => throw _privateConstructorUsedError;
+  String? get type => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -50,7 +54,11 @@ abstract class $DataUserCopyWith<$Res> {
       String firstName,
       String lastName,
       String middleName,
-      String position});
+      String position,
+      String? role,
+      String? tabelNumber,
+      String? user_id,
+      String? type});
 }
 
 /// @nodoc
@@ -75,6 +83,10 @@ class _$DataUserCopyWithImpl<$Res, $Val extends DataUser>
     Object? lastName = null,
     Object? middleName = null,
     Object? position = null,
+    Object? role = freezed,
+    Object? tabelNumber = freezed,
+    Object? user_id = freezed,
+    Object? type = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -113,6 +125,22 @@ class _$DataUserCopyWithImpl<$Res, $Val extends DataUser>
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
               as String,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tabelNumber: freezed == tabelNumber
+          ? _value.tabelNumber
+          : tabelNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -133,7 +161,11 @@ abstract class _$$_DataUserCopyWith<$Res> implements $DataUserCopyWith<$Res> {
       String firstName,
       String lastName,
       String middleName,
-      String position});
+      String position,
+      String? role,
+      String? tabelNumber,
+      String? user_id,
+      String? type});
 }
 
 /// @nodoc
@@ -156,6 +188,10 @@ class __$$_DataUserCopyWithImpl<$Res>
     Object? lastName = null,
     Object? middleName = null,
     Object? position = null,
+    Object? role = freezed,
+    Object? tabelNumber = freezed,
+    Object? user_id = freezed,
+    Object? type = freezed,
   }) {
     return _then(_$_DataUser(
       id: null == id
@@ -194,6 +230,22 @@ class __$$_DataUserCopyWithImpl<$Res>
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
               as String,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tabelNumber: freezed == tabelNumber
+          ? _value.tabelNumber
+          : tabelNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -210,7 +262,11 @@ class _$_DataUser implements _DataUser {
       required this.firstName,
       required this.lastName,
       required this.middleName,
-      required this.position});
+      required this.position,
+      required this.role,
+      required this.tabelNumber,
+      required this.user_id,
+      required this.type});
 
   factory _$_DataUser.fromJson(Map<String, dynamic> json) =>
       _$$_DataUserFromJson(json);
@@ -233,10 +289,18 @@ class _$_DataUser implements _DataUser {
   final String middleName;
   @override
   final String position;
+  @override
+  final String? role;
+  @override
+  final String? tabelNumber;
+  @override
+  final String? user_id;
+  @override
+  final String? type;
 
   @override
   String toString() {
-    return 'DataUser(id: $id, branch: $branch, active: $active, department: $department, email: $email, firstName: $firstName, lastName: $lastName, middleName: $middleName, position: $position)';
+    return 'DataUser(id: $id, branch: $branch, active: $active, department: $department, email: $email, firstName: $firstName, lastName: $lastName, middleName: $middleName, position: $position, role: $role, tabelNumber: $tabelNumber, user_id: $user_id, type: $type)';
   }
 
   @override
@@ -257,13 +321,31 @@ class _$_DataUser implements _DataUser {
             (identical(other.middleName, middleName) ||
                 other.middleName == middleName) &&
             (identical(other.position, position) ||
-                other.position == position));
+                other.position == position) &&
+            (identical(other.role, role) || other.role == role) &&
+            (identical(other.tabelNumber, tabelNumber) ||
+                other.tabelNumber == tabelNumber) &&
+            (identical(other.user_id, user_id) || other.user_id == user_id) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, branch, active, department,
-      email, firstName, lastName, middleName, position);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      branch,
+      active,
+      department,
+      email,
+      firstName,
+      lastName,
+      middleName,
+      position,
+      role,
+      tabelNumber,
+      user_id,
+      type);
 
   @JsonKey(ignore: true)
   @override
@@ -289,7 +371,11 @@ abstract class _DataUser implements DataUser {
       required final String firstName,
       required final String lastName,
       required final String middleName,
-      required final String position}) = _$_DataUser;
+      required final String position,
+      required final String? role,
+      required final String? tabelNumber,
+      required final String? user_id,
+      required final String? type}) = _$_DataUser;
 
   factory _DataUser.fromJson(Map<String, dynamic> json) = _$_DataUser.fromJson;
 
@@ -311,6 +397,14 @@ abstract class _DataUser implements DataUser {
   String get middleName;
   @override
   String get position;
+  @override
+  String? get role;
+  @override
+  String? get tabelNumber;
+  @override
+  String? get user_id;
+  @override
+  String? get type;
   @override
   @JsonKey(ignore: true)
   _$$_DataUserCopyWith<_$_DataUser> get copyWith =>

@@ -134,6 +134,7 @@ abstract class EditWidget extends StatelessWidget {
             title: title,
             textEditingController: textEditingController,
             onTap: onTap,
+            enabled: enabled,
             onChange: onChange,
             list: list,
             width: width));

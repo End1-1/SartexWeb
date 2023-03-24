@@ -5,6 +5,6 @@
 "Sizes":"select id,code,country,name,size01,size02,size03,size04,size05,size06,size07,size08,size09,size10,coalesce(size11, '') as size11 from Sizes",
 "Parthners":"select id, coalesce(branch, '') as branch, country, name, type from Parthners",
 "productStatuses":"select id,coalesce(branch, '')as branch, checkStatus,prod_status from productStatuses",
-"patver_data":"select id, branch, action, User, date, IDPatver, status, PatverN, PatverDate, parent_id, Katarox, Patviratu, brand, Model, short_code, ModelCod, sum(if(action='add', cast(Total as unsigned), 0)) as appended,sum(if(action='cancel', cast(Total as unsigned), 0)) as discarded, sum(if(action='add', cast(Total as unsigned), 0)) - sum(if(action='cancel', cast(Total as unsigned), 0)) as Total from patver_data group by IDPatver",
-"open_patver_data":"select * from patver_data"
+"patver_data":"select id, branch, action, User, date, IDPatver, status, PatverN, PatverDate, if (cast(parent_id as unsigned)=0, id, parent_id) as parent_id, Katarox, Patviratu, brand, Model, short_code, ModelCod, sum(if(action='add', cast(Total as unsigned), 0)) as appended,sum(if(action='cancel', cast(Total as unsigned), 0)) as discarded, sum(if(action='add', cast(Total as unsigned), 0)) - sum(if(action='cancel', cast(Total as unsigned), 0)) as Total from patver_data group by IDPatver order by 10",
+"open_patver_data":"select id, branch, action, User, date, IDPatver, status, PatverN, PatverDate, if (cast(parent_id as unsigned)=0, id, parent_id) as parent_id, Katarox, Patviratu, brand, Model, short_code, ModelCod,Total,country,size_standart,variant_prod, short_code, Size01, Size02, Size03, Size04, Size05, Size06, Size07, Size08, Size09, Size10, Colore from patver_data"
 }

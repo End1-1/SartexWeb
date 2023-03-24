@@ -24,7 +24,11 @@ class DataUser with _$DataUser {
       required String firstName,
       required String lastName,
       required String middleName,
-      required String position}) = _DataUser;
+      required String position,
+      required String? role,
+      required String? tabelNumber,
+      required String? user_id,
+      required String? type}) = _DataUser;
 
   factory DataUser.fromJson(Map<String, Object?> json) =>
       _$DataUserFromJson(json);
@@ -43,22 +47,30 @@ class UserDataSource extends SartexDataGridSource {
   late List<String> activeList;
   late List<String> positionList;
   late List<String> departmentList;
+  late List<String> typeList;
+  late List<String> roleList;
   UserDataSource({required super.context, required List data}) {
     addRows(data);
     addColumn('edit', 'Edit', 100);
     addColumn('id', 'Id', 40);
-    addColumn('branch', 'Branch', 100);
-    addColumn('active', 'Active', 100);
+    addColumn('branch', 'Branch', 120);
     addColumn('firstname', 'First name', 200);
     addColumn('lastname', 'Last name', 200);
     addColumn('middlename', 'Middle name', 200);
     addColumn('email', 'Email', 200);
     addColumn('position', 'Position', 200);
     addColumn('department', 'Department', 200);
+    addColumn('active', 'Active', 100);
+    addColumn('tableid', 'Tabel id', 100);
+    addColumn('type', 'Type', 100);
     branchList = ['Sartex', 'Itex'];
     activeList = ['yes', 'no'];
     HttpSqlQuery.listOfQuery('select distinct(position) from Users order by 1').then((value) => positionList = value);
     HttpSqlQuery.listOf('department', 'department').then((value) => departmentList = value);
+    HttpSqlQuery.listOfQuery('select distinct(type) from Users where type is not null').then((value) => typeList = value);
+    HttpSqlQuery.listDistinctOf('Users', 'role').then((value) {
+      roleList = value;
+    });
   }
 
   @override
@@ -68,20 +80,22 @@ class UserDataSource extends SartexDataGridSource {
           DataGridCell(columnName: 'editdata', value: e.id),
           DataGridCell(columnName: 'id', value: e.id),
           DataGridCell(columnName: 'branch', value: e.branch),
-          DataGridCell(columnName: 'active', value: e.active),
           DataGridCell(columnName: 'firstName', value: e.firstName),
           DataGridCell(columnName: 'lastName', value: e.lastName),
           DataGridCell(columnName: 'middleName', value: e.middleName),
           DataGridCell(columnName: 'email', value: e.email),
           DataGridCell(columnName: 'position', value: e.position),
-          DataGridCell(columnName: 'department', value: e.department)
+          DataGridCell(columnName: 'department', value: e.department),
+          DataGridCell(columnName: 'active', value: e.active),
+          DataGridCell(columnName: 'tabelid', value: e.tabelNumber),
+          DataGridCell(columnName: 'type', value: e.type),
         ])));
   }
 
   @override
   Widget getEditWidget(String id) {
     if (id.isEmpty) {
-      return UserEditWidget(user: const DataUser(id: '', branch: '', active: '', email: '', firstName: '', lastName: '',middleName: '', position: '', department: '',), source: this,);
+      return UserEditWidget(user: const DataUser(id: '', branch: '', active: '', email: '', firstName: '', lastName: '',middleName: '', position: '', department: '', user_id: '', tabelNumber: '', type: '', role: ''), source: this,);
     } else {
       return UserEditWidget(user: data
           .where((e) => e.id == id)
@@ -102,6 +116,9 @@ class UserEditWidget extends EditWidget {
   final TextEditingController _tecDepartment = TextEditingController();
   final TextEditingController _tecActive = TextEditingController();
   final TextEditingController _tecBranch = TextEditingController();
+  final TextEditingController _tecTabelNN = TextEditingController();
+  final TextEditingController _tecRole = TextEditingController();
+  final TextEditingController _tecType = TextEditingController();
 
   UserEditWidget({required this.user, required this.source, super.key}) {
     _tecBranch.text = user.branch;
@@ -112,6 +129,8 @@ class UserEditWidget extends EditWidget {
     _tecPosition.text = user.position;
     _tecDepartment.text = user.department;
     _tecActive.text = user.active;
+    _tecRole.text = user.role ?? '';
+    _tecType.text = user.type ?? '';
   }
 
   @override
@@ -121,159 +140,27 @@ class UserEditWidget extends EditWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Row(children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-            Padding(
-                padding: const EdgeInsets.only(top:10, left: 10, right: 10),
-                child: Text(L.tr('First name'),
-                    style: const TextStyle(fontSize: 18))),
-            Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: SizedBox(width: 200, child: TextFormField(
-                  controller: _tecFirstName,
-                ))),
-          ]),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                  padding: const EdgeInsets.only(top:10, left: 10, right: 10),
-                  child: Text(L.tr('Last name'),
-                      style: const TextStyle(fontSize: 18))),
-              Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: SizedBox(width: 200, child: TextFormField(
-                    controller: _tecLastName,
-                  ))),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                  padding: const EdgeInsets.only(top:10, left: 10, right: 10),
-                  child: Text(L.tr('Middle name'),
-                      style: const TextStyle(fontSize: 18))),
-              Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: SizedBox(width: 200, child: TextFormField(
-                    controller: _tecMiddleName,
-                  ))),
-            ],
-          )
+        textFieldColumn(context: context, title: 'First name' , textEditingController: _tecFirstName),
+        textFieldColumn(context: context, title: 'Last name', textEditingController: _tecLastName),
+          textFieldColumn(context: context, title: 'Middle name', textEditingController: _tecMiddleName),
         ]),
         Row(children: [
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-            Padding(
-              padding: const EdgeInsets.only(top:10, left: 10, right: 10),
-              child: Text(L.tr('Email'), style: const TextStyle(fontSize: 18))),
-            Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: SizedBox(width: 300, child: TextFormField(
-                  controller: _tecEmail,
-                ))),
-          ]),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-            Padding(
-                padding: const EdgeInsets.only(top:10, left: 10, right: 10),
-                child: Text(L.tr('Position'), style: const TextStyle(fontSize: 18))),
-            Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: SizedBox(width: 300, child: TextFormField(
-                  onTap: () {
-                    showDialog(context: context, builder: (BuildContext context) {
-                      return PopupValuesScreen(values: source.positionList);
-                    }).then((value) {if (value != null) {_tecPosition.text = value;}} );
-                  },
-                  readOnly: true,
-                  controller: _tecPosition,
-                )))
-          ],)
+          textFieldColumn(context: context, title: 'Tabel NN', textEditingController: _tecTabelNN),
+          textFieldColumn(context: context, title: 'Email', textEditingController: _tecEmail),
+          textFieldColumn(context: context, title: 'Position', textEditingController: _tecPosition, list: source.positionList),
         ]),
         Row(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(top:10, left: 10, right: 10),
-                    child: Text(L.tr('Department'), style: const TextStyle(fontSize: 18))),
-                Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: SizedBox(width: 300, child: TextFormField(
-                      onTap: () {
-                        showDialog(context: context, builder: (BuildContext context) {
-                          return PopupValuesScreen(values: source.departmentList);
-                        }).then((value) { if (value != null) {_tecDepartment.text = value;}});
-                      },
-                      readOnly: true,
-                      controller: _tecDepartment,
-                    )))
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(top:10, left: 10, right: 10),
-                    child:
-                    Text(L.tr('Password'), style: const TextStyle(fontSize: 18))),
-                Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: SizedBox(width: 300, child: TextFormField(
-                      controller: _tecPassword,
-                    ))),
-              ],
-            )
+            textFieldColumn(context: context, title: 'Department', textEditingController: _tecDepartment, list: source.departmentList),
+            textFieldColumn(context: context, title: 'Type', textEditingController: _tecType, list: source.typeList),
+            textFieldColumn(context: context, title: 'Password', textEditingController: _tecPassword)
           ],
         ),
         Row(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(top:10, left: 10, right: 10),
-                    child:
-                    Text(L.tr('Active'), style: const TextStyle(fontSize: 18))),
-                Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: SizedBox(width: 300, child: TextFormField(
-                      onTap: () {
-                        showDialog(context: context, builder: (BuildContext context) {
-                          return PopupValuesScreen(values: source.activeList);
-                        }).then((value) {if (value != null) { _tecActive.text = value;}});
-                      },
-                      readOnly: true,
-                      controller: _tecActive,
-                    ))),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(top:10, left: 10, right: 10),
-                    child:
-                    Text(L.tr('Branch'), style: const TextStyle(fontSize: 18))),
-                Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: SizedBox(width: 300, child: TextFormField(
-                      onTap: () {
-                        showDialog(context: context, builder: (BuildContext context) {
-                          return PopupValuesScreen(values: source.branchList);
-                        }).then((value) {if (value != null){ _tecBranch.text = value;}});
-                      },
-                      readOnly: true,
-                      controller: _tecBranch,
-                    ))),
-              ],
-            )
+            textFieldColumn(context: context, title: 'Role', textEditingController: _tecRole, list: source.roleList),
+            textFieldColumn(context: context, title: 'Active', textEditingController: _tecActive, list: source.activeList),
+            textFieldColumn(context: context, title: 'Branch', textEditingController: _tecBranch, list: source.branchList),
           ],
         ),
         saveWidget(context, user)
@@ -291,7 +178,7 @@ class UserEditWidget extends EditWidget {
       active: _tecActive.text,
       department: _tecDepartment.text,
       position: _tecPosition.text,
-
+      tabelNumber: _tecTabelNN.text
     );
     String sql;
     if (user.id.isEmpty) {

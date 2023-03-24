@@ -346,8 +346,10 @@ class OrderDocScreen extends EditWidget {
       List<Widget> onerow = [];
       for (int j = 0; j < columnWidths.length; j++) {
         final OrderRow or = _model.details[i];
+        final fontColor = or.id.isEmpty ? const Color(0xff4c6b8b) : (or.action == 'add' ? (or.id==or.parent_id ? const Color(0xffffffff) : const Color(0xff4c6b8b)) : const Color(0xff4c6b8b));
+        final TextStyle ts = TextStyle(color: fontColor, fontSize: 18);
         final Color bgcolor =
-            or.id.isEmpty ? const Color(0xffcccccc) : (or.action == 'add' ? const Color(0xff4c6b8b) : const Color(0xffefb6b6));
+            or.id.isEmpty ? const Color(0xffcccccc) : (or.action == 'add' ? (or.id==or.parent_id ? const Color(0xff4c6b8b) : const Color(0xffcecece)) : const Color(0xffefb6b6));
         final BoxDecoration boxDecoration =
             BoxDecoration(color: bgcolor, border: border);
         if (i == _model.rowEditMode) {
@@ -725,7 +727,7 @@ class OrderDocScreen extends EditWidget {
                                     _model.rowEditMode = -1;
                                   } else {
                                     _model.details.insert(
-                                        i + 1, or.copyWith(action: 'cancel', parent_id: or.id, Size01: '', Size02: '', Size03: '', Size04: '', Size05: '',
+                                        i + 1, or.copyWith(id:'',action: 'cancel', parent_id: or.id, Size01: '', Size02: '', Size03: '', Size04: '', Size05: '',
                                     Size06: '', Size07: '', Size08: '', Size09:'', Size10: '', variant_prod: or.variant_prod));
                                     _model.rowEditMode = i + 1;
                                   }

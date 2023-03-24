@@ -82,7 +82,7 @@ class HttpSqlQuery {
   }
 
   static Future<List<String>> listDistinctOf(String table, String column) async {
-    var query = 'select distinct($column) from $table order by 1';
+    var query = 'select distinct($column)  from $table where $column is not null order by 1';
     http.Response response = await http.get(Uri.parse(
         '$server_http_address/?user=$_user&sl=j,Vasil,Vasil_2023,sql,$query'));
     print(utf8.decode(response.bodyBytes));

@@ -16,6 +16,10 @@ _$_DataUser _$$_DataUserFromJson(Map<String, dynamic> json) => _$_DataUser(
       lastName: json['lastName'] as String,
       middleName: json['middleName'] as String,
       position: json['position'] as String,
+      role: json['role'] as String?,
+      tabelNumber: json['tabelNumber'] as String?,
+      user_id: json['user_id'] as String?,
+      type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$_DataUserToJson(_$_DataUser instance) =>
@@ -29,6 +33,10 @@ Map<String, dynamic> _$$_DataUserToJson(_$_DataUser instance) =>
       'lastName': instance.lastName,
       'middleName': instance.middleName,
       'position': instance.position,
+      'role': instance.role,
+      'tabelNumber': instance.tabelNumber,
+      'user_id': instance.user_id,
+      'type': instance.type,
     };
 
 _$_DataUserList _$$_DataUserListFromJson(Map<String, dynamic> json) =>

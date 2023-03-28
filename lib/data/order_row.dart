@@ -10,7 +10,8 @@ part 'order_row.g.dart';
 @freezed
 class OrderRow with _$OrderRow {
   const factory OrderRow({
-  required String id,
+  required String? main,
+    required String id,
     required String? branch,
     required String? action,
     required String? User,

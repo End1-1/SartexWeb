@@ -46,6 +46,7 @@ class OrderDocModel {
     TextEditingController(),
     TextEditingController(),
     TextEditingController(),
+    TextEditingController(),
   ];
 
   List<String> shortCodeOf(String brand) {

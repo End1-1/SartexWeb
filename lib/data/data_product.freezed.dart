@@ -21,13 +21,15 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Product {
   String get id => throw _privateConstructorUsedError;
-  String get branch => throw _privateConstructorUsedError;
-  String get country => throw _privateConstructorUsedError;
-  String get model => throw _privateConstructorUsedError;
-  String get modelCode => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get size_standart => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
+  String? get branch => throw _privateConstructorUsedError;
+  String? get brand => throw _privateConstructorUsedError;
+  String? get model => throw _privateConstructorUsedError;
+  String? get modelCode => throw _privateConstructorUsedError;
+  String? get size_standart => throw _privateConstructorUsedError;
+  String? get Packaging => throw _privateConstructorUsedError;
+  String? get ProductsTypeCode => throw _privateConstructorUsedError;
+  String? get Netto => throw _privateConstructorUsedError;
+  String? get Brutto => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,13 +43,15 @@ abstract class $ProductCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String branch,
-      String country,
-      String model,
-      String modelCode,
-      String name,
-      String size_standart,
-      String type});
+      String? branch,
+      String? brand,
+      String? model,
+      String? modelCode,
+      String? size_standart,
+      String? Packaging,
+      String? ProductsTypeCode,
+      String? Netto,
+      String? Brutto});
 }
 
 /// @nodoc
@@ -64,47 +68,57 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   @override
   $Res call({
     Object? id = null,
-    Object? branch = null,
-    Object? country = null,
-    Object? model = null,
-    Object? modelCode = null,
-    Object? name = null,
-    Object? size_standart = null,
-    Object? type = null,
+    Object? branch = freezed,
+    Object? brand = freezed,
+    Object? model = freezed,
+    Object? modelCode = freezed,
+    Object? size_standart = freezed,
+    Object? Packaging = freezed,
+    Object? ProductsTypeCode = freezed,
+    Object? Netto = freezed,
+    Object? Brutto = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      branch: null == branch
+      branch: freezed == branch
           ? _value.branch
           : branch // ignore: cast_nullable_to_non_nullable
-              as String,
-      country: null == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
-              as String,
-      model: null == model
+              as String?,
+      brand: freezed == brand
+          ? _value.brand
+          : brand // ignore: cast_nullable_to_non_nullable
+              as String?,
+      model: freezed == model
           ? _value.model
           : model // ignore: cast_nullable_to_non_nullable
-              as String,
-      modelCode: null == modelCode
+              as String?,
+      modelCode: freezed == modelCode
           ? _value.modelCode
           : modelCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      size_standart: null == size_standart
+              as String?,
+      size_standart: freezed == size_standart
           ? _value.size_standart
           : size_standart // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      Packaging: freezed == Packaging
+          ? _value.Packaging
+          : Packaging // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ProductsTypeCode: freezed == ProductsTypeCode
+          ? _value.ProductsTypeCode
+          : ProductsTypeCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      Netto: freezed == Netto
+          ? _value.Netto
+          : Netto // ignore: cast_nullable_to_non_nullable
+              as String?,
+      Brutto: freezed == Brutto
+          ? _value.Brutto
+          : Brutto // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -118,13 +132,15 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String branch,
-      String country,
-      String model,
-      String modelCode,
-      String name,
-      String size_standart,
-      String type});
+      String? branch,
+      String? brand,
+      String? model,
+      String? modelCode,
+      String? size_standart,
+      String? Packaging,
+      String? ProductsTypeCode,
+      String? Netto,
+      String? Brutto});
 }
 
 /// @nodoc
@@ -138,47 +154,57 @@ class __$$_ProductCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? branch = null,
-    Object? country = null,
-    Object? model = null,
-    Object? modelCode = null,
-    Object? name = null,
-    Object? size_standart = null,
-    Object? type = null,
+    Object? branch = freezed,
+    Object? brand = freezed,
+    Object? model = freezed,
+    Object? modelCode = freezed,
+    Object? size_standart = freezed,
+    Object? Packaging = freezed,
+    Object? ProductsTypeCode = freezed,
+    Object? Netto = freezed,
+    Object? Brutto = freezed,
   }) {
     return _then(_$_Product(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      branch: null == branch
+      branch: freezed == branch
           ? _value.branch
           : branch // ignore: cast_nullable_to_non_nullable
-              as String,
-      country: null == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
-              as String,
-      model: null == model
+              as String?,
+      brand: freezed == brand
+          ? _value.brand
+          : brand // ignore: cast_nullable_to_non_nullable
+              as String?,
+      model: freezed == model
           ? _value.model
           : model // ignore: cast_nullable_to_non_nullable
-              as String,
-      modelCode: null == modelCode
+              as String?,
+      modelCode: freezed == modelCode
           ? _value.modelCode
           : modelCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      size_standart: null == size_standart
+              as String?,
+      size_standart: freezed == size_standart
           ? _value.size_standart
           : size_standart // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      Packaging: freezed == Packaging
+          ? _value.Packaging
+          : Packaging // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ProductsTypeCode: freezed == ProductsTypeCode
+          ? _value.ProductsTypeCode
+          : ProductsTypeCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      Netto: freezed == Netto
+          ? _value.Netto
+          : Netto // ignore: cast_nullable_to_non_nullable
+              as String?,
+      Brutto: freezed == Brutto
+          ? _value.Brutto
+          : Brutto // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -189,12 +215,14 @@ class _$_Product implements _Product {
   const _$_Product(
       {required this.id,
       required this.branch,
-      required this.country,
+      required this.brand,
       required this.model,
       required this.modelCode,
-      required this.name,
       required this.size_standart,
-      required this.type});
+      required this.Packaging,
+      required this.ProductsTypeCode,
+      required this.Netto,
+      required this.Brutto});
 
   factory _$_Product.fromJson(Map<String, dynamic> json) =>
       _$$_ProductFromJson(json);
@@ -202,23 +230,27 @@ class _$_Product implements _Product {
   @override
   final String id;
   @override
-  final String branch;
+  final String? branch;
   @override
-  final String country;
+  final String? brand;
   @override
-  final String model;
+  final String? model;
   @override
-  final String modelCode;
+  final String? modelCode;
   @override
-  final String name;
+  final String? size_standart;
   @override
-  final String size_standart;
+  final String? Packaging;
   @override
-  final String type;
+  final String? ProductsTypeCode;
+  @override
+  final String? Netto;
+  @override
+  final String? Brutto;
 
   @override
   String toString() {
-    return 'Product(id: $id, branch: $branch, country: $country, model: $model, modelCode: $modelCode, name: $name, size_standart: $size_standart, type: $type)';
+    return 'Product(id: $id, branch: $branch, brand: $brand, model: $model, modelCode: $modelCode, size_standart: $size_standart, Packaging: $Packaging, ProductsTypeCode: $ProductsTypeCode, Netto: $Netto, Brutto: $Brutto)';
   }
 
   @override
@@ -228,20 +260,24 @@ class _$_Product implements _Product {
             other is _$_Product &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.branch, branch) || other.branch == branch) &&
-            (identical(other.country, country) || other.country == country) &&
+            (identical(other.brand, brand) || other.brand == brand) &&
             (identical(other.model, model) || other.model == model) &&
             (identical(other.modelCode, modelCode) ||
                 other.modelCode == modelCode) &&
-            (identical(other.name, name) || other.name == name) &&
             (identical(other.size_standart, size_standart) ||
                 other.size_standart == size_standart) &&
-            (identical(other.type, type) || other.type == type));
+            (identical(other.Packaging, Packaging) ||
+                other.Packaging == Packaging) &&
+            (identical(other.ProductsTypeCode, ProductsTypeCode) ||
+                other.ProductsTypeCode == ProductsTypeCode) &&
+            (identical(other.Netto, Netto) || other.Netto == Netto) &&
+            (identical(other.Brutto, Brutto) || other.Brutto == Brutto));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, branch, country, model,
-      modelCode, name, size_standart, type);
+  int get hashCode => Object.hash(runtimeType, id, branch, brand, model,
+      modelCode, size_standart, Packaging, ProductsTypeCode, Netto, Brutto);
 
   @JsonKey(ignore: true)
   @override
@@ -260,32 +296,38 @@ class _$_Product implements _Product {
 abstract class _Product implements Product {
   const factory _Product(
       {required final String id,
-      required final String branch,
-      required final String country,
-      required final String model,
-      required final String modelCode,
-      required final String name,
-      required final String size_standart,
-      required final String type}) = _$_Product;
+      required final String? branch,
+      required final String? brand,
+      required final String? model,
+      required final String? modelCode,
+      required final String? size_standart,
+      required final String? Packaging,
+      required final String? ProductsTypeCode,
+      required final String? Netto,
+      required final String? Brutto}) = _$_Product;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$_Product.fromJson;
 
   @override
   String get id;
   @override
-  String get branch;
+  String? get branch;
   @override
-  String get country;
+  String? get brand;
   @override
-  String get model;
+  String? get model;
   @override
-  String get modelCode;
+  String? get modelCode;
   @override
-  String get name;
+  String? get size_standart;
   @override
-  String get size_standart;
+  String? get Packaging;
   @override
-  String get type;
+  String? get ProductsTypeCode;
+  @override
+  String? get Netto;
+  @override
+  String? get Brutto;
   @override
   @JsonKey(ignore: true)
   _$$_ProductCopyWith<_$_Product> get copyWith =>

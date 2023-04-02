@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sartex/data/data_partner.dart';
 import 'package:sartex/data/data_product_status.dart';
 import 'package:sartex/data/data_user.dart';
+import 'package:sartex/data/docs.dart';
 import 'package:sartex/data/order_row.dart';
 import 'package:sartex/screen/dashboard/dashboard_model.dart';
 import 'package:sartex/screen/language_editor/language_screen.dart';
@@ -45,28 +46,35 @@ class _SartexDashboardScreen extends StatelessWidget {
         if (_dashboardState.locationName != state.locationName) {
           switch (state.locationName) {
             case locUsers:
-              _model = DashboardModel(UserDataSource(context: context, data: state.data));
+              _model = DashboardModel(
+                  UserDataSource(context: context, data: state.data));
               break;
             case locDepartement:
-              _model =
-                  DashboardModel(DepartmentDataSource(context: context, data: state.data));
+              _model = DashboardModel(
+                  DepartmentDataSource(context: context, data: state.data));
               break;
             case locProducts:
-              _model =
-                  DashboardModel(ProductsDatasource(context: context, data: state.data));
+              _model = DashboardModel(
+                  ProductsDatasource(context: context, data: state.data));
               break;
             case locSizes:
-              _model = DashboardModel(SizeDatasource(context: context, data: state.data));
+              _model = DashboardModel(
+                  SizeDatasource(context: context, data: state.data));
               break;
             case locPathners:
-              _model =
-                  DashboardModel(PartnerDatasource(context: context, data: state.data));
+              _model = DashboardModel(
+                  PartnerDatasource(context: context, data: state.data));
               break;
             case locProductStatuses:
-              _model = DashboardModel(ProductStatusDatasource(context: context, data: state.data));
+              _model = DashboardModel(
+                  ProductStatusDatasource(context: context, data: state.data));
               break;
             case locOrders:
-              _model = DashboardModel(OrderRowDatasource(context: context, data: state.data));
+              _model = DashboardModel(
+                  OrderRowDatasource(context: context, data: state.data));
+              break;
+            case locDocs:
+              _model = DashboardModel(DocsDatasource(context: context, data: state.data));
               break;
             default:
               break;
@@ -87,7 +95,10 @@ class _SartexDashboardScreen extends StatelessWidget {
               children: [
                 Text(prefs.getString(key_user_branch)!,
                     style: const TextStyle(color: Colors.white, fontSize: 20)),
-                const VerticalDivider(width: 30, color: Colors.transparent,),
+                const VerticalDivider(
+                  width: 30,
+                  color: Colors.transparent,
+                ),
                 Text(L.tr(state.locationName),
                     style: const TextStyle(color: Colors.white, fontSize: 20)),
                 _appendButton(context, state.locationName),
@@ -156,21 +167,18 @@ class _SartexDashboardScreen extends StatelessWidget {
                               children: [
                                 SvgButton(
                                     onTap: () {
-                                      BlocProvider.of<DashboardBloc>(
-                                          context)
-                                          .eventToState(
-                                          DashboardActionLoadData(
+                                      BlocProvider.of<DashboardBloc>(context)
+                                          .eventToState(DashboardActionLoadData(
                                               locOrders));
                                     },
                                     assetPath: 'svg/document.svg'),
                                 TextMouseButton(
                                     onTap: () {
-                                      BlocProvider.of<DashboardBloc>(
-                                          context)
-                                          .eventToState(
-                                          DashboardActionLoadData(
+                                      BlocProvider.of<DashboardBloc>(context)
+                                          .eventToState(DashboardActionLoadData(
                                               locOrders));
-                                    }, caption: L.tr('Orders'))
+                                    },
+                                    caption: L.tr('Orders'))
                               ],
                             ),
                             Row(
@@ -178,12 +186,17 @@ class _SartexDashboardScreen extends StatelessWidget {
                                 SvgButton(
                                     onTap: () {
                                       BlocProvider.of<DashboardBloc>(context)
-                                          .eventToState(DashboardActionMenu(
-                                              false, false, false));
+                                          .eventToState(
+                                              DashboardActionLoadData(locDocs));
                                     },
                                     assetPath: 'svg/truck.svg'),
                                 TextMouseButton(
-                                    onTap: () {}, caption: L.tr('Loading'))
+                                    onTap: () {
+                                      BlocProvider.of<DashboardBloc>(context)
+                                          .eventToState(
+                                              DashboardActionLoadData(locDocs));
+                                    },
+                                    caption: L.tr('Loading'))
                               ],
                             ),
                             Row(
@@ -299,10 +312,10 @@ class _SartexDashboardScreen extends StatelessWidget {
                                       TextMouseButton(
                                           onTap: () {
                                             BlocProvider.of<DashboardBloc>(
-                                                context)
+                                                    context)
                                                 .eventToState(
-                                                DashboardActionLoadData(
-                                                    locProductStatuses));
+                                                    DashboardActionLoadData(
+                                                        locProductStatuses));
                                           },
                                           caption: L.tr('Products states')),
                                       TextMouseButton(
@@ -370,9 +383,10 @@ class _SartexDashboardScreen extends StatelessWidget {
                                       TextMouseButton(
                                           onTap: () {
                                             BlocProvider.of<DashboardBloc>(
-                                                context)
+                                                    context)
                                                 .eventToState(
-                                                DashboardActionLanguageEditor(locLanguageEditor));
+                                                    DashboardActionLanguageEditor(
+                                                        locLanguageEditor));
                                           },
                                           caption: L.tr('Editor')),
                                       TextMouseButton(
@@ -393,7 +407,6 @@ class _SartexDashboardScreen extends StatelessWidget {
                                                         false, false, false));
                                           },
                                           caption: L.tr('Italy')),
-
                                     ],
                                   ),
                                 )),
@@ -413,6 +426,7 @@ class _SartexDashboardScreen extends StatelessWidget {
       case locPathners:
       case locProductStatuses:
       case locOrders:
+      case locDocs:
         return SfDataGrid(
             source: _model!.datasource, columns: _model!.datasource.columns);
       case locLanguageEditor:
@@ -433,17 +447,19 @@ class _SartexDashboardScreen extends StatelessWidget {
       case locPathners:
       case locProductStatuses:
       case locOrders:
-        return SvgButton(onTap: (){
-          showDialog(
-            barrierDismissible: false,
-              context: context, builder: (BuildContext context) {
-            return SimpleDialog(
-              children: [
-              _model!.datasource.getEditWidget('')
-            ],);
-          });
-        },
-        assetPath: 'svg/plusfolder.svg');
+      case locDocs:
+        return SvgButton(
+            onTap: () {
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SimpleDialog(
+                      children: [_model!.datasource.getEditWidget('')],
+                    );
+                  });
+            },
+            assetPath: 'svg/plusfolder.svg');
     }
     return Container();
   }

@@ -9,6 +9,7 @@ const locPathners = 'Parthners';
 const locProductStatuses = 'productStatuses';
 const locOrders = 'patver_data';
 const locLanguageEditor = 'Language editor';
+const locDocs = 'Docs';
 
 abstract class DashboardState {
 

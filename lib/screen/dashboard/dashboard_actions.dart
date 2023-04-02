@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:sartex/data/data_user.dart';
+import 'package:sartex/data/docs.dart';
 import 'package:sartex/data/sql.dart';
 import 'package:sartex/screen/dashboard/dashboard_state.dart';
 import 'package:sartex/utils/http_sql.dart';
@@ -79,6 +80,9 @@ class DashboardActionLoadData extends DashboardActionMenu {
         break;
       case locOrders:
         state.data = OrderRowList.fromJson({'list': jsonDecode(s)}).list;
+        break;
+      case locDocs:
+        state.data = DocsList.fromJson({'list': jsonDecode(s)}).list;
         break;
     }
   }

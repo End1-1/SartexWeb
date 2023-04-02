@@ -5,6 +5,9 @@ import 'package:sartex/data/sartex_datagridsource.dart';
 import 'package:sartex/widgets/edit_widget.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../utils/consts.dart';
+import '../utils/prefs.dart';
+
 part 'data_product.freezed.dart';
 part 'data_product.g.dart';
 
@@ -12,13 +15,15 @@ part 'data_product.g.dart';
 class Product with _$Product {
   const factory Product(
       {required String id,
-      required String branch,
-      required String country,
-      required String model,
-      required String modelCode,
-      required String name,
-      required String size_standart,
-      required String type}) = _Product;
+      required String? branch,
+        required String? brand,
+      required String? model,
+      required String? modelCode,
+        required String? size_standart,
+        required String? Packaging,
+        required String? ProductsTypeCode,
+        required String? Netto,
+        required String? Brutto}) = _Product;
 
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
@@ -39,12 +44,13 @@ class ProductsDatasource extends SartexDataGridSource {
     addColumn('edit', 'Edit', 100);
     addColumn('id', 'Id', 40);
     addColumn('branch', 'Branch', 100);
-    addColumn('country', 'Country', 200);
+    addColumn('brand', 'Brand', 200);
     addColumn('model', 'Model', 200);
     addColumn('modelCode', 'ModelCode', 200);
-    addColumn('name', 'Name', 200);
     addColumn('size_standart', 'Standart', 200);
-    addColumn('type', 'Type', 200);
+    addColumn('productstypecode', 'Products type code', 200);
+    addColumn('netto', 'Netto', 200);
+    addColumn('brutto', 'Brutto', 200);
   }
 
   @override
@@ -54,12 +60,13 @@ class ProductsDatasource extends SartexDataGridSource {
       DataGridCell(columnName: 'editdata', value: e.id),
       DataGridCell(columnName: 'id', value: e.id),
       DataGridCell(columnName: 'branch', value: e.branch),
-      DataGridCell(columnName: 'country', value: e.country),
+      DataGridCell(columnName: 'brand', value: e.brand),
       DataGridCell(columnName: 'model', value: e.model),
       DataGridCell(columnName: 'modelCode', value: e.modelCode),
-      DataGridCell(columnName: 'name', value: e.name),
       DataGridCell(columnName: 'size_standart', value: e.size_standart),
-      DataGridCell(columnName: 'type', value: e.type),
+      DataGridCell(columnName: 'productstypecode', value: e.ProductsTypeCode),
+      DataGridCell(columnName: 'Netto', value: e.Netto),
+      DataGridCell(columnName: 'Brutto', value: e.Brutto)
     ])));
   }
 
@@ -68,12 +75,14 @@ class ProductsDatasource extends SartexDataGridSource {
     if (id.isEmpty) {
       return ProductEditWidget(product: const Product(id: '',
           branch: '',
-          country: '',
+          brand: '',
           model: '',
           modelCode: '',
-          name: '',
           size_standart: '',
-          type: ''), source: this);
+          ProductsTypeCode: '',
+      Packaging: '',
+      Netto: '',
+      Brutto: '',), source: this);
     } else {
       return ProductEditWidget(product: data
           .where((e) => e.id == id)
@@ -86,31 +95,37 @@ class ProductEditWidget extends EditWidget {
   late Product product;
   late ProductsDatasource source;
 
-  final TextEditingController _tecContry = TextEditingController();
-  final TextEditingController _tecModelCode = TextEditingController();
-  final TextEditingController _tecModel = TextEditingController();
-  final TextEditingController _tecName = TextEditingController();
-  final TextEditingController _tecSizeStandart = TextEditingController();
-  final TextEditingController _tecType = TextEditingController();
+  final TextEditingController _editBrand = TextEditingController();
+  final TextEditingController _editModelCode = TextEditingController();
+  final TextEditingController _editModel = TextEditingController();
+  final TextEditingController _editSizeStandart = TextEditingController();
+  final TextEditingController _editPackaging = TextEditingController();
+  final TextEditingController _editProductsTypeCode = TextEditingController();
+  final TextEditingController _editNetto = TextEditingController();
+  final TextEditingController _editBrutto = TextEditingController();
 
   ProductEditWidget({super.key, required this.product, required this.source}) {
-    _tecContry.text = product.country;
-    _tecModel.text = product.model;
-    _tecModelCode.text = product.modelCode;
-    _tecName.text = product.name;
-    _tecSizeStandart.text = product.size_standart;
-    _tecType.text = product.type;
+    _editBrand.text = product.brand ?? '';
+    _editModel.text = product.model ?? '';
+    _editModelCode.text = product.modelCode ?? '';
+    _editSizeStandart.text = product.size_standart ?? '';
+    _editPackaging.text = product.Packaging ?? '';
+    _editProductsTypeCode.text = product.ProductsTypeCode ?? '';
+    _editNetto.text = product.Netto ?? '';
+    _editBrutto.text = product.Brutto ?? '';
   }
 
   @override
   void save(BuildContext context, String table, object) {
     product = product.copyWith(
-        country: _tecContry.text,
-        model: _tecModel.text,
-        name: _tecName.text,
-        type: _tecType.text,
-        size_standart: _tecSizeStandart.text,
-        modelCode: _tecModelCode.text
+      branch: prefs.getString(key_user_branch) ?? 'Unknown',
+      model: _editModel.text,
+      modelCode: _editModelCode.text,
+      size_standart: _editSizeStandart.text,
+      ProductsTypeCode: _editProductsTypeCode.text,
+      Packaging: _editPackaging.text,
+      Netto: double.tryParse(_editNetto.text)?.toString() ?? '0',
+      Brutto: double.tryParse(_editBrutto.text)?.toString() ?? '0' ,
     );
     super.save(context, table, product);
   }
@@ -122,17 +137,19 @@ class ProductEditWidget extends EditWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Row(children: [
-            textFieldColumn(context: context, title: 'Model code', textEditingController: _tecModelCode),
-            textFieldColumn(context: context, title: 'Model', textEditingController: _tecModel)
+            textFieldColumn(context: context, title: 'Brand', textEditingController: _editBrand),
+            textFieldColumn(context: context, title: 'Model', textEditingController: _editModel),
+            textFieldColumn(context: context, title: 'Model code', textEditingController: _editModelCode),
           ]),
           Row(children: [
-            textFieldColumn(context: context, title: 'Name', textEditingController: _tecName),
-            textFieldColumn(context: context, title: 'Type', textEditingController: _tecType),
+            textFieldColumn(context: context, title: 'Size', textEditingController: _editSizeStandart),
+            textFieldColumn(context: context, title: 'Packaging', textEditingController: _editPackaging),
+            textFieldColumn(context: context, title: 'ProductsTypeCode', textEditingController: _editProductsTypeCode),
           ]),
           Row(
             children: [
-              textFieldColumn(context: context, title: 'Country', textEditingController: _tecContry),
-              textFieldColumn(context: context, title: 'Size', textEditingController: _tecSizeStandart)
+              textFieldColumn(context: context, title: 'Netto', textEditingController: _editNetto),
+              textFieldColumn(context: context, title: 'Brutto', textEditingController: _editBrutto),
             ],
           ),
           saveWidget(context, product)

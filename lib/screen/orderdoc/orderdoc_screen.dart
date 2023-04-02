@@ -8,6 +8,7 @@ import 'package:sartex/screen/orderdoc/orderdoc_event.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_model.dart';
 import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/http_sql.dart';
+import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/widgets/edit_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
@@ -21,6 +22,7 @@ class OrderDocScreen extends EditWidget {
   final List<double> columnWidths = [
     200,
     100,
+    50,
     80,
     80,
     80,
@@ -230,10 +232,12 @@ class OrderDocScreen extends EditWidget {
                 Expanded(
                   child: BlocBuilder<OrderDocBloc, OrderDocState>(
                       buildWhen: (previous, current) =>
-                          current is OrderDocStateNewRow,
+                          current is OrderDocStateNewRow ||
+                          current is OrderDocSubRowState,
                       builder: (context, state) {
                         return SingleChildScrollView(
-                            child: Column(children: _orderDetails(context)));
+                            child: Column(
+                                children: _orderDetails(context, state)));
                       }),
                 ),
                 const Divider(height: 30, color: Colors.transparent),
@@ -262,6 +266,15 @@ class OrderDocScreen extends EditWidget {
           break;
         case 1:
           r.add(Container(
+            height: rowheight,
+            width: columnWidths[i],
+            decoration: decoration,
+            child: Align(
+                alignment: Alignment.center, child: Text("+/-", style: ts)),
+          ));
+          break;
+        case 2:
+          r.add(Container(
               height: rowheight,
               width: columnWidths[i],
               decoration: decoration,
@@ -269,7 +282,6 @@ class OrderDocScreen extends EditWidget {
                   alignment: Alignment.center,
                   child: Text(L.tr('Color'), style: ts))));
           break;
-        case 2:
         case 3:
         case 4:
         case 5:
@@ -279,15 +291,16 @@ class OrderDocScreen extends EditWidget {
         case 9:
         case 10:
         case 11:
+        case 12:
           r.add(Container(
               height: rowheight,
               width: columnWidths[i],
               decoration: decoration,
               child: Align(
                   alignment: Alignment.center,
-                  child: Text(values[i - 2], style: ts))));
+                  child: Text(values[i - 3], style: ts))));
           break;
-        case 12:
+        case 13:
           r.add(Container(
               height: rowheight,
               width: columnWidths[i],
@@ -296,7 +309,7 @@ class OrderDocScreen extends EditWidget {
                   alignment: Alignment.center,
                   child: Text(L.tr('Total'), style: ts))));
           break;
-        case 13:
+        case 14:
           r.add(Container(
               height: rowheight,
               width: columnWidths[i],
@@ -306,7 +319,7 @@ class OrderDocScreen extends EditWidget {
                   child: SvgButton(
                     onTap: () {
                       _model.details.add(OrderRow(
-                          main: '',
+                          main: '0',
                           id: '',
                           branch: 'branch',
                           action: 'add',
@@ -358,6 +371,9 @@ class OrderDocScreen extends EditWidget {
 
   Color bgColor(OrderRow or) {
     if (or.id.isEmpty) {
+      if (or.action == 'cancel') {
+        return const Color(0xffefb6b6);
+      }
       return const Color(0xffcccccc);
     }
     if (or.main == '0') {
@@ -369,17 +385,35 @@ class OrderDocScreen extends EditWidget {
     return const Color(0xffefb6b6);
   }
 
-  List<Widget> _orderDetails(BuildContext context) {
-    const EdgeInsets padding = EdgeInsets.all(2);
+  List<Widget> _orderDetails(BuildContext context, OrderDocState state) {
+    const EdgeInsets padding = EdgeInsets.all(0);
     const TextStyle ts = TextStyle(color: Colors.white, fontSize: 18);
     const Border border =
         Border.fromBorderSide(BorderSide(color: Color(0x00cccccc), width: 0.3));
     const double rowheight = 40;
     final List<Widget> l = [];
+
+    String showRow = state is OrderDocSubRowState ? state.row : '';
+
     for (int i = 0; i < _model.details.length; i++) {
+      final OrderRow or = _model.details[i];
+      if (or.id.isNotEmpty) {
+        if (showRow.isNotEmpty) {
+          if (showRow != or.parent_id && or.main != '0') {
+            continue;
+          }
+        } else {
+          if (or.main == '1') {
+            continue;
+          }
+          if (or.parent_id != or.id) {
+            continue;
+          }
+        }
+      }
       List<Widget> onerow = [];
+
       for (int j = 0; j < columnWidths.length; j++) {
-        final OrderRow or = _model.details[i];
         final Color bgcolor = bgColor(or);
         final fontColor = bgcolor.value == const Color(0xff4c6b8b).value
             ? const Color(0xffffffff)
@@ -392,40 +426,41 @@ class OrderDocScreen extends EditWidget {
           _model.detailsControllers[0].text = or.variant_prod!;
           _model.detailsControllers[0].selection = TextSelection.fromPosition(
               TextPosition(offset: or.variant_prod!.length));
-          _model.detailsControllers[1].text = or.Colore!;
-          _model.detailsControllers[1].selection = TextSelection.fromPosition(
-              TextPosition(offset: or.Colore!.length));
-          _model.detailsControllers[2].text = or.Size01!;
+          _model.detailsControllers[2].text = or.Colore!;
           _model.detailsControllers[2].selection = TextSelection.fromPosition(
-              TextPosition(offset: or.Size01!.length));
-          _model.detailsControllers[3].text = or.Size02!;
+              TextPosition(offset: or.Colore!.length));
+          _model.detailsControllers[3].text = or.Size01!;
           _model.detailsControllers[3].selection = TextSelection.fromPosition(
-              TextPosition(offset: or.Size02!.length));
-          _model.detailsControllers[4].text = or.Size03!;
+              TextPosition(offset: or.Size01!.length));
+          _model.detailsControllers[4].text = or.Size02!;
           _model.detailsControllers[4].selection = TextSelection.fromPosition(
-              TextPosition(offset: or.Size03!.length));
-          _model.detailsControllers[5].text = or.Size04!;
+              TextPosition(offset: or.Size02!.length));
+          _model.detailsControllers[5].text = or.Size03!;
           _model.detailsControllers[5].selection = TextSelection.fromPosition(
-              TextPosition(offset: or.Size04!.length));
-          _model.detailsControllers[6].text = or.Size05!;
+              TextPosition(offset: or.Size03!.length));
+          _model.detailsControllers[6].text = or.Size04!;
           _model.detailsControllers[6].selection = TextSelection.fromPosition(
-              TextPosition(offset: or.Size05!.length));
-          _model.detailsControllers[7].text = or.Size06!;
+              TextPosition(offset: or.Size04!.length));
+          _model.detailsControllers[7].text = or.Size05!;
           _model.detailsControllers[7].selection = TextSelection.fromPosition(
-              TextPosition(offset: or.Size06!.length));
-          _model.detailsControllers[8].text = or.Size07!;
+              TextPosition(offset: or.Size05!.length));
+          _model.detailsControllers[8].text = or.Size06!;
           _model.detailsControllers[8].selection = TextSelection.fromPosition(
-              TextPosition(offset: or.Size07!.length));
-          _model.detailsControllers[9].text = or.Size08!;
+              TextPosition(offset: or.Size06!.length));
+          _model.detailsControllers[9].text = or.Size07!;
           _model.detailsControllers[9].selection = TextSelection.fromPosition(
-              TextPosition(offset: or.Size08!.length));
-          _model.detailsControllers[10].text = or.Size09!;
+              TextPosition(offset: or.Size07!.length));
+          _model.detailsControllers[10].text = or.Size08!;
           _model.detailsControllers[10].selection = TextSelection.fromPosition(
-              TextPosition(offset: or.Size09!.length));
-          _model.detailsControllers[11].text = or.Size10!;
+              TextPosition(offset: or.Size08!.length));
+          _model.detailsControllers[11].text = or.Size09!;
           _model.detailsControllers[11].selection = TextSelection.fromPosition(
+              TextPosition(offset: or.Size09!.length));
+          _model.detailsControllers[12].text = or.Size10!;
+          _model.detailsControllers[12].selection = TextSelection.fromPosition(
               TextPosition(offset: or.Size10!.length));
         }
+
         switch (j) {
           case 0:
             onerow.add(Container(
@@ -443,10 +478,20 @@ class OrderDocScreen extends EditWidget {
                         },
                         controller: _model.detailsControllers[j],
                       )
-                    : Text( or.main == '0' ? or.variant_prod! : or.date!,
+                    : Text(or.main == '0' ? or.variant_prod! : or.date!,
                         textAlign: TextAlign.center, style: ts)));
             break;
           case 1:
+            onerow.add(Container(
+                alignment: Alignment.center,
+                padding: padding,
+                height: rowheight,
+                width: columnWidths[j],
+                decoration: boxDecoration,
+                child: Text(or.action == "add" ? "+" : "-",
+                    textAlign: TextAlign.center, style: ts)));
+            break;
+          case 2:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -461,10 +506,10 @@ class OrderDocScreen extends EditWidget {
                               .add(OrderDocNewRow());
                         },
                         controller: _model.detailsControllers[j])
-                    : Text(or.main == '0'? or.Colore! : or.action == 'add' ? '+' : '-',
+                    : Text(or.Colore!,
                         textAlign: TextAlign.center, style: ts)));
             break;
-          case 2:
+          case 3:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -487,7 +532,7 @@ class OrderDocScreen extends EditWidget {
                     : Text(or.Size01!,
                         textAlign: TextAlign.center, style: ts)));
             break;
-          case 3:
+          case 4:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -511,7 +556,7 @@ class OrderDocScreen extends EditWidget {
                     : Text(or.Size02!,
                         textAlign: TextAlign.center, style: ts)));
             break;
-          case 4:
+          case 5:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -535,7 +580,7 @@ class OrderDocScreen extends EditWidget {
                     : Text(or.Size03!,
                         textAlign: TextAlign.center, style: ts)));
             break;
-          case 5:
+          case 6:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -559,7 +604,7 @@ class OrderDocScreen extends EditWidget {
                     : Text(or.Size04!,
                         textAlign: TextAlign.center, style: ts)));
             break;
-          case 6:
+          case 7:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -583,7 +628,7 @@ class OrderDocScreen extends EditWidget {
                     : Text(or.Size05!,
                         textAlign: TextAlign.center, style: ts)));
             break;
-          case 7:
+          case 8:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -607,7 +652,7 @@ class OrderDocScreen extends EditWidget {
                     : Text(or.Size06!,
                         textAlign: TextAlign.center, style: ts)));
             break;
-          case 8:
+          case 9:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -631,7 +676,7 @@ class OrderDocScreen extends EditWidget {
                     : Text(or.Size07!,
                         textAlign: TextAlign.center, style: ts)));
             break;
-          case 9:
+          case 10:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -655,7 +700,7 @@ class OrderDocScreen extends EditWidget {
                     : Text(or.Size08!,
                         textAlign: TextAlign.center, style: ts)));
             break;
-          case 10:
+          case 11:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -679,7 +724,7 @@ class OrderDocScreen extends EditWidget {
                     : Text(or.Size09!,
                         textAlign: TextAlign.center, style: ts)));
             break;
-          case 11:
+          case 12:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -703,7 +748,7 @@ class OrderDocScreen extends EditWidget {
                     : Text(or.Size10!,
                         textAlign: TextAlign.center, style: ts)));
             break;
-          case 12:
+          case 13:
             onerow.add(BlocBuilder<OrderDocBloc, OrderDocState>(
               builder: (context, state) {
                 return Container(
@@ -717,7 +762,7 @@ class OrderDocScreen extends EditWidget {
               },
             ));
             break;
-          case 13:
+          case 14:
             if (i == _model.rowEditMode) {
               onerow.add(Container(
                   alignment: Alignment.center,
@@ -762,9 +807,12 @@ class OrderDocScreen extends EditWidget {
                                   : SizedBox(
                                       height: rowheight,
                                       child: SvgButton(
+                                          width: 20,
                                           onTap: () {
                                             OrderRow r = or.copyWith(
                                                 id: '',
+                                                date: DateFormat('dd/MM/yyyy')
+                                                    .format(DateTime.now()),
                                                 Size01: '',
                                                 Size02: '',
                                                 Size03: '',
@@ -775,6 +823,7 @@ class OrderDocScreen extends EditWidget {
                                                 Size08: '',
                                                 Size09: '',
                                                 Size10: '',
+                                                Colore: or.Colore,
                                                 parent_id: or.id,
                                                 variant_prod: or.variant_prod);
                                             _model.details.insert(i + 1, r);
@@ -788,6 +837,7 @@ class OrderDocScreen extends EditWidget {
                               SizedBox(
                                   height: rowheight,
                                   child: SvgButton(
+                                      width: 20,
                                       onTap: () {
                                         if (or.id.isEmpty) {
                                           _model.details.removeAt(i);
@@ -796,7 +846,7 @@ class OrderDocScreen extends EditWidget {
                                           _model.details.insert(
                                               i + 1,
                                               or.copyWith(
-                                                main:'',
+                                                  main: '',
                                                   id: '',
                                                   action: 'cancel',
                                                   parent_id: or.id,
@@ -810,6 +860,7 @@ class OrderDocScreen extends EditWidget {
                                                   Size08: '',
                                                   Size09: '',
                                                   Size10: '',
+                                                  Colore: or.Colore,
                                                   variant_prod:
                                                       or.variant_prod));
                                           _model.rowEditMode = i + 1;
@@ -818,19 +869,30 @@ class OrderDocScreen extends EditWidget {
                                             .add(OrderDocNewRow());
                                       },
                                       assetPath: 'svg/minus.svg',
+                                      darkMode: false)),
+                              SizedBox(
+                                  height: rowheight,
+                                  child: SvgButton(
+                                      width: 20,
+                                      onTap: () {
+                                        BlocProvider.of<OrderDocBloc>(context)
+                                            .add(OrderDocSubRow(row: showRow.isEmpty || or.parent_id != showRow ? or.id : ''));
+                                      },
+                                      assetPath: 'svg/eye.svg',
                                       darkMode: false))
                             ])));
             }
             break;
         }
       }
-      l.add(Padding(
-          padding: const EdgeInsets.only(bottom: 2),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: onerow)));
-    }
+
+        l.add(Padding(
+            padding: const EdgeInsets.only(bottom: 2),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: onerow)));
+      }
 
     return l;
   }
@@ -839,8 +901,10 @@ class OrderDocScreen extends EditWidget {
   Future<void> save(BuildContext context, String table, Object? o) async {
     List<String> error = [];
     String uuid;
+    bool isNew = false;
     if (_model.orderId == null || _model.orderId!.isEmpty) {
       uuid = const Uuid().v1();
+      isNew = true;
     } else {
       uuid = _model.orderId!;
     }
@@ -880,14 +944,17 @@ class OrderDocScreen extends EditWidget {
     }
     _model.rowEditMode = -1;
     for (var e in _model.details) {
-      if (e.main == '0') {
-        continue;
-      }
+      // if (e.main == '0') {
+      //   continue;
+      // }
       OrderRow or = e.copyWith(
+        branch: prefs.getString(key_user_branch) ?? 'Unknown',
           brand: _model.brandController.text,
           Patviratu: '',
-          date: DateFormat('yyyy-MM-dd').format(
-              DateFormat('dd/MM/yyyy').parse(_model.dateCreateController.text)),
+          date: isNew
+              ? DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy')
+                  .parse(_model.dateCreateController.text))
+              : DateFormat('yyyy-MM-dd').format(DateTime.now()),
           PatverDate: DateFormat('yyyy-MM-dd').format(
               DateFormat('dd/MM/yyyy').parse(_model.dateCreateController.text)),
           IDPatver: uuid,
@@ -938,4 +1005,19 @@ class OrderDocScreen extends EditWidget {
           ]);
         });
   }
+}
+
+class AnimatedContainerWithRow extends AnimatedContainer {
+  final int row;
+  bool show = true;
+
+  AnimatedContainerWithRow(
+      {super.key,
+      required this.row,
+      required super.duration,
+      required super.height,
+      required super.child,
+      super.decoration,
+      super.color,
+      super.padding});
 }

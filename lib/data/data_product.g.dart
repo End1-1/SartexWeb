@@ -8,25 +8,29 @@ part of 'data_product.dart';
 
 _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
       id: json['id'] as String,
-      branch: json['branch'] as String,
-      country: json['country'] as String,
-      model: json['model'] as String,
-      modelCode: json['modelCode'] as String,
-      name: json['name'] as String,
-      size_standart: json['size_standart'] as String,
-      type: json['type'] as String,
+      branch: json['branch'] as String?,
+      brand: json['brand'] as String?,
+      model: json['model'] as String?,
+      modelCode: json['modelCode'] as String?,
+      size_standart: json['size_standart'] as String?,
+      Packaging: json['Packaging'] as String?,
+      ProductsTypeCode: json['ProductsTypeCode'] as String?,
+      Netto: json['Netto'] as String?,
+      Brutto: json['Brutto'] as String?,
     );
 
 Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
     <String, dynamic>{
       'id': instance.id,
       'branch': instance.branch,
-      'country': instance.country,
+      'brand': instance.brand,
       'model': instance.model,
       'modelCode': instance.modelCode,
-      'name': instance.name,
       'size_standart': instance.size_standart,
-      'type': instance.type,
+      'Packaging': instance.Packaging,
+      'ProductsTypeCode': instance.ProductsTypeCode,
+      'Netto': instance.Netto,
+      'Brutto': instance.Brutto,
     };
 
 _$_ProductList _$$_ProductListFromJson(Map<String, dynamic> json) =>

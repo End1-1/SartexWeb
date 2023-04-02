@@ -7,13 +7,17 @@ class SvgButton extends StatelessWidget {
   final String assetPath;
   final String caption;
   final bool darkMode;
+  final double height;
+  final double width;
 
   const SvgButton(
       {super.key,
       required this.onTap,
       required this.assetPath,
       this.caption = "",
-      this.darkMode = true});
+      this.darkMode = true,
+      this.height = 36,
+      this.width = 36});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +29,8 @@ class SvgButton extends StatelessWidget {
                 onTap: onTap,
                 child: Row(children: [
                   SizedBox(
-                      height: 36,
-                      width: 36,
+                      height: height,
+                      width: width,
                       child: SvgPicture.asset(assetPath,
                           colorFilter: darkMode
                               ? const ColorFilter.mode(

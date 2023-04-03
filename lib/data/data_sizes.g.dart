@@ -21,7 +21,6 @@ _$_Size _$$_SizeFromJson(Map<String, dynamic> json) => _$_Size(
       size08: json['size08'] as String,
       size09: json['size09'] as String,
       size10: json['size10'] as String,
-      size11: json['size11'] as String,
     );
 
 Map<String, dynamic> _$$_SizeToJson(_$_Size instance) => <String, dynamic>{
@@ -39,7 +38,6 @@ Map<String, dynamic> _$$_SizeToJson(_$_Size instance) => <String, dynamic>{
       'size08': instance.size08,
       'size09': instance.size09,
       'size10': instance.size10,
-      'size11': instance.size11,
     };
 
 _$_SizeList _$$_SizeListFromJson(Map<String, dynamic> json) => _$_SizeList(

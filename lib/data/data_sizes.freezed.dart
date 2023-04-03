@@ -34,7 +34,6 @@ mixin _$Size {
   String get size08 => throw _privateConstructorUsedError;
   String get size09 => throw _privateConstructorUsedError;
   String get size10 => throw _privateConstructorUsedError;
-  String get size11 => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -60,8 +59,7 @@ abstract class $SizeCopyWith<$Res> {
       String size07,
       String size08,
       String size09,
-      String size10,
-      String size11});
+      String size10});
 }
 
 /// @nodoc
@@ -91,7 +89,6 @@ class _$SizeCopyWithImpl<$Res, $Val extends Size>
     Object? size08 = null,
     Object? size09 = null,
     Object? size10 = null,
-    Object? size11 = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -150,10 +147,6 @@ class _$SizeCopyWithImpl<$Res, $Val extends Size>
           ? _value.size10
           : size10 // ignore: cast_nullable_to_non_nullable
               as String,
-      size11: null == size11
-          ? _value.size11
-          : size11 // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 }
@@ -178,8 +171,7 @@ abstract class _$$_SizeCopyWith<$Res> implements $SizeCopyWith<$Res> {
       String size07,
       String size08,
       String size09,
-      String size10,
-      String size11});
+      String size10});
 }
 
 /// @nodoc
@@ -205,7 +197,6 @@ class __$$_SizeCopyWithImpl<$Res> extends _$SizeCopyWithImpl<$Res, _$_Size>
     Object? size08 = null,
     Object? size09 = null,
     Object? size10 = null,
-    Object? size11 = null,
   }) {
     return _then(_$_Size(
       id: null == id
@@ -264,17 +255,13 @@ class __$$_SizeCopyWithImpl<$Res> extends _$SizeCopyWithImpl<$Res, _$_Size>
           ? _value.size10
           : size10 // ignore: cast_nullable_to_non_nullable
               as String,
-      size11: null == size11
-          ? _value.size11
-          : size11 // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_Size implements _Size {
+class _$_Size extends _Size {
   const _$_Size(
       {required this.id,
       required this.code,
@@ -289,8 +276,8 @@ class _$_Size implements _Size {
       required this.size07,
       required this.size08,
       required this.size09,
-      required this.size10,
-      required this.size11});
+      required this.size10})
+      : super._();
 
   factory _$_Size.fromJson(Map<String, dynamic> json) => _$$_SizeFromJson(json);
 
@@ -322,12 +309,10 @@ class _$_Size implements _Size {
   final String size09;
   @override
   final String size10;
-  @override
-  final String size11;
 
   @override
   String toString() {
-    return 'Size(id: $id, code: $code, country: $country, name: $name, size01: $size01, size02: $size02, size03: $size03, size04: $size04, size05: $size05, size06: $size06, size07: $size07, size08: $size08, size09: $size09, size10: $size10, size11: $size11)';
+    return 'Size(id: $id, code: $code, country: $country, name: $name, size01: $size01, size02: $size02, size03: $size03, size04: $size04, size05: $size05, size06: $size06, size07: $size07, size08: $size08, size09: $size09, size10: $size10)';
   }
 
   @override
@@ -348,29 +333,13 @@ class _$_Size implements _Size {
             (identical(other.size07, size07) || other.size07 == size07) &&
             (identical(other.size08, size08) || other.size08 == size08) &&
             (identical(other.size09, size09) || other.size09 == size09) &&
-            (identical(other.size10, size10) || other.size10 == size10) &&
-            (identical(other.size11, size11) || other.size11 == size11));
+            (identical(other.size10, size10) || other.size10 == size10));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      code,
-      country,
-      name,
-      size01,
-      size02,
-      size03,
-      size04,
-      size05,
-      size06,
-      size07,
-      size08,
-      size09,
-      size10,
-      size11);
+  int get hashCode => Object.hash(runtimeType, id, code, country, name, size01,
+      size02, size03, size04, size05, size06, size07, size08, size09, size10);
 
   @JsonKey(ignore: true)
   @override
@@ -386,7 +355,7 @@ class _$_Size implements _Size {
   }
 }
 
-abstract class _Size implements Size {
+abstract class _Size extends Size {
   const factory _Size(
       {required final String id,
       required final String code,
@@ -401,8 +370,8 @@ abstract class _Size implements Size {
       required final String size07,
       required final String size08,
       required final String size09,
-      required final String size10,
-      required final String size11}) = _$_Size;
+      required final String size10}) = _$_Size;
+  const _Size._() : super._();
 
   factory _Size.fromJson(Map<String, dynamic> json) = _$_Size.fromJson;
 
@@ -434,8 +403,6 @@ abstract class _Size implements Size {
   String get size09;
   @override
   String get size10;
-  @override
-  String get size11;
   @override
   @JsonKey(ignore: true)
   _$$_SizeCopyWith<_$_Size> get copyWith => throw _privateConstructorUsedError;

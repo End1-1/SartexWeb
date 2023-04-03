@@ -44,7 +44,7 @@ class _SartexLogin extends StatelessWidget {
                       child: Column(
                         children: [
                           state is SartexAppStateError
-                              ? SizedBox(height: 50, child: Text(state.errorString!))
+                              ? SizedBox(height: 50, child: Text(state.errorString))
                               : const SizedBox(height: 50),
                           TextFormField(
                             autofocus: true,

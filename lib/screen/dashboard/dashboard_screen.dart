@@ -83,7 +83,9 @@ class _SartexDashboardScreen extends StatelessWidget {
               break;
           }
         } else {
-          _model!.datasource.data.addAll(state.data);
+          if (state.data != null) {
+            _model!.datasource.data.addAll(state.data);
+          }
         }
         _dashboardState = state;
 

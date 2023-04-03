@@ -64,6 +64,7 @@ const text_style_white_bold =
     TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold);
 const datagrid_text_style =
     TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.normal);
+const TextStyle tsDialogHeader = TextStyle(color: Color(0xff0000ff), fontSize: 30, fontWeight: FontWeight.bold);
 
 Future<void> appDialog(BuildContext context, String msg) async {
   await showDialog(
@@ -81,6 +82,43 @@ Future<void> appDialog(BuildContext context, String msg) async {
                         Navigator.pop(context);
                       },
                       child: Text(L.tr('Close')))
+                ]))
+          ],
+        );
+      });
+}
+
+Future<void> appDialogYesNo(BuildContext context, String msg, Function yes, Function no) async {
+  await showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          children: [
+            Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                child: Column(children: [
+                  Text(msg, style: const TextStyle(fontSize: 18)),
+                  const SizedBox(height: 20),
+                  Row(children:[
+                    Expanded(child: Container()),
+                    OutlinedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          if (yes != null) {
+                            yes();
+                          }
+                        },
+                        child: Text(L.tr('Yes'))),
+                    const SizedBox(width: 20),
+                    OutlinedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        if (no != null) {
+                          no();
+                        }
+                      },
+                      child: Text(L.tr('No'))),
+                  Expanded(child: Container())])
                 ]))
           ],
         );

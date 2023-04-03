@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sartex/data/barcum.dart';
 import 'package:sartex/data/data_partner.dart';
 import 'package:sartex/data/data_product_status.dart';
 import 'package:sartex/data/data_user.dart';
@@ -42,7 +43,6 @@ class _SartexDashboardScreen extends StatelessWidget {
     return Scaffold(
         body: BlocListener<DashboardBloc, DashboardState>(
             listener: (context, state) {
-      if (state.data != null && state.data.isNotEmpty) {
         if (_dashboardState.locationName != state.locationName) {
           switch (state.locationName) {
             case locUsers:
@@ -76,6 +76,9 @@ class _SartexDashboardScreen extends StatelessWidget {
             case locDocs:
               _model = DashboardModel(DocsDatasource(context: context, data: state.data));
               break;
+            case locBarcum:
+              _model = DashboardModel(BarcumDatasource(context: context, data: state.data));
+              break;
             default:
               break;
           }
@@ -83,7 +86,7 @@ class _SartexDashboardScreen extends StatelessWidget {
           _model!.datasource.data.addAll(state.data);
         }
         _dashboardState = state;
-      }
+
     }, child: BlocBuilder<DashboardBloc, DashboardState>(
                 builder: (context, state) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -187,14 +190,14 @@ class _SartexDashboardScreen extends StatelessWidget {
                                     onTap: () {
                                       BlocProvider.of<DashboardBloc>(context)
                                           .eventToState(
-                                              DashboardActionLoadData(locDocs));
+                                              DashboardActionLoadData(locBarcum));
                                     },
                                     assetPath: 'svg/truck.svg'),
                                 TextMouseButton(
                                     onTap: () {
                                       BlocProvider.of<DashboardBloc>(context)
                                           .eventToState(
-                                              DashboardActionLoadData(locDocs));
+                                              DashboardActionLoadData(locBarcum));
                                     },
                                     caption: L.tr('Loading'))
                               ],
@@ -427,6 +430,7 @@ class _SartexDashboardScreen extends StatelessWidget {
       case locProductStatuses:
       case locOrders:
       case locDocs:
+      case locBarcum:
         return SfDataGrid(
             source: _model!.datasource, columns: _model!.datasource.columns);
       case locLanguageEditor:
@@ -448,6 +452,7 @@ class _SartexDashboardScreen extends StatelessWidget {
       case locProductStatuses:
       case locOrders:
       case locDocs:
+      case locBarcum:
         return SvgButton(
             onTap: () {
               showDialog(

@@ -56,7 +56,7 @@ class OrderDocModel {
   Future<void> loadOrder() async {
     await HttpSqlQuery.postString({
       'sl':
-          "${Sql.sqlList['open_patver_data'].toString().replaceAll('%where1%', "where IDPatver='$_orderId'").replaceAll('%where2%', " where IDPatver='$_orderId' ")}"
+          "${sqlList['open_patver_data'].toString().replaceAll('%where1%', "where IDPatver='$_orderId'").replaceAll('%where2%', " where IDPatver='$_orderId' ")}"
     }).then((value) {
       OrderRowList orl = OrderRowList.fromJson({'list': jsonDecode(value)});
       for (var e in orl.list) {

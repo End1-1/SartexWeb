@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:sartex/data/barcum.dart';
 import 'package:sartex/data/data_user.dart';
 import 'package:sartex/data/docs.dart';
 import 'package:sartex/data/sql.dart';
@@ -57,7 +58,7 @@ class DashboardActionLoadData extends DashboardActionMenu {
 
   @override
   Future<void> proceedAction() async {
-    String s = await HttpSqlQuery.postString({'sl':Sql.sqlList[state.locationName]});
+    String s = await HttpSqlQuery.postString({'sl':sqlList[state.locationName]});
     //HANDLE ERROR
     switch (state.locationName) {
       case locUsers:
@@ -83,6 +84,9 @@ class DashboardActionLoadData extends DashboardActionMenu {
         break;
       case locDocs:
         state.data = DocsList.fromJson({'list': jsonDecode(s)}).list;
+        break;
+      case locBarcum:
+        state.data = BarcumList.fromJson({'list': jsonDecode(s)}).list;
         break;
     }
   }

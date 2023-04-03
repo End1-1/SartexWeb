@@ -48,19 +48,6 @@ abstract class EditWidget extends StatelessWidget {
     });
   }
 
-  void valueOfList(BuildContext context, List<String> list,
-      TextEditingController textEditingController) {
-    showDialog(
-        context: context,
-        builder: (BuildContext contex) {
-          return PopupValuesScreen(values: list);
-        }).then((value) {
-      if (value != null) {
-        textEditingController.text = value;
-      }
-    });
-  }
-
   Widget saveWidget(BuildContext context, Object o) {
     return Padding(
         padding: const EdgeInsets.only(top: 10, left: 10, right: 10),

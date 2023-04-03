@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sartex/data/sartex_datagridsource.dart';
+import 'package:sartex/screen/preloading/preloading_screen.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 part 'barcum.freezed.dart';
@@ -37,7 +39,7 @@ class Barcum with _$Barcum {
 
 @freezed
 class BarcumList with _$BarcumList {
-  const factory BarcumList({required List<BarcuM> list}) = _BarcumList;
+  const factory BarcumList({required List<Barcum> list}) = _BarcumList;
   factory BarcumList.fromJson(Map<String, Object?> json) => _$BarcumListFromJson(json);
 }
 
@@ -72,5 +74,10 @@ class BarcumDatasource extends SartexDataGridSource {
       DataGridCell(columnName: 'total', value: e.Total),
       DataGridCell(columnName: 'status', value: e.status),
     ])));
+  }
+
+  @override
+  Widget getEditWidget(String id) {
+    return PreloadingScreen();
   }
 }

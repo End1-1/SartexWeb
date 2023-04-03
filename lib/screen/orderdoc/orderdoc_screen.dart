@@ -10,7 +10,6 @@ import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/widgets/edit_widget.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../data/sql.dart';
@@ -106,7 +105,7 @@ class OrderDocScreen extends EditWidget {
                       enabled: _model.orderId!.isEmpty,
                       onTap: _model.orderId!.isEmpty
                           ? () {
-                              _changeDate(context, _model.dateCreateController);
+                              dateDialog(context, _model.dateCreateController);
                             }
                           : null),
                   textFieldColumn(
@@ -116,7 +115,7 @@ class OrderDocScreen extends EditWidget {
                     enabled: _model.orderId!.isEmpty,
                     onTap: _model.orderId!.isEmpty
                         ? () {
-                            _changeDate(context, _model.dateForController);
+                            dateDialog(context, _model.dateForController);
                           }
                         : null,
                   )
@@ -876,7 +875,11 @@ class OrderDocScreen extends EditWidget {
                                       width: 20,
                                       onTap: () {
                                         BlocProvider.of<OrderDocBloc>(context)
-                                            .add(OrderDocSubRow(row: showRow.isEmpty || or.parent_id != showRow ? or.id : ''));
+                                            .add(OrderDocSubRow(
+                                                row: showRow.isEmpty ||
+                                                        or.parent_id != showRow
+                                                    ? or.id
+                                                    : ''));
                                       },
                                       assetPath: 'svg/eye.svg',
                                       darkMode: false))
@@ -886,13 +889,13 @@ class OrderDocScreen extends EditWidget {
         }
       }
 
-        l.add(Padding(
-            padding: const EdgeInsets.only(bottom: 2),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: onerow)));
-      }
+      l.add(Padding(
+          padding: const EdgeInsets.only(bottom: 2),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: onerow)));
+    }
 
     return l;
   }
@@ -948,7 +951,7 @@ class OrderDocScreen extends EditWidget {
       //   continue;
       // }
       OrderRow or = e.copyWith(
-        branch: prefs.getString(key_user_branch) ?? 'Unknown',
+          branch: prefs.getString(key_user_branch) ?? 'Unknown',
           brand: _model.brandController.text,
           Patviratu: '',
           date: isNew
@@ -984,26 +987,6 @@ class OrderDocScreen extends EditWidget {
   @override
   String getTable() {
     return "";
-  }
-
-  void _changeDate(BuildContext context, TextEditingController controller) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(children: [
-            SizedBox(
-                width: 200,
-                child: TableCalendar(
-                  focusedDay: DateFormat('dd/MM/yyyy').parse(controller.text),
-                  firstDay: DateTime.now(),
-                  lastDay: DateTime.now().add(const Duration(days: 700)),
-                  onDaySelected: (d1, d2) {
-                    controller.text = DateFormat('dd/MM/yyyy').format(d1);
-                    Navigator.pop(context);
-                  },
-                ))
-          ]);
-        });
   }
 }
 

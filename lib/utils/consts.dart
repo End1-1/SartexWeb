@@ -1,7 +1,10 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:sartex/screen/popup_values_screen.dart';
 import 'package:sartex/utils/translator.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 const server_http_address = 'https://app.sartex.am/mix/mservice.php';
 final server_uri = Uri.parse(server_http_address);
@@ -59,7 +62,8 @@ const table_body_boxdecoration = BoxDecoration(
 const table_default_row_height = 40.0;
 const text_style_white_bold =
     TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold);
-const datagrid_text_style = TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.normal);
+const datagrid_text_style =
+    TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.normal);
 
 Future<void> appDialog(BuildContext context, String msg) async {
   await showDialog(
@@ -81,4 +85,42 @@ Future<void> appDialog(BuildContext context, String msg) async {
           ],
         );
       });
+}
+
+void dateDialog(BuildContext context, TextEditingController controller) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(children: [
+          SizedBox(
+              width: 200,
+              child: TableCalendar(
+                focusedDay: controller.text.isEmpty
+                    ? DateTime.now()
+                    : DateFormat('dd/MM/yyyy').parse(controller.text),
+                firstDay: DateTime.now(),
+                lastDay: DateTime.now().add(const Duration(days: 700)),
+                onDaySelected: (d1, d2) {
+                  controller.text = DateFormat('dd/MM/yyyy').format(d1);
+                  Navigator.pop(context);
+                },
+              ))
+        ]);
+      });
+}
+
+void valueOfList(BuildContext context, List<String> list,
+    TextEditingController textEditingController, {VoidCallback? done}) {
+  showDialog(
+      context: context,
+      builder: (BuildContext contex) {
+        return PopupValuesScreen(values: list);
+      }).then((value) {
+    if (value != null) {
+      textEditingController.text = value;
+      if (done != null) {
+        done();
+      }
+    }
+  });
 }

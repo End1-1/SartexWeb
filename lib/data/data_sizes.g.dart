@@ -6,7 +6,7 @@ part of 'data_sizes.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Size _$$_SizeFromJson(Map<String, dynamic> json) => _$_Size(
+_$_DataSize _$$_DataSizeFromJson(Map<String, dynamic> json) => _$_DataSize(
       id: json['id'] as String,
       code: json['code'] as String,
       country: json['country'] as String,
@@ -23,7 +23,8 @@ _$_Size _$$_SizeFromJson(Map<String, dynamic> json) => _$_Size(
       size10: json['size10'] as String,
     );
 
-Map<String, dynamic> _$$_SizeToJson(_$_Size instance) => <String, dynamic>{
+Map<String, dynamic> _$$_DataSizeToJson(_$_DataSize instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'code': instance.code,
       'country': instance.country,
@@ -42,7 +43,7 @@ Map<String, dynamic> _$$_SizeToJson(_$_Size instance) => <String, dynamic>{
 
 _$_SizeList _$$_SizeListFromJson(Map<String, dynamic> json) => _$_SizeList(
       sizes: (json['sizes'] as List<dynamic>)
-          .map((e) => Size.fromJson(e as Map<String, dynamic>))
+          .map((e) => DataSize.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

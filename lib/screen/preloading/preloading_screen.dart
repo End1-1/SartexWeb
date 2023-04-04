@@ -1,101 +1,132 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/scheduler/ticker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sartex/screen/preloading/preloading_bloc.dart';
+import 'package:sartex/screen/preloading/preloading_item.dart';
 import 'package:sartex/screen/preloading/preloading_model.dart';
 import 'package:sartex/screen/preloading/preloading_widgets.dart';
 import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/edit_widget.dart';
 import 'package:sartex/widgets/svg_button.dart';
+import 'package:intl/intl.dart';
 
 class PreloadingScreen extends EditWidget {
   final PreloadingModel _model = PreloadingModel();
+  String? docNum;
+
+  PreloadingScreen({super.key, this.docNum});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        //Header
-        Row(children: [Expanded(child: Text(L.tr('Preloading'), textAlign: TextAlign.center, style: tsDialogHeader))]),
-        Row(children: [
-          textFieldColumn(
-              context: context,
-              title: 'Date',
-              textEditingController: _model.editDate,
-              onTap: () {
-                dateDialog(context, _model.editDate);
-              }),
-          textFieldColumn(
-              context: context,
-              title: 'Track',
-              textEditingController: _model.editTruck),
-          textFieldColumn(
-              context: context,
-              title: 'Store',
-              textEditingController: _model.editStore),
-          textFieldColumn(
-              context: context,
-              title: 'Receipant',
-              textEditingController: _model.editReceipant),
-          Expanded(child: Container()),
-          SvgButton(
-              darkMode: false,
-              onTap: () {
-                appDialogYesNo(context, L.tr('Close document?'), () {
-                  Navigator.pop(context);
-                }, () {});
-              },
-              assetPath: 'svg/cancel.svg'),
-          SvgButton(
-              darkMode: false,
-              onTap: () {
-                appDialogYesNo(context, L.tr('Save document?'), () {
-                  _model.save().then((value) {
-                    if (value.isNotEmpty) {
-                      appDialog(context, value);
-                      return;
-                    }
-                    Navigator.pop(context);
-                  });
-                }, () {});
-              },
-              assetPath: 'svg/save.svg')
-        ]),
-        const Divider(height: 20, color: Colors.transparent),
-        //MainWindow
-        DefaultTabController(
-            length: 2,
-            child: SizedBox(
-                height: 800,
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: Scaffold(
-                  appBar: TabBar(
-                    labelColor: Colors.black,
-                    unselectedLabelColor: Colors.black45,
-                    tabs: [
-                      Text(L.tr('New preloading')),
-                      Text(L.tr('Preloading list'))
-                    ],
-                  ),
-                  body: TabBarView(
-                    children: [
-                      Container(
-                          alignment: Alignment.topLeft,
-                          padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                          child: PreloadingLine(model: _model)),
-                      Container(
-                          alignment: Alignment.topLeft,
-                          padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                          child: PreloadingLines(model: _model)),
-                    ],
-                  ),
-                ))),
-      ],
-    );
+    return BlocProvider<PreloadingBloc>(
+        create: (_) => PreloadingBloc(PreloadingStateIdle())
+          ..add(PreloadingEventOpenDoc(docnum: docNum)),
+        child: BlocBuilder<PreloadingBloc, PreloadingState>(
+            builder: (context, state) {
+              if (state is PreloadingStateOpenDoc) {
+                if (state.items.isNotEmpty) {
+                  _model.prReadyLines.addAll(state.items);
+                  _model.editDate.text = DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(state.header['date']!));
+                  _model.editReceipant.text = state.header['receipant']!;
+                  _model.editStore.text = state.header['store']!;
+                  _model.editTruck.text = state.header['truck']!;
+                  _model.prReadyLines.addAll(state.items);
+                }
+              }
+          return Column(
+            children: [
+              //Header
+              Row(children: [
+                Expanded(
+                    child: Text(L.tr('Preloading'),
+                        textAlign: TextAlign.center, style: tsDialogHeader))
+              ]),
+              Row(children: [
+                textFieldColumn(
+                    context: context,
+                    title: 'Date',
+                    textEditingController: _model.editDate,
+                    onTap: () {
+                      dateDialog(context, _model.editDate);
+                    }),
+                textFieldColumn(
+                    context: context,
+                    title: 'Track',
+                    textEditingController: _model.editTruck),
+                textFieldColumn(
+                    context: context,
+                    title: 'Store',
+                    textEditingController: _model.editStore),
+                textFieldColumn(
+                    context: context,
+                    title: 'Receipant',
+                    textEditingController: _model.editReceipant),
+                Expanded(child: Container()),
+                SvgButton(
+                    darkMode: false,
+                    onTap: () {
+                      appDialogYesNo(context, L.tr('Close document?'), () {
+                        Navigator.pop(context);
+                      }, () {});
+                    },
+                    assetPath: 'svg/cancel.svg'),
+                SvgButton(
+                    darkMode: false,
+                    onTap: () {
+                      appDialogYesNo(context, L.tr('Save document?'), () {
+                        _model.save().then((value) {
+                          if (value.isNotEmpty) {
+                            appDialog(context, value);
+                            return;
+                          }
+                          Navigator.pop(context);
+                        });
+                      }, () {});
+                    },
+                    assetPath: 'svg/save.svg')
+              ]),
+              const Divider(height: 20, color: Colors.transparent),
+              //MainWindow
+              DefaultTabController(
+                  length: 2,
+                  child: SizedBox(
+                      height: 800,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: Scaffold(
+                        appBar: TabBar(
+                          labelColor: Colors.black,
+                          unselectedLabelColor: Colors.black45,
+                          tabs: [
+                            Text(L.tr('New preloading')),
+                            Text(L.tr('Preloading list'))
+                          ],
+                        ),
+                        body: TabBarView(
+                          children: [
+                            Container(
+                                alignment: Alignment.topLeft,
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                child: PreloadingLine(model: _model)),
+                            Container(
+                                alignment: Alignment.topLeft,
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                child: PreloadingLines(model: _model)),
+                          ],
+                        ),
+                      ))),
+            ],
+          );
+        }));
   }
 
   @override
   String getTable() {
     return '';
   }
+
 }
 
 class PreloadingLine extends StatefulWidget {

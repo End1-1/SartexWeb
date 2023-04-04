@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Size _$SizeFromJson(Map<String, dynamic> json) {
-  return _Size.fromJson(json);
+DataSize _$DataSizeFromJson(Map<String, dynamic> json) {
+  return _DataSize.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Size {
+mixin _$DataSize {
   String get id => throw _privateConstructorUsedError;
   String get code => throw _privateConstructorUsedError;
   String get country => throw _privateConstructorUsedError;
@@ -37,13 +37,14 @@ mixin _$Size {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $SizeCopyWith<Size> get copyWith => throw _privateConstructorUsedError;
+  $DataSizeCopyWith<DataSize> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $SizeCopyWith<$Res> {
-  factory $SizeCopyWith(Size value, $Res Function(Size) then) =
-      _$SizeCopyWithImpl<$Res, Size>;
+abstract class $DataSizeCopyWith<$Res> {
+  factory $DataSizeCopyWith(DataSize value, $Res Function(DataSize) then) =
+      _$DataSizeCopyWithImpl<$Res, DataSize>;
   @useResult
   $Res call(
       {String id,
@@ -63,9 +64,9 @@ abstract class $SizeCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SizeCopyWithImpl<$Res, $Val extends Size>
-    implements $SizeCopyWith<$Res> {
-  _$SizeCopyWithImpl(this._value, this._then);
+class _$DataSizeCopyWithImpl<$Res, $Val extends DataSize>
+    implements $DataSizeCopyWith<$Res> {
+  _$DataSizeCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -152,9 +153,10 @@ class _$SizeCopyWithImpl<$Res, $Val extends Size>
 }
 
 /// @nodoc
-abstract class _$$_SizeCopyWith<$Res> implements $SizeCopyWith<$Res> {
-  factory _$$_SizeCopyWith(_$_Size value, $Res Function(_$_Size) then) =
-      __$$_SizeCopyWithImpl<$Res>;
+abstract class _$$_DataSizeCopyWith<$Res> implements $DataSizeCopyWith<$Res> {
+  factory _$$_DataSizeCopyWith(
+          _$_DataSize value, $Res Function(_$_DataSize) then) =
+      __$$_DataSizeCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -175,9 +177,11 @@ abstract class _$$_SizeCopyWith<$Res> implements $SizeCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_SizeCopyWithImpl<$Res> extends _$SizeCopyWithImpl<$Res, _$_Size>
-    implements _$$_SizeCopyWith<$Res> {
-  __$$_SizeCopyWithImpl(_$_Size _value, $Res Function(_$_Size) _then)
+class __$$_DataSizeCopyWithImpl<$Res>
+    extends _$DataSizeCopyWithImpl<$Res, _$_DataSize>
+    implements _$$_DataSizeCopyWith<$Res> {
+  __$$_DataSizeCopyWithImpl(
+      _$_DataSize _value, $Res Function(_$_DataSize) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -198,7 +202,7 @@ class __$$_SizeCopyWithImpl<$Res> extends _$SizeCopyWithImpl<$Res, _$_Size>
     Object? size09 = null,
     Object? size10 = null,
   }) {
-    return _then(_$_Size(
+    return _then(_$_DataSize(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -261,8 +265,8 @@ class __$$_SizeCopyWithImpl<$Res> extends _$SizeCopyWithImpl<$Res, _$_Size>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Size extends _Size {
-  const _$_Size(
+class _$_DataSize extends _DataSize {
+  const _$_DataSize(
       {required this.id,
       required this.code,
       required this.country,
@@ -279,7 +283,8 @@ class _$_Size extends _Size {
       required this.size10})
       : super._();
 
-  factory _$_Size.fromJson(Map<String, dynamic> json) => _$$_SizeFromJson(json);
+  factory _$_DataSize.fromJson(Map<String, dynamic> json) =>
+      _$$_DataSizeFromJson(json);
 
   @override
   final String id;
@@ -312,14 +317,14 @@ class _$_Size extends _Size {
 
   @override
   String toString() {
-    return 'Size(id: $id, code: $code, country: $country, name: $name, size01: $size01, size02: $size02, size03: $size03, size04: $size04, size05: $size05, size06: $size06, size07: $size07, size08: $size08, size09: $size09, size10: $size10)';
+    return 'DataSize(id: $id, code: $code, country: $country, name: $name, size01: $size01, size02: $size02, size03: $size03, size04: $size04, size05: $size05, size06: $size06, size07: $size07, size08: $size08, size09: $size09, size10: $size10)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Size &&
+            other is _$_DataSize &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.country, country) || other.country == country) &&
@@ -344,19 +349,19 @@ class _$_Size extends _Size {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SizeCopyWith<_$_Size> get copyWith =>
-      __$$_SizeCopyWithImpl<_$_Size>(this, _$identity);
+  _$$_DataSizeCopyWith<_$_DataSize> get copyWith =>
+      __$$_DataSizeCopyWithImpl<_$_DataSize>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SizeToJson(
+    return _$$_DataSizeToJson(
       this,
     );
   }
 }
 
-abstract class _Size extends Size {
-  const factory _Size(
+abstract class _DataSize extends DataSize {
+  const factory _DataSize(
       {required final String id,
       required final String code,
       required final String country,
@@ -370,10 +375,10 @@ abstract class _Size extends Size {
       required final String size07,
       required final String size08,
       required final String size09,
-      required final String size10}) = _$_Size;
-  const _Size._() : super._();
+      required final String size10}) = _$_DataSize;
+  const _DataSize._() : super._();
 
-  factory _Size.fromJson(Map<String, dynamic> json) = _$_Size.fromJson;
+  factory _DataSize.fromJson(Map<String, dynamic> json) = _$_DataSize.fromJson;
 
   @override
   String get id;
@@ -405,7 +410,8 @@ abstract class _Size extends Size {
   String get size10;
   @override
   @JsonKey(ignore: true)
-  _$$_SizeCopyWith<_$_Size> get copyWith => throw _privateConstructorUsedError;
+  _$$_DataSizeCopyWith<_$_DataSize> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 SizeList _$SizeListFromJson(Map<String, dynamic> json) {
@@ -414,7 +420,7 @@ SizeList _$SizeListFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SizeList {
-  List<Size> get sizes => throw _privateConstructorUsedError;
+  List<DataSize> get sizes => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -427,7 +433,7 @@ abstract class $SizeListCopyWith<$Res> {
   factory $SizeListCopyWith(SizeList value, $Res Function(SizeList) then) =
       _$SizeListCopyWithImpl<$Res, SizeList>;
   @useResult
-  $Res call({List<Size> sizes});
+  $Res call({List<DataSize> sizes});
 }
 
 /// @nodoc
@@ -449,7 +455,7 @@ class _$SizeListCopyWithImpl<$Res, $Val extends SizeList>
       sizes: null == sizes
           ? _value.sizes
           : sizes // ignore: cast_nullable_to_non_nullable
-              as List<Size>,
+              as List<DataSize>,
     ) as $Val);
   }
 }
@@ -461,7 +467,7 @@ abstract class _$$_SizeListCopyWith<$Res> implements $SizeListCopyWith<$Res> {
       __$$_SizeListCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Size> sizes});
+  $Res call({List<DataSize> sizes});
 }
 
 /// @nodoc
@@ -481,7 +487,7 @@ class __$$_SizeListCopyWithImpl<$Res>
       sizes: null == sizes
           ? _value._sizes
           : sizes // ignore: cast_nullable_to_non_nullable
-              as List<Size>,
+              as List<DataSize>,
     ));
   }
 }
@@ -489,14 +495,14 @@ class __$$_SizeListCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_SizeList implements _SizeList {
-  const _$_SizeList({required final List<Size> sizes}) : _sizes = sizes;
+  const _$_SizeList({required final List<DataSize> sizes}) : _sizes = sizes;
 
   factory _$_SizeList.fromJson(Map<String, dynamic> json) =>
       _$$_SizeListFromJson(json);
 
-  final List<Size> _sizes;
+  final List<DataSize> _sizes;
   @override
-  List<Size> get sizes {
+  List<DataSize> get sizes {
     if (_sizes is EqualUnmodifiableListView) return _sizes;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_sizes);
@@ -535,12 +541,12 @@ class _$_SizeList implements _SizeList {
 }
 
 abstract class _SizeList implements SizeList {
-  const factory _SizeList({required final List<Size> sizes}) = _$_SizeList;
+  const factory _SizeList({required final List<DataSize> sizes}) = _$_SizeList;
 
   factory _SizeList.fromJson(Map<String, dynamic> json) = _$_SizeList.fromJson;
 
   @override
-  List<Size> get sizes;
+  List<DataSize> get sizes;
   @override
   @JsonKey(ignore: true)
   _$$_SizeListCopyWith<_$_SizeList> get copyWith =>

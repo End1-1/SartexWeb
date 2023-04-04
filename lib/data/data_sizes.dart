@@ -6,10 +6,10 @@ part 'data_sizes.freezed.dart';
 part 'data_sizes.g.dart';
 
 @freezed
-class Size with _$Size {
-  const Size._();
+class DataSize with _$DataSize {
+  const DataSize._();
 
-  const factory Size({
+  const factory DataSize({
     required String id,
     required String code,
     required String country,
@@ -24,9 +24,9 @@ class Size with _$Size {
     required String size08,
     required String size09,
     required String size10
-}) = _Size;
+}) = _DataSize;
 
-  factory Size.fromJson(Map<String, dynamic> json) => _$SizeFromJson(json);
+  factory DataSize.fromJson(Map<String, dynamic> json) => _$DataSizeFromJson(json);
 
   String sizeOfIndex(int i) {
     switch (i) {
@@ -58,7 +58,7 @@ class Size with _$Size {
 
 @freezed
 class SizeList with _$SizeList {
-  const factory SizeList({required List<Size> sizes}) = _SizeList;
+  const factory SizeList({required List<DataSize> sizes}) = _SizeList;
   factory SizeList.fromJson(Map<String, dynamic> json) => _$SizeListFromJson(json);
 }
 

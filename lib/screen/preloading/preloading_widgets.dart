@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sartex/screen/preloading/preloading_model.dart';
+import 'package:sartex/screen/preloading/preloading_size.dart';
 import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/translator.dart';
 

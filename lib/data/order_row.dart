@@ -24,7 +24,7 @@ class OrderRow with _$OrderRow {
     required String? Katarox,
     required String? Patviratu,
     required String? Model,
-    required String? ModelCod,
+    required String? ModelCode,
     required String? brand,
     required String? short_code,
     required String? size_standart,
@@ -58,15 +58,14 @@ class OrderRowList with _$OrderRowList {
 class OrderRowDatasource extends SartexDataGridSource {
   late List<String> executors;
   late List<String> brands;
-  final Map<String, List<String>> shortCodeOfBrand = {};
-  final Map<String, List<String>> modelAndSizeOfShort = {};
+  final Map<String, List<String>> codeAndSizeList = {};
+  final Map<String, List<String>> modelList = {};
   final Map<String, List<String>> sizesOfModel = {};
 
   OrderRowDatasource({required super.context, required List data}) {
     addRows(data);
     addColumn('edit', 'Edit', 100);
     addColumn('id', 'Id', 60);
-    addColumn('branch', 'Branch', 100);
     addColumn('date', 'Date', 100);
     addColumn('patvern', 'NN', 100);
     addColumn('patviratu', 'Customer', 120);
@@ -86,12 +85,12 @@ class OrderRowDatasource extends SartexDataGridSource {
     addColumn('status', 'Status', 100);
     HttpSqlQuery.listOfQuery("select name from Parthners where type='Արտադրող'").then((value) => executors = value);
     HttpSqlQuery.listDistinctOf('Products', 'brand');
-    HttpSqlQuery.get('select brand, modelCode, model, size_standart  from Products').then((value) => value.forEach((e) {
-      if (!shortCodeOfBrand.containsKey(e['brand'])) {
-        shortCodeOfBrand[e['brand']] = [];
+    HttpSqlQuery.get('select brand, model, modelCode,  size_standart  from Products').then((value) => value.forEach((e) {
+      if (!modelList.containsKey(e['brand'])) {
+        modelList[e['brand']] = [];
       }
-      shortCodeOfBrand[e['brand']]!.add(e['modelCode']);
-      modelAndSizeOfShort[e['modelCode']] = [e['model'], e['size_standart']];
+      modelList[e['brand']]!.add(e['model']);
+      codeAndSizeList[e['model']] = [e['modelCode'], e['size_standart']];
     }));
     HttpSqlQuery.get('select * from Sizes').then((value) => value.forEach((e) {
       sizesOfModel[e['code']] = [e['size01'], e['size02'], e['size03'], e['size04'], e['size05'], e['size06'], e['size07'], e['size08'], e['size09'], e['size10']];
@@ -104,13 +103,12 @@ class OrderRowDatasource extends SartexDataGridSource {
     rows.addAll(d.map<DataGridRow>((e) => DataGridRow(cells: [
         DataGridCell(columnName: 'editdata', value: e.IDPatver),
         DataGridCell(columnName: 'id', value: e.id),
-        DataGridCell(columnName: 'branch', value: e.branch),
         DataGridCell(columnName: 'date', value: e.date),
         DataGridCell(columnName: 'patvern', value: e.PatverN),
         DataGridCell(columnName: 'patviratu', value: e.Patviratu),
         DataGridCell(columnName: 'brand', value: e.brand),
         DataGridCell(columnName: 'model', value: e.Model),
-        DataGridCell(columnName: 'modelcod', value: e.ModelCod),
+        DataGridCell(columnName: 'modelcod', value: e.ModelCode),
         DataGridCell(columnName: 'executor', value: e.Katarox),
         DataGridCell(columnName: '+', value: e.appended),
         DataGridCell(columnName: '-', value: e.discarded),

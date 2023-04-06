@@ -30,8 +30,8 @@ class OrderDocModel {
   final TextEditingController executorController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
   final TextEditingController brandController = STextEditingController();
-  final TextEditingController modelCodController = STextEditingController();
   final TextEditingController modelController = TextEditingController();
+  final TextEditingController modelCodeController = STextEditingController();
   final TextEditingController sizeStandartController = TextEditingController();
   final List<TextEditingController> detailsControllers = [
     TextEditingController(),
@@ -49,8 +49,8 @@ class OrderDocModel {
     TextEditingController(),
   ];
 
-  List<String> shortCodeOf(String brand) {
-    return datasource.shortCodeOfBrand[brand] ?? [];
+  List<String> modelOf(String brand) {
+    return datasource.modelList[brand] ?? [];
   }
 
   Future<void> loadOrder() async {

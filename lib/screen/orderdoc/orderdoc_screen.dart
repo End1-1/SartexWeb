@@ -67,7 +67,7 @@ class OrderDocScreen extends EditWidget {
                     listener: (context, state) {
                       if (_model.details.isNotEmpty) {
                         _model.brandController.removeListener(() {});
-                        _model.modelCodController.removeListener(() {});
+                        _model.modelController.removeListener(() {});
                         final OrderRow or = _model.details.first;
                         _model.orderIdController.text = or.PatverN ?? '???';
                         _model.dateCreateController.text =
@@ -81,14 +81,14 @@ class OrderDocScreen extends EditWidget {
                                     DateFormat('yyyy-MM-dd')
                                         .format(DateTime.now())));
                         _model.brandController.text = or.brand ?? '';
-                        _model.modelCodController.text = or.ModelCod ?? '';
+                        _model.modelCodeController.text = or.ModelCode ?? '';
                         _model.modelController.text = or.Model ?? '';
                         _model.sizeStandartController.text =
                             or.size_standart ?? '';
                         _model.executorController.text = or.Katarox ?? '';
                         _model.countryController.text = or.country ?? '';
                         bloc.add(OrderDocNewRow());
-                        bloc.add(OrderDocShortChanged());
+                        bloc.add(OrderDocModelChanged());
                       }
                     },
                     child: Container()),
@@ -149,55 +149,56 @@ class OrderDocScreen extends EditWidget {
                                 print('NO BRAND LISTENER');
                               }),
                       list: _model.orderId!.isEmpty
-                          ? _model.datasource.shortCodeOfBrand.keys.toList()
+                          ? _model.datasource.modelList.keys.toList()
                           : null,
                       enabled: _model.orderId!.isEmpty,
                     ),
-                    BlocBuilder<OrderDocBloc, OrderDocState>(
-                        buildWhen: (previos, current) =>
-                            current is OrderDocStateBrand,
-                        builder: (context, state) {
-                          _model.modelCodController.clear();
-                          return textFieldColumn(
-                              context: context,
-                              title: 'Model code',
-                              textEditingController: _model.modelCodController
-                                ..addListener(_model.orderId!.isEmpty
-                                    ? () {
-                                        bloc.add(OrderDocShortChanged());
-                                      }
-                                    : () {}),
-                              list: _model.orderId!.isEmpty
-                                  ? _model
-                                      .shortCodeOf(_model.brandController.text)
-                                  : null,
-                              enabled: _model.orderId!.isEmpty);
-                        }),
+
                     BlocListener<OrderDocBloc, OrderDocState>(
                         listenWhen: (previose, current) =>
-                            current is OrderDocStateShort,
+                            current is OrderDocStateModel,
                         listener: (context, state) {
-                          if (_model.modelCodController.text.isEmpty) {
-                            _model.modelController.clear();
+                          if (_model.modelController.text.isEmpty) {
+                            _model.modelCodeController.clear();
                             _model.sizeStandartController.clear();
                           } else {
-                            _model.modelController.text = _model
+                            _model.modelCodeController.text = _model
                                 .datasource
-                                .modelAndSizeOfShort[
-                                    _model.modelCodController.text]!
+                                .codeAndSizeList[
+                                    _model.modelController.text]!
                                 .elementAt(0);
                             _model.sizeStandartController.text = _model
                                 .datasource
-                                .modelAndSizeOfShort[
-                                    _model.modelCodController.text]!
+                                .codeAndSizeList[
+                                    _model.modelController.text]!
                                 .elementAt(1);
                           }
                         },
                         child: Container()),
+                    BlocBuilder<OrderDocBloc, OrderDocState>(
+                        buildWhen: (previos, current) =>
+                        current is OrderDocStateBrand,
+                        builder: (context, state) {
+                          _model.modelController.clear();
+                          return textFieldColumn(
+                              context: context,
+                              title: 'Model',
+                              textEditingController: _model.modelController
+                                ..addListener(_model.orderId!.isEmpty
+                                    ? () {
+                                  bloc.add(OrderDocModelChanged());
+                                }
+                                    : () {}),
+                              list: _model.orderId!.isEmpty
+                                  ? _model
+                                  .modelOf(_model.brandController.text)
+                                  : null,
+                              enabled: _model.orderId!.isEmpty);
+                        }),
                     textFieldColumn(
                         context: context,
-                        title: 'Model',
-                        textEditingController: _model.modelController,
+                        title: 'Model code',
+                        textEditingController: _model.modelCodeController,
                         list: []),
                     textFieldColumn(
                         context: context,
@@ -209,13 +210,15 @@ class OrderDocScreen extends EditWidget {
                 const Divider(height: 30, color: Colors.transparent),
                 BlocBuilder<OrderDocBloc, OrderDocState>(
                     buildWhen: (previos, current) =>
-                        current is OrderDocStateShort,
+                        current is OrderDocStateModel,
                     builder: (context, state) {
                       return _detailsHeader(
                           context,
                           _model.datasource.sizesOfModel[
                                   _model.sizeStandartController.text] ??
                               [
+                                '?',
+                                '?',
                                 '?',
                                 '?',
                                 '?',
@@ -332,7 +335,7 @@ class OrderDocScreen extends EditWidget {
                           Katarox: _model.executorController.text,
                           Patviratu: '',
                           Model: _model.modelController.text,
-                          ModelCod: _model.modelCodController.text,
+                          ModelCode: _model.modelCodeController.text,
                           brand: _model.brandController.text,
                           short_code: '',
                           size_standart: _model.sizeStandartController.text,
@@ -963,7 +966,7 @@ class OrderDocScreen extends EditWidget {
           IDPatver: uuid,
           Katarox: _model.executorController.text,
           Model: _model.modelController.text,
-          ModelCod: _model.modelCodController.text,
+          ModelCode: _model.modelCodeController.text,
           size_standart: _model.sizeStandartController.text);
       String sql = '';
       Map<String, dynamic> s = or.toJson();

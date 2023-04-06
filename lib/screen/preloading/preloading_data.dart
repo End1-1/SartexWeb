@@ -94,12 +94,12 @@ class PreloadingData {
       country = m['country'];
       pid = m['id'];
     }
-    l = await HttpSqlQuery.post({'sl':'select * from patver_data where id=$pid'});
+    l = await HttpSqlQuery.post({'sl': "select * from Sizes where code='$sizeStandart'"});
     for (int i = 1; i < 13; i++) {
-      s.sizes[i - 1].text = l[0]['Size${i.toString().padLeft(2, '0')}'];
+      s.sizes[i - 1].text = l[0]['size${i.toString().padLeft(2, '0')}'];
     }
     l = await HttpSqlQuery.post({
-      "sl": "select a.apr_id,  m.mnacord as pahest_mnac, a.size_number from Apranq a inner join Mnacord m on m.apr_id=a.apr_id where pid='$pid'"
+      "sl": "select a.apr_id, m.mnacord as pahest_mnac, a.pat_mnac, a.size_number from Apranq a left join Mnacord m on m.apr_id=a.apr_id where pid='$pid'"
     });
     s.preSize ??= PreloadingSize();
     for (var e in l) {
@@ -107,7 +107,7 @@ class PreloadingData {
       s.preSize!.aprId[index] = e['apr_id'];
       s.preSize!.size[index] = e['pat_mnac'] ?? '0';
       s.remains[index].text = e['pat_mnac'] ?? '0';
-      s.pahest[index].text = e['pahest_mnacord'] ?? '0';
+      s.pahest[index].text = e['pahest_mnac'] ?? '0';
     }
     s.remains[s.remains.length - 1].text = s.sumOfMnacord();
     s.pahest[s.pahest.length - 1].text = s.sumOfPahest();

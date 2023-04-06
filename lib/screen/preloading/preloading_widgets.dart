@@ -129,6 +129,9 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                         e.color.clear();
                                         e.variant.clear();
                                         e.country.clear();
+                                        for (var sz in e.sizes) {
+                                          sz.text = '';
+                                        }
                                       });
                                     })),
                     ],
@@ -165,6 +168,10 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                     e.commesa.clear();
                                     e.color.clear();
                                     e.variant.clear();
+                                    e.country.clear();
+                                    for (var sz in e.sizes) {
+                                      sz.text = '';
+                                    }
                                     widget.model!.data.buildCommesaLevel(
                                         e.brand.text, e.model.text);
                                   });
@@ -204,12 +211,40 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                           e.commesa, done: () {
                                         e.color.clear();
                                         e.variant.clear();
+                                        for (var sz in e.sizes) {
+                                          sz.text = '';
+                                        }
                                         widget.model!.data.buildColorLevel(
                                             e.brand.text,
                                             e.model.text,
                                             e.commesa.text);
                                       });
                                     })),
+                    ],
+                  )),
+              //country
+              SizedBox(
+                  width: 80,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          padding: padding,
+                          decoration: headerDecor1,
+                          child: Row(children: [
+                            Expanded(
+                                child: TextFormField(
+                                    readOnly: true,
+                                    decoration: labelDecor,
+                                    initialValue: L.tr('Country'),
+                                    style: headerLeft))
+                          ])),
+                      Container(
+                          decoration: headerDecor1,
+                          child: TextFormField(
+                              readOnly: true,
+                              decoration: formDecor1,
+                              controller: e.country)),
                     ],
                   )),
               //Color
@@ -295,31 +330,6 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                     })),
                     ],
                   )),
-              //country
-              SizedBox(
-                  width: 80,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          padding: padding,
-                          decoration: headerDecor1,
-                          child: Row(children: [
-                            Expanded(
-                                child: TextFormField(
-                                    readOnly: true,
-                                    decoration: labelDecor,
-                                    initialValue: L.tr('Country'),
-                                    style: headerLeft))
-                          ])),
-                      Container(
-                          decoration: headerDecor1,
-                          child: TextFormField(
-                              readOnly: true,
-                              decoration: formDecor1,
-                              controller: e.country)),
-                    ],
-                  )),
               //Sizes
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,7 +339,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                     children: [
                       for (int i = 1; i < 11; i++) ...[
                         SizedBox(
-                            width: 60,
+                            width: 70,
                             child: Container(
                                 padding: padding,
                                 decoration: headerDecor1,
@@ -363,7 +373,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                           children: [
                             for (int i = 1; i < 11; i++) ...[
                               SizedBox(
-                                  width: 60,
+                                  width: 70,
                                   child: Container(
                                       decoration: headerDecor2,
                                       child: Row(children: [
@@ -415,7 +425,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                     children: [
                       for (int i = 1; i < 11; i++) ...[
                         SizedBox(
-                            width: 60,
+                            width: 70,
                             child: Container(
                                 decoration: headerDecor4,
                                 child: Row(children: [
@@ -447,12 +457,13 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                     children: [
                       for (int i = 1; i < 11; i++) ...[
                         SizedBox(
-                            width: 60,
+                            width: 70,
                             child: Container(
                                 decoration: headerDecor3,
                                 child: Row(children: [
                                   Expanded(
                                       child: TextFormField(
+                                        readOnly: !widget.showLine1,
                                           onChanged: (text) {
                                             int newvalue =
                                                 int.tryParse(text) ?? 0;

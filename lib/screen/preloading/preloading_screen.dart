@@ -161,6 +161,11 @@ class _PreloadingLine extends State<PreloadingLine> {
                       if (widget.model.prLine.prLine.isEmpty) {
                         err += L.tr('Select line');
                       }
+                      for (var e in widget.model.prLine.items) {
+                        if ((int.tryParse(e.newvalues[e.newvalues.length - 1].text) ?? 0) == 0) {
+                          err += L.tr('Invalid total quantity of loading');
+                        }
+                      }
                       if (err.isNotEmpty) {
                         appDialog(context, err);
                         return;

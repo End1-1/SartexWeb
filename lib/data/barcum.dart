@@ -35,7 +35,6 @@ class BarcumDatasource extends SartexDataGridSource {
     addRows(data);
     addColumn('edit', 'Edit', 100);
     addColumn('id', 'Document', 120);
-    addColumn('branch', 'Branch', 120);
     addColumn('date', 'Date', 100);
     addColumn('country', 'Country', 200);
     addColumn('receiver', 'Receipant', 200);
@@ -50,7 +49,6 @@ class BarcumDatasource extends SartexDataGridSource {
     rows.addAll(d.map<DataGridRow>((e) => DataGridRow(cells: [
       DataGridCell(columnName: 'editdata', value: e.docnum),
       DataGridCell(columnName: 'docnum', value: e.docnum),
-      DataGridCell(columnName: 'branch', value: e.branch),
       DataGridCell(columnName: 'date', value: e.date),
       DataGridCell(columnName: 'country', value: e.country),
       DataGridCell(columnName: 'receiver', value: e.partner),

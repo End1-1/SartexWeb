@@ -46,6 +46,7 @@ class PreloadingModel {
 
   //New PRELOADING
   PreloadingFullItem prLine = PreloadingFullItem();
+  final List<String> storeNames = ['P1', 'P2', 'P3', 'P4'];
   final List<PreloadingFullItem> prReadyLines = [];
   String? docNumber;
 
@@ -83,8 +84,8 @@ class PreloadingModel {
             continue;
           }
 
-          String? aprid = item.preSize?.aprIdOfIndex(i);
-          if (aprid == null || qty == null) {
+          String? aprid = item.preSize?.aprIdOf(i);
+          if (aprid == null || aprid.isEmpty) {
             continue;
           }
           Map<String, String> bind = {};
@@ -98,7 +99,7 @@ class PreloadingModel {
           bind['qanak'] = qty.toString();
           bind['status'] = 'draft';
           bind['avto'] = editTruck.text;
-          bind['ditox'] = pr.prLine;
+          bind['line'] = pr.prLine;
           bind['partner'] = editReceipant.text;
           String insertSql = Sql.insert('Docs', bind);
           await HttpSqlQuery.post({'sl': insertSql});

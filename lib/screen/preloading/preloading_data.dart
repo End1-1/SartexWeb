@@ -18,7 +18,7 @@ class PreloadingData {
   PreloadingData() {
     HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.brand) from patver_data pd where pd.status='inProgress'"
+      "select distinct(pd.brand) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress'"
     }).then((value) {
       brandLevel.clear();
       for (var e in value) {
@@ -28,7 +28,7 @@ class PreloadingData {
     HttpSqlQuery.post({'sl': 'select * from Sizes'}).then((value) {
       SizeList sl = SizeList.fromJson({'sizes': value});
       for (var e in sl.sizes) {
-        sizeStandartList[e.code] = e;
+        sizeStandartList[e.code!] = e;
       }
     });
   }
@@ -36,7 +36,7 @@ class PreloadingData {
   void buildModelList(String brand) {
     HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.Model) from patver_data pd where pd.status='inProgress' and brand='$brand'"
+      "select distinct(pd.Model) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand'"
     }).then((value) {
       modelLevel.clear();
       for (var e in value) {
@@ -48,7 +48,7 @@ class PreloadingData {
   void buildCommesaLevel(String brand, String model) {
     HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.PatverN) from patver_data pd where pd.status='inProgress' and brand='$brand' and Model='$model'"
+      "select distinct(pd.PatverN) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model'"
     }).then((value) {
       commesaLevel.clear();
       for (var e in value) {
@@ -60,7 +60,7 @@ class PreloadingData {
   void buildColorLevel(String brand, String model, String commesa) {
     HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.Colore) from patver_data pd where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa'"
+      "select distinct(pd.Colore) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa'"
     }).then((value) {
       colorLevel.clear();
       for (var e in value) {
@@ -73,7 +73,7 @@ class PreloadingData {
       String brand, String model, String commesa, String color) {
     HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.variant_prod) from patver_data pd where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa' and Colore='$color'"
+      "select distinct(pd.variant_prod) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa' and Colore='$color'"
     }).then((value) {
       variantLevel.clear();
       for (var e in value) {
@@ -86,7 +86,7 @@ class PreloadingData {
       String brand, String model, String commesa, PreloadingItem s) async {
     List<dynamic> l = await HttpSqlQuery.post({
       "sl":
-      "select country, size_standart, id from patver_data pd where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa'"
+      "select pd.country, pd.size_standart, pd.id from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa'"
     });
     if (l.isNotEmpty) {
       Map<String, dynamic> m = l[0];
@@ -94,64 +94,23 @@ class PreloadingData {
       country = m['country'];
       pid = m['id'];
     }
+    l = await HttpSqlQuery.post({'sl':'select * from patver_data where id=$pid'});
+    for (int i = 1; i < 13; i++) {
+      s.sizes[i - 1].text = l[0]['Size${i.toString().padLeft(2, '0')}'];
+    }
     l = await HttpSqlQuery.post({
-      "sl": "select apr_id, pat_mnac, size_number from Apranq where pid='$pid'"
+      "sl": "select a.apr_id,  m.mnacord as pahest_mnac, a.size_number from Apranq a inner join Mnacord m on m.apr_id=a.apr_id where pid='$pid'"
     });
     s.preSize ??= PreloadingSize();
     for (var e in l) {
-      switch (e['size_number']) {
-        case 'size01':
-          s.preSize!.aprId01 = e['apr_id'];
-          s.preSize!.size01 = e['pat_mnac'];
-          s.remains[0].text = e['pat_mnac'];
-          break;
-        case 'size02':
-          s.preSize!.aprId02 = e['apr_id'];
-          s.preSize!.size02 = e['pat_mnac'];
-          s.remains[1].text = e['pat_mnac'];
-          break;
-        case 'size03':
-          s.preSize!.aprId03 = e['apr_id'];
-          s.preSize!.size03 = e['pat_mnac'];
-          s.remains[2].text = e['pat_mnac'];
-          break;
-        case 'size04':
-          s.preSize!.aprId04 = e['apr_id'];
-          s.preSize!.size04 = e['pat_mnac'];
-          s.remains[3].text = e['pat_mnac'];
-          break;
-        case 'size05':
-          s.preSize!.aprId05 = e['apr_id'];
-          s.preSize!.size05 = e['pat_mnac'];
-          s.remains[4].text = e['pat_mnac'];
-          break;
-        case 'size06':
-          s.preSize!.aprId06 = e['apr_id'];
-          s.preSize!.size06 = e['pat_mnac'];
-          s.remains[5].text = e['pat_mnac'];
-          break;
-        case 'size07':
-          s.preSize!.aprId07 = e['apr_id'];
-          s.preSize!.size07 = e['pat_mnac'];
-          s.remains[6].text = e['pat_mnac'];
-          break;
-        case 'size08':
-          s.preSize!.aprId08 = e['apr_id'];
-          s.preSize!.size08 = e['pat_mnac'];
-          s.remains[7].text = e['pat_mnac'];
-          break;
-        case 'size09':
-          s.preSize!.aprId09 = e['apr_id'];
-          s.preSize!.size09 = e['pat_mnac'];
-          s.remains[8].text = e['pat_mnac'];
-          break;
-        case 'size10':
-          s.preSize!.aprId10 = e['apr_id'];
-          s.preSize!.size10 = e['pat_mnac'];
-          s.remains[9].text = e['pat_mnac'];
-          break;
-      }
+      int index = int.tryParse(e['size_number'].substring(e['size_number'].length - 2)) ?? -1;
+      s.preSize!.aprId[index] = e['apr_id'];
+      s.preSize!.size[index] = e['pat_mnac'] ?? '0';
+      s.remains[index].text = e['pat_mnac'] ?? '0';
+      s.pahest[index].text = e['pahest_mnacord'] ?? '0';
     }
+    s.remains[s.remains.length - 1].text = s.sumOfMnacord();
+    s.pahest[s.pahest.length - 1].text = s.sumOfPahest();
   }
 
 }

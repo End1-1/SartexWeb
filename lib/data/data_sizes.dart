@@ -11,48 +11,68 @@ class DataSize with _$DataSize {
 
   const factory DataSize({
     required String id,
-    required String code,
-    required String country,
-    required String name,
-    required String size01,
-    required String size02,
-    required String size03,
-    required String size04,
-    required String size05,
-    required String size06,
-    required String size07,
-    required String size08,
-    required String size09,
-    required String size10
+    required String? code,
+    required String? country,
+    required String? name,
+    required String? size01,
+    required String? size02,
+    required String? size03,
+    required String? size04,
+    required String? size05,
+    required String? size06,
+    required String? size07,
+    required String? size08,
+    required String? size09,
+    required String? size10,
+    required String? size11,
+    required String? size12
 }) = _DataSize;
 
   factory DataSize.fromJson(Map<String, dynamic> json) => _$DataSizeFromJson(json);
 
   String sizeOfIndex(int i) {
+    String? s;
     switch (i) {
       case 1:
-        return size01;
+        s = size01;
+        break;
       case 2:
-        return size02;
+        s = size02;
+        break;
       case 3:
-        return size03;
+        s = size03;
+        break;
       case 4:
-        return size04;
+        s = size04;
+        break;
       case 5:
-        return size05;
+        s = size05;
+        break;
       case 6:
-        return size06;
+        s = size06;
+        break;
       case 7:
-        return size07;
+        s = size07;
+        break;
       case 8:
-        return size08;
+        s = size08;
+        break;
       case 9:
-        return size09;
+         s = size09;
+         break;
       case 10:
-        return size10;
+        s = size10;
+        break;
+      case 11:
+        s = size11;
+        break;
+      case 12:
+        s = size12;
+        break;
       default:
         throw Exception('Invalid index for size');
     }
+    return s ?? '0';
   }
 }
 
@@ -79,7 +99,9 @@ class SizeDatasource extends SartexDataGridSource {
     addColumn('size07', '7', 70);
     addColumn('size08', '8', 70);
     addColumn('size09', '9', 70);
-    addColumn('size10', '10', 70);;
+    addColumn('size10', '10', 70);
+    addColumn('size11', '11', 70);
+    addColumn('size12', '12', 70);
   }
 
   @override
@@ -101,6 +123,8 @@ class SizeDatasource extends SartexDataGridSource {
       DataGridCell(columnName: 'size08', value: e.size08),
       DataGridCell(columnName: 'size09', value: e.size09),
       DataGridCell(columnName: 'size10', value: e.size10),
+      DataGridCell(columnName: 'size11', value: e.size11),
+      DataGridCell(columnName: 'size12', value: e.size12),
     ])));
   }
 }

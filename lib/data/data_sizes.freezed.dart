@@ -21,19 +21,21 @@ DataSize _$DataSizeFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$DataSize {
   String get id => throw _privateConstructorUsedError;
-  String get code => throw _privateConstructorUsedError;
-  String get country => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get size01 => throw _privateConstructorUsedError;
-  String get size02 => throw _privateConstructorUsedError;
-  String get size03 => throw _privateConstructorUsedError;
-  String get size04 => throw _privateConstructorUsedError;
-  String get size05 => throw _privateConstructorUsedError;
-  String get size06 => throw _privateConstructorUsedError;
-  String get size07 => throw _privateConstructorUsedError;
-  String get size08 => throw _privateConstructorUsedError;
-  String get size09 => throw _privateConstructorUsedError;
-  String get size10 => throw _privateConstructorUsedError;
+  String? get code => throw _privateConstructorUsedError;
+  String? get country => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  String? get size01 => throw _privateConstructorUsedError;
+  String? get size02 => throw _privateConstructorUsedError;
+  String? get size03 => throw _privateConstructorUsedError;
+  String? get size04 => throw _privateConstructorUsedError;
+  String? get size05 => throw _privateConstructorUsedError;
+  String? get size06 => throw _privateConstructorUsedError;
+  String? get size07 => throw _privateConstructorUsedError;
+  String? get size08 => throw _privateConstructorUsedError;
+  String? get size09 => throw _privateConstructorUsedError;
+  String? get size10 => throw _privateConstructorUsedError;
+  String? get size11 => throw _privateConstructorUsedError;
+  String? get size12 => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,19 +50,21 @@ abstract class $DataSizeCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String code,
-      String country,
-      String name,
-      String size01,
-      String size02,
-      String size03,
-      String size04,
-      String size05,
-      String size06,
-      String size07,
-      String size08,
-      String size09,
-      String size10});
+      String? code,
+      String? country,
+      String? name,
+      String? size01,
+      String? size02,
+      String? size03,
+      String? size04,
+      String? size05,
+      String? size06,
+      String? size07,
+      String? size08,
+      String? size09,
+      String? size10,
+      String? size11,
+      String? size12});
 }
 
 /// @nodoc
@@ -77,77 +81,87 @@ class _$DataSizeCopyWithImpl<$Res, $Val extends DataSize>
   @override
   $Res call({
     Object? id = null,
-    Object? code = null,
-    Object? country = null,
-    Object? name = null,
-    Object? size01 = null,
-    Object? size02 = null,
-    Object? size03 = null,
-    Object? size04 = null,
-    Object? size05 = null,
-    Object? size06 = null,
-    Object? size07 = null,
-    Object? size08 = null,
-    Object? size09 = null,
-    Object? size10 = null,
+    Object? code = freezed,
+    Object? country = freezed,
+    Object? name = freezed,
+    Object? size01 = freezed,
+    Object? size02 = freezed,
+    Object? size03 = freezed,
+    Object? size04 = freezed,
+    Object? size05 = freezed,
+    Object? size06 = freezed,
+    Object? size07 = freezed,
+    Object? size08 = freezed,
+    Object? size09 = freezed,
+    Object? size10 = freezed,
+    Object? size11 = freezed,
+    Object? size12 = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      code: null == code
+      code: freezed == code
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
-              as String,
-      country: null == country
+              as String?,
+      country: freezed == country
           ? _value.country
           : country // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
+              as String?,
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      size01: null == size01
+              as String?,
+      size01: freezed == size01
           ? _value.size01
           : size01 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size02: null == size02
+              as String?,
+      size02: freezed == size02
           ? _value.size02
           : size02 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size03: null == size03
+              as String?,
+      size03: freezed == size03
           ? _value.size03
           : size03 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size04: null == size04
+              as String?,
+      size04: freezed == size04
           ? _value.size04
           : size04 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size05: null == size05
+              as String?,
+      size05: freezed == size05
           ? _value.size05
           : size05 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size06: null == size06
+              as String?,
+      size06: freezed == size06
           ? _value.size06
           : size06 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size07: null == size07
+              as String?,
+      size07: freezed == size07
           ? _value.size07
           : size07 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size08: null == size08
+              as String?,
+      size08: freezed == size08
           ? _value.size08
           : size08 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size09: null == size09
+              as String?,
+      size09: freezed == size09
           ? _value.size09
           : size09 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size10: null == size10
+              as String?,
+      size10: freezed == size10
           ? _value.size10
           : size10 // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      size11: freezed == size11
+          ? _value.size11
+          : size11 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      size12: freezed == size12
+          ? _value.size12
+          : size12 // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -161,19 +175,21 @@ abstract class _$$_DataSizeCopyWith<$Res> implements $DataSizeCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String code,
-      String country,
-      String name,
-      String size01,
-      String size02,
-      String size03,
-      String size04,
-      String size05,
-      String size06,
-      String size07,
-      String size08,
-      String size09,
-      String size10});
+      String? code,
+      String? country,
+      String? name,
+      String? size01,
+      String? size02,
+      String? size03,
+      String? size04,
+      String? size05,
+      String? size06,
+      String? size07,
+      String? size08,
+      String? size09,
+      String? size10,
+      String? size11,
+      String? size12});
 }
 
 /// @nodoc
@@ -188,77 +204,87 @@ class __$$_DataSizeCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? code = null,
-    Object? country = null,
-    Object? name = null,
-    Object? size01 = null,
-    Object? size02 = null,
-    Object? size03 = null,
-    Object? size04 = null,
-    Object? size05 = null,
-    Object? size06 = null,
-    Object? size07 = null,
-    Object? size08 = null,
-    Object? size09 = null,
-    Object? size10 = null,
+    Object? code = freezed,
+    Object? country = freezed,
+    Object? name = freezed,
+    Object? size01 = freezed,
+    Object? size02 = freezed,
+    Object? size03 = freezed,
+    Object? size04 = freezed,
+    Object? size05 = freezed,
+    Object? size06 = freezed,
+    Object? size07 = freezed,
+    Object? size08 = freezed,
+    Object? size09 = freezed,
+    Object? size10 = freezed,
+    Object? size11 = freezed,
+    Object? size12 = freezed,
   }) {
     return _then(_$_DataSize(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      code: null == code
+      code: freezed == code
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
-              as String,
-      country: null == country
+              as String?,
+      country: freezed == country
           ? _value.country
           : country // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
+              as String?,
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      size01: null == size01
+              as String?,
+      size01: freezed == size01
           ? _value.size01
           : size01 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size02: null == size02
+              as String?,
+      size02: freezed == size02
           ? _value.size02
           : size02 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size03: null == size03
+              as String?,
+      size03: freezed == size03
           ? _value.size03
           : size03 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size04: null == size04
+              as String?,
+      size04: freezed == size04
           ? _value.size04
           : size04 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size05: null == size05
+              as String?,
+      size05: freezed == size05
           ? _value.size05
           : size05 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size06: null == size06
+              as String?,
+      size06: freezed == size06
           ? _value.size06
           : size06 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size07: null == size07
+              as String?,
+      size07: freezed == size07
           ? _value.size07
           : size07 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size08: null == size08
+              as String?,
+      size08: freezed == size08
           ? _value.size08
           : size08 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size09: null == size09
+              as String?,
+      size09: freezed == size09
           ? _value.size09
           : size09 // ignore: cast_nullable_to_non_nullable
-              as String,
-      size10: null == size10
+              as String?,
+      size10: freezed == size10
           ? _value.size10
           : size10 // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      size11: freezed == size11
+          ? _value.size11
+          : size11 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      size12: freezed == size12
+          ? _value.size12
+          : size12 // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -280,7 +306,9 @@ class _$_DataSize extends _DataSize {
       required this.size07,
       required this.size08,
       required this.size09,
-      required this.size10})
+      required this.size10,
+      required this.size11,
+      required this.size12})
       : super._();
 
   factory _$_DataSize.fromJson(Map<String, dynamic> json) =>
@@ -289,35 +317,39 @@ class _$_DataSize extends _DataSize {
   @override
   final String id;
   @override
-  final String code;
+  final String? code;
   @override
-  final String country;
+  final String? country;
   @override
-  final String name;
+  final String? name;
   @override
-  final String size01;
+  final String? size01;
   @override
-  final String size02;
+  final String? size02;
   @override
-  final String size03;
+  final String? size03;
   @override
-  final String size04;
+  final String? size04;
   @override
-  final String size05;
+  final String? size05;
   @override
-  final String size06;
+  final String? size06;
   @override
-  final String size07;
+  final String? size07;
   @override
-  final String size08;
+  final String? size08;
   @override
-  final String size09;
+  final String? size09;
   @override
-  final String size10;
+  final String? size10;
+  @override
+  final String? size11;
+  @override
+  final String? size12;
 
   @override
   String toString() {
-    return 'DataSize(id: $id, code: $code, country: $country, name: $name, size01: $size01, size02: $size02, size03: $size03, size04: $size04, size05: $size05, size06: $size06, size07: $size07, size08: $size08, size09: $size09, size10: $size10)';
+    return 'DataSize(id: $id, code: $code, country: $country, name: $name, size01: $size01, size02: $size02, size03: $size03, size04: $size04, size05: $size05, size06: $size06, size07: $size07, size08: $size08, size09: $size09, size10: $size10, size11: $size11, size12: $size12)';
   }
 
   @override
@@ -338,13 +370,31 @@ class _$_DataSize extends _DataSize {
             (identical(other.size07, size07) || other.size07 == size07) &&
             (identical(other.size08, size08) || other.size08 == size08) &&
             (identical(other.size09, size09) || other.size09 == size09) &&
-            (identical(other.size10, size10) || other.size10 == size10));
+            (identical(other.size10, size10) || other.size10 == size10) &&
+            (identical(other.size11, size11) || other.size11 == size11) &&
+            (identical(other.size12, size12) || other.size12 == size12));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, code, country, name, size01,
-      size02, size03, size04, size05, size06, size07, size08, size09, size10);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      code,
+      country,
+      name,
+      size01,
+      size02,
+      size03,
+      size04,
+      size05,
+      size06,
+      size07,
+      size08,
+      size09,
+      size10,
+      size11,
+      size12);
 
   @JsonKey(ignore: true)
   @override
@@ -363,19 +413,21 @@ class _$_DataSize extends _DataSize {
 abstract class _DataSize extends DataSize {
   const factory _DataSize(
       {required final String id,
-      required final String code,
-      required final String country,
-      required final String name,
-      required final String size01,
-      required final String size02,
-      required final String size03,
-      required final String size04,
-      required final String size05,
-      required final String size06,
-      required final String size07,
-      required final String size08,
-      required final String size09,
-      required final String size10}) = _$_DataSize;
+      required final String? code,
+      required final String? country,
+      required final String? name,
+      required final String? size01,
+      required final String? size02,
+      required final String? size03,
+      required final String? size04,
+      required final String? size05,
+      required final String? size06,
+      required final String? size07,
+      required final String? size08,
+      required final String? size09,
+      required final String? size10,
+      required final String? size11,
+      required final String? size12}) = _$_DataSize;
   const _DataSize._() : super._();
 
   factory _DataSize.fromJson(Map<String, dynamic> json) = _$_DataSize.fromJson;
@@ -383,31 +435,35 @@ abstract class _DataSize extends DataSize {
   @override
   String get id;
   @override
-  String get code;
+  String? get code;
   @override
-  String get country;
+  String? get country;
   @override
-  String get name;
+  String? get name;
   @override
-  String get size01;
+  String? get size01;
   @override
-  String get size02;
+  String? get size02;
   @override
-  String get size03;
+  String? get size03;
   @override
-  String get size04;
+  String? get size04;
   @override
-  String get size05;
+  String? get size05;
   @override
-  String get size06;
+  String? get size06;
   @override
-  String get size07;
+  String? get size07;
   @override
-  String get size08;
+  String? get size08;
   @override
-  String get size09;
+  String? get size09;
   @override
-  String get size10;
+  String? get size10;
+  @override
+  String? get size11;
+  @override
+  String? get size12;
   @override
   @JsonKey(ignore: true)
   _$$_DataSizeCopyWith<_$_DataSize> get copyWith =>

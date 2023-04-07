@@ -81,7 +81,7 @@ class OrderDocScreen extends EditWidget {
                                     DateFormat('yyyy-MM-dd')
                                         .format(DateTime.now())));
                         _model.brandController.text = or.brand ?? '';
-                        _model.modelCodeController.text = or.ModelCode ?? '';
+                        _model.modelCodeController.text = or.ModelCod ?? '';
                         _model.modelController.text = or.Model ?? '';
                         _model.sizeStandartController.text =
                             or.size_standart ?? '';
@@ -335,7 +335,7 @@ class OrderDocScreen extends EditWidget {
                           Katarox: _model.executorController.text,
                           Patviratu: '',
                           Model: _model.modelController.text,
-                          ModelCode: _model.modelCodeController.text,
+                          ModelCod: _model.modelCodeController.text,
                           brand: _model.brandController.text,
                           short_code: '',
                           size_standart: _model.sizeStandartController.text,
@@ -966,7 +966,7 @@ class OrderDocScreen extends EditWidget {
           IDPatver: uuid,
           Katarox: _model.executorController.text,
           Model: _model.modelController.text,
-          ModelCode: _model.modelCodeController.text,
+          ModelCod: _model.modelCodeController.text,
           size_standart: _model.sizeStandartController.text);
       String sql = '';
       Map<String, dynamic> s = or.toJson();

@@ -19,7 +19,7 @@ class _LineDropdownButton extends State<LineDropdownButton> {
         isExpanded: true,
         underline: const SizedBox(),
         hint: Container(
-          width: 150,                      //and here
+          width: 150, //and here
           child: Text(
             L.tr('Select line'),
             style: const TextStyle(color: Colors.white),
@@ -30,7 +30,12 @@ class _LineDropdownButton extends State<LineDropdownButton> {
             color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
         value: widget.model.prLine.prLine,
         items: widget.model.lines.map((s) {
-          return DropdownMenuItem<String>(value: s, child: Text(s, style: const TextStyle(color: Colors.black),));
+          return DropdownMenuItem<String>(
+              value: s,
+              child: Text(
+                s,
+                style: const TextStyle(color: Colors.black),
+              ));
         }).toList(),
         onChanged: (s) {
           setState(() {
@@ -64,6 +69,9 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
       border: Border.fromBorderSide(BorderSide(width: 0.1)));
   final BoxDecoration headerDecor4 = const BoxDecoration(
       color: Color(0xffb6f6b6),
+      border: Border.fromBorderSide(BorderSide(width: 0.1)));
+  final BoxDecoration headerDecor5 = const BoxDecoration(
+      color: Color(0xfffdb0b0),
       border: Border.fromBorderSide(BorderSide(width: 0.1)));
 
   final InputDecoration labelDecor = const InputDecoration(
@@ -156,8 +164,23 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                     Container(
                         decoration: headerDecor1,
                         child: TextFormField(
+                          readOnly: true,
                           decoration: formDecor1,
-                          controller: e.model,
+                          controller: e.model
+                            ..addListener(() {
+                              if (e.model.text.isNotEmpty) {
+                                widget.model!.data
+                                    .buildCommesaLevel(
+                                        e.brand.text, e.model.text)
+                                    .then((value) {
+                                  if (widget.model!.data.commesaLevel.length ==
+                                      1) {
+                                    e.commesa.text =
+                                        widget.model!.data.commesaLevel.first;
+                                  }
+                                });
+                              }
+                            }),
                           onTap: widget.model == null
                               ? null
                               : () {
@@ -170,10 +193,18 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                     e.variant.clear();
                                     e.country.clear();
                                     for (var sz in e.sizes) {
-                                      sz.text = '';
+                                      sz.clear();
+                                    }
+                                    for (var rm in e.remains) {
+                                      rm.clear();
                                     }
                                     widget.model!.data.buildCommesaLevel(
-                                        e.brand.text, e.model.text);
+                                        e.brand.text, e.model.text).then((value){
+                                      if (widget.model!.data.commesaLevel.length == 1) {
+                                        e.commesa.text = widget.model!.data.commesaLevel.first;
+                                      }
+                                    });
+
                                   });
                                 },
                         ))
@@ -200,8 +231,26 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                       Container(
                           decoration: headerDecor1,
                           child: TextFormField(
+                              readOnly: true,
                               decoration: formDecor1,
-                              controller: e.commesa,
+                              controller: e.commesa
+                                ..addListener(() {
+                                  if (e.commesa.text.isNotEmpty) {
+                                    widget.model!.data
+                                        .buildCountryLevel(
+                                            e.brand.text,
+                                            e.model.text,
+                                            e.commesa.text)
+                                        .then((value) {
+                                      if (widget.model!.data.countryLevel
+                                              .length ==
+                                          1) {
+                                        e.country.text = widget
+                                            .model!.data.countryLevel.first;
+                                      }
+                                    });
+                                  }
+                                }),
                               onTap: widget.model == null
                                   ? null
                                   : () {
@@ -211,13 +260,21 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                           e.commesa, done: () {
                                         e.color.clear();
                                         e.variant.clear();
+                                        e.country.clear();
                                         for (var sz in e.sizes) {
-                                          sz.text = '';
+                                          sz.clear();
                                         }
-                                        widget.model!.data.buildColorLevel(
+                                        for (var rm in e.remains) {
+                                          rm.clear();
+                                        }
+                                        widget.model!.data.buildCountryLevel(
                                             e.brand.text,
                                             e.model.text,
-                                            e.commesa.text);
+                                            e.commesa.text).then((value) {
+                                              if (widget.model!.data.countryLevel.length == 1) {
+                                                e.country.text = widget.model!.data.countryLevel.first;
+                                              }
+                                        });
                                       });
                                     })),
                     ],
@@ -244,7 +301,41 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                           child: TextFormField(
                               readOnly: true,
                               decoration: formDecor1,
-                              controller: e.country)),
+                              controller: e.country..addListener(() {
+                                if (e.country.text.isNotEmpty) {
+                                  widget.model!.data.buildColorLevel(e.brand.text, e.model.text, e.commesa.text, e.country.text).then((value) {
+                                    if (widget.model!.data.colorLevel.length == 1) {
+                                      e.color.text = widget.model!.data.colorLevel.first;
+                                    }
+                                  });
+                                }
+                              }),
+                              onTap: widget.model == null
+                                  ? null
+                                  : () {
+                                      valueOfList(
+                                          context,
+                                          widget.model!.data.countryLevel,
+                                          e.country, done: () {
+                                        e.color.clear();
+                                        e.variant.clear();
+                                        for (var sz in e.sizes) {
+                                          sz.clear();
+                                        }
+                                        for (var rm in e.remains) {
+                                          rm.clear();
+                                        }
+                                        widget.model!.data.buildColorLevel(
+                                            e.brand.text,
+                                            e.model.text,
+                                            e.commesa.text,
+                                            e.country.text).then((value) {
+                                              if (widget.model!.data.colorLevel.length == 1) {
+                                                e.color.text = widget.model!.data.colorLevel.first;
+                                              }
+                                        });
+                                      });
+                                    })),
                     ],
                   )),
               //Color
@@ -268,7 +359,18 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                           decoration: headerDecor1,
                           child: TextFormField(
                               decoration: formDecor1,
-                              controller: e.color,
+                              controller: e.color..addListener(() {
+                                widget.model!.data.buildVariantLevel(
+                                    e.brand.text,
+                                    e.model.text,
+                                    e.commesa.text,
+                                    e.country.text,
+                                    e.color.text).then((value) {
+                                  if (widget.model!.data.variantLevel.length == 1) {
+                                    e.variant.text = widget.model!.data.variantLevel.first;
+                                  }
+                                });
+                              }),
                               onTap: widget.model == null
                                   ? null
                                   : () {
@@ -277,11 +379,22 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                           widget.model!.data.colorLevel,
                                           e.color, done: () {
                                         e.variant.clear();
+                                        for (var sz in e.sizes) {
+                                          sz.clear();
+                                        }
+                                        for (var rm in e.remains) {
+                                          rm.clear();
+                                        }
                                         widget.model!.data.buildVariantLevel(
                                             e.brand.text,
                                             e.model.text,
                                             e.commesa.text,
-                                            e.color.text);
+                                            e.country.text,
+                                            e.color.text).then((value) {
+                                              if (widget.model!.data.variantLevel.length == 1) {
+                                                e.variant.text = widget.model!.data.variantLevel.first;
+                                              }
+                                        });
                                       });
                                     })),
                     ],
@@ -307,7 +420,24 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                           decoration: headerDecor1,
                           child: TextFormField(
                               decoration: formDecor1,
-                              controller: e.variant,
+                              controller: e.variant..addListener(() {
+                                if (e.variant.text.isNotEmpty) {
+                                  widget.model!.data
+                                      .getSizes(
+                                      e.brand.text,
+                                      e.model.text,
+                                      e.commesa.text,
+                                      e.country.text,
+                                      e.color.text,
+                                      e)
+                                      .then((value) {
+                                    for (int i = 1; i < 11; i++) {
+                                      e.sizes[i - 1].text +=
+                                      ' / ${e.preSize!.aprId[i - 1]}';
+                                    }
+                                  });
+                                }
+                              }),
                               onTap: widget.model == null
                                   ? null
                                   : () {
@@ -316,11 +446,14 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                           widget.model!.data.variantLevel,
                                           e.variant, done: () {
                                         widget.model!.data
-                                            .getSizesAndCountry(e.brand.text,
-                                                e.model.text, e.commesa.text, e)
+                                            .getSizes(
+                                                e.brand.text,
+                                                e.model.text,
+                                                e.commesa.text,
+                                                e.country.text,
+                                            e.color.text,
+                                                e)
                                             .then((value) {
-                                          e.country.text =
-                                              widget.model!.data.country ?? '';
                                           for (int i = 1; i < 11; i++) {
                                             e.sizes[i - 1].text +=
                                                 ' / ${e.preSize!.aprId[i - 1]}';
@@ -420,38 +553,6 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                           ],
                         )
                       : Container(),
-                  //Pahest row
-                  Row(
-                    children: [
-                      for (int i = 1; i < 11; i++) ...[
-                        SizedBox(
-                            width: 70,
-                            child: Container(
-                                decoration: headerDecor4,
-                                child: Row(children: [
-                                  Expanded(
-                                      child: TextFormField(
-                                          readOnly: true,
-                                          decoration: formDecor1,
-                                          controller: e.pahest[i - 1],
-                                          style: headerLeft))
-                                ]))),
-                      ],
-                      SizedBox(
-                          width: 120,
-                          child: Container(
-                              decoration: headerDecor4,
-                              child: Row(children: [
-                                Expanded(
-                                    child: TextFormField(
-                                        readOnly: true,
-                                        decoration: formDecor1,
-                                        controller:
-                                            e.pahest[e.pahest.length - 1],
-                                        style: headerLeft))
-                              ]))),
-                    ],
-                  ),
                   //Input row
                   Row(
                     children: [
@@ -463,7 +564,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 child: Row(children: [
                                   Expanded(
                                       child: TextFormField(
-                                        readOnly: !widget.showLine1,
+                                          readOnly: !widget.showLine1,
                                           onChanged: (text) {
                                             int newvalue =
                                                 int.tryParse(text) ?? 0;
@@ -496,6 +597,104 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                               ]))),
                     ],
                   ),
+                  //Pahest row
+                  Row(
+                    children: [
+                      for (int i = 1; i < 11; i++) ...[
+                        SizedBox(
+                            width: 70,
+                            child: Container(
+                                decoration: headerDecor4,
+                                child: Row(children: [
+                                  Expanded(
+                                      child: TextFormField(
+                                          readOnly: true,
+                                          decoration: formDecor1,
+                                          controller: e.pahest[i - 1],
+                                          style: headerLeft))
+                                ]))),
+                      ],
+                      SizedBox(
+                          width: 120,
+                          child: Container(
+                              decoration: headerDecor4,
+                              child: Row(children: [
+                                Expanded(
+                                    child: TextFormField(
+                                        readOnly: true,
+                                        decoration: formDecor1,
+                                        controller:
+                                            e.pahest[e.pahest.length - 1],
+                                        style: headerLeft))
+                              ]))),
+                    ],
+                  ),
+                  //Diff row
+                  widget.showLine1
+                      ? Container()
+                      : Row(
+                          children: [
+                            for (int i = 1; i < 11; i++) ...[
+                              SizedBox(
+                                  width: 70,
+                                  child: Container(
+                                      decoration:
+                                          (int.tryParse(e.pahest[i - 1].text) ??
+                                                          0) -
+                                                      (int.tryParse(e
+                                                              .newvalues[i - 1]
+                                                              .text) ??
+                                                          0) <
+                                                  0
+                                              ? headerDecor5
+                                              : headerDecor4,
+                                      child: Row(children: [
+                                        Expanded(
+                                            child: TextFormField(
+                                                readOnly: true,
+                                                decoration: formDecor1,
+                                                initialValue: ((int.tryParse(e
+                                                                .pahest[i - 1]
+                                                                .text) ??
+                                                            0) -
+                                                        (int.tryParse(e
+                                                                .newvalues[
+                                                                    i - 1]
+                                                                .text) ??
+                                                            0))
+                                                    .toString(),
+                                                //controller: e.diff[i - 1],
+                                                style: headerLeft))
+                                      ]))),
+                            ],
+                            SizedBox(
+                                width: 120,
+                                child: Container(
+                                    decoration: (int.tryParse(e
+                                                        .pahest[
+                                                            e.pahest.length - 1]
+                                                        .text) ??
+                                                    0) -
+                                                (int.tryParse(e
+                                                        .newvalues[
+                                                            e.newvalues.length -
+                                                                1]
+                                                        .text) ??
+                                                    0) <
+                                            0
+                                        ? headerDecor5
+                                        : headerDecor4,
+                                    child: Row(children: [
+                                      Expanded(
+                                          child: TextFormField(
+                                              readOnly: true,
+                                              decoration: formDecor1,
+                                              controller:
+                                                  e.diff[e.diff.length - 1],
+                                              style: headerLeft))
+                                    ]))),
+                          ],
+                        ),
                 ],
               )
             ])

@@ -7,6 +7,7 @@ class PreloadingData {
   List<String> brandLevel = [];
   List<String> modelLevel = [];
   List<String> commesaLevel = [];
+  List<String> countryLevel = [];
   List<String> colorLevel = [];
   List<String> variantLevel = [];
   Map<String, DataSize> sizeStandartList = {};
@@ -45,53 +46,111 @@ class PreloadingData {
     });
   }
 
-  void buildCommesaLevel(String brand, String model) {
-    HttpSqlQuery.post({
+  Future<void> buildCommesaLevel(String brand, String model) async {
+    var value = await HttpSqlQuery.post({
       "sl":
       "select distinct(pd.PatverN) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model'"
-    }).then((value) {
+    });
       commesaLevel.clear();
       for (var e in value) {
         commesaLevel.add(e['PatverN']);
       }
-    });
   }
 
-  void buildColorLevel(String brand, String model, String commesa) {
-    HttpSqlQuery.post({
+  Future<void> buildCountryLevel(String brand, String model, String commesa) async {
+    var value = await HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.Colore) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa'"
-    }).then((value) {
+      "select distinct(pd.country) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa'"
+    });
+      countryLevel.clear();
+      for (var e in value) {
+        countryLevel.add(e['country']);
+      }
+  }
+
+  Future<void> buildColorLevel(String brand, String model, String commesa, String country) async {
+    var value = await HttpSqlQuery.post({
+      "sl":
+      "select distinct(pd.Colore) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
+          "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country'"
+    });
       colorLevel.clear();
       for (var e in value) {
         colorLevel.add(e['Colore']);
       }
-    });
   }
 
-  void buildVariantLevel(
-      String brand, String model, String commesa, String color) {
-    HttpSqlQuery.post({
+  Future<void> buildVariantLevel(
+      String brand, String model, String commesa, String country, String color) async {
+    var value = await HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.variant_prod) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa' and Colore='$color'"
-    }).then((value) {
+      "select distinct(pd.variant_prod) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
+          "and brand='$brand' and Model='$model' and PatverN='$commesa' and Colore='$color' and country='$country'"
+    });
       variantLevel.clear();
       for (var e in value) {
         variantLevel.add(e['variant_prod']);
       }
-    });
   }
 
-  Future<void> getSizesAndCountry(
-      String brand, String model, String commesa, PreloadingItem s) async {
+  Future<void> autoFillPatverCountryColorVariant(String brand, String model) async {
+    var value = await HttpSqlQuery.post({
+      "sl":
+      "select distinct(pd.country) as country from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' "
+          + "and brand='$brand' and Model='$model'  "
+    });
+    commesaLevel.clear();
+    countryLevel.clear();
+    colorLevel.clear();
+    variantLevel.clear();
+    if (value.length == 1){
+      var e = value.first;
+      countryLevel.add(e['country']);
+    }
+  }
+
+  Future<void> autoFillCountryColorVariant(String brand, String model, String commesa) async {
+    var value = await HttpSqlQuery.post({
+      "sl":
+      "select distinct(pd.country)  from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' "
+          + "and brand='$brand' and Model='$model' and PatverN='$commesa'  "
+    });
+    countryLevel.clear();
+    colorLevel.clear();
+    variantLevel.clear();
+    if (value.length == 1) {
+      for (var e in value) {
+        countryLevel.add(e['country']);
+      }
+    }
+  }
+
+  Future<void> autoFillColorVariant(String brand, String model, String commesa, String country) async {
+    var value = await HttpSqlQuery.post({
+      "sl":
+      "select pd.Colore, pd.variant_prod from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' "
+      + "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country' "
+    });
+    if (value.length == 1) {
+      colorLevel.clear();
+      variantLevel.clear();
+      for (var e in value) {
+        colorLevel.add(e['Colore']);
+        variantLevel.add(e['variant_prod']);
+      }
+    }
+  }
+
+  Future<void> getSizes(
+      String brand, String model, String commesa, String country, String color, PreloadingItem s) async {
     List<dynamic> l = await HttpSqlQuery.post({
       "sl":
-      "select pd.country, pd.size_standart, pd.id from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa'"
+      "select pd.size_standart, pd.id from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
+          "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country' and Colore='$color' "
     });
     if (l.isNotEmpty) {
       Map<String, dynamic> m = l[0];
       sizeStandart = m['size_standart'];
-      country = m['country'];
       pid = m['id'];
     }
     l = await HttpSqlQuery.post({'sl': "select * from Sizes where code='$sizeStandart'"});

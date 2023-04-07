@@ -75,6 +75,24 @@ class PreloadingItem {
     //total
     TextEditingController(),
   ];
+
+  final List<TextEditingController> diff = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    //total
+    TextEditingController(),
+  ];
+
   PreloadingSize? preSize;
 
   String sumOfMnacord() {
@@ -87,6 +105,10 @@ class PreloadingItem {
 
   String sumOfNewValues() {
     return sumOfList(newvalues);
+  }
+
+  String sumOfDiff() {
+    return sumOfList(diff);
   }
 
   String sumOfList(List<TextEditingController> l) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sartex/screen/preloading/preloading_model.dart';
 import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/translator.dart';
+import 'package:sartex/widgets/svg_button.dart';
 
 class LineDropdownButton extends StatefulWidget {
   final PreloadingModel model;
@@ -49,9 +50,10 @@ class PreloadingItemsContainer extends StatefulWidget {
   final PreloadingFullItem item;
   PreloadingModel? model;
   final bool showLine1;
+  VoidCallback parentState;
 
   PreloadingItemsContainer(
-      {super.key, required this.item, required this.showLine1, this.model});
+      {super.key, required this.item, required this.showLine1, required this.model, required this.parentState});
 
   @override
   State<StatefulWidget> createState() => _PreloadingItemsContainer();
@@ -696,7 +698,37 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                           ],
                         ),
                 ],
-              )
+              ),
+    //RemoveButton
+              SizedBox(
+                  width: 60,
+                  height: 70,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            padding: padding,
+                            decoration: headerDecor1,
+                            child: Row(children: [
+                              Expanded(
+                                  child: SvgButton(darkMode: false, onTap: () {
+                                    appDialogYesNo(context, L.tr('Confirm to remove row'), (){
+                                      if (widget.showLine1) {
+                                        widget.item.items.remove(e);
+                                        setState((){});
+                                      } else {
+                                        widget.item.items.remove(e);
+                                        if (widget.item.items.isEmpty) {
+                                          widget.model?.prReadyLines.remove(widget.item);
+                                          widget.parentState();
+                                        } else {
+                                          setState(() {});
+                                        }
+                                      }
+                                    }, null);
+                                  }, assetPath: 'svg/delete.svg', ))
+                            ]))])),
+
             ])
           ]
         ],

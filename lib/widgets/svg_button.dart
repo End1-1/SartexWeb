@@ -36,7 +36,7 @@ class SvgButton extends StatelessWidget {
                               ? const ColorFilter.mode(
                                   Colors.white, BlendMode.srcIn)
                               : const ColorFilter.mode(
-                                  Colors.black87, BlendMode.srcIn))),
+                                  Colors.black87, BlendMode.dstIn))),
                   caption.isEmpty
                       ? Container()
                       : Text(caption,

@@ -163,6 +163,7 @@ class PreloadingData {
     s.preSize ??= PreloadingSize();
     for (var e in l) {
       int index = int.tryParse(e['size_number'].substring(e['size_number'].length - 2)) ?? -1;
+      index--;
       s.preSize!.aprId[index] = e['apr_id'];
       s.preSize!.size[index] = e['pat_mnac'] ?? '0';
       s.remains[index].text = e['pat_mnac'] ?? '0';

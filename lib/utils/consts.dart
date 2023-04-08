@@ -88,7 +88,7 @@ Future<void> appDialog(BuildContext context, String msg) async {
       });
 }
 
-Future<void> appDialogYesNo(BuildContext context, String msg, Function yes, Function no) async {
+Future<void> appDialogYesNo(BuildContext context, String msg, Function yes, Function? no) async {
   await showDialog(
       context: context,
       builder: (context) {

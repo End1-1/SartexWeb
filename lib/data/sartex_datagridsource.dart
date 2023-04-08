@@ -114,7 +114,11 @@ abstract class SartexDataGridSource extends DataGridSource {
           return SimpleDialog(
             children: [getEditWidget(id)],
           );
-        });
+        }).then((value) {
+          if (value != null) {
+            print(value);
+          }
+    });
   }
 
   void newData() {
@@ -124,7 +128,11 @@ abstract class SartexDataGridSource extends DataGridSource {
           return SimpleDialog(
             children: [getEditWidget('')],
           );
-        });
+        }).then((value) {
+          if (value != null) {
+            print(value);
+          }
+    });
   }
 }
 

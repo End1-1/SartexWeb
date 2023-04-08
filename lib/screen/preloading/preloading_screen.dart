@@ -79,7 +79,7 @@ class PreloadingScreen extends EditWidget {
                             appDialog(context, value);
                             return;
                           }
-                          Navigator.pop(context);
+                          Navigator.pop(context, _model.docNumber);
                         });
                       }, () {});
                     },
@@ -179,7 +179,7 @@ class _PreloadingLine extends State<PreloadingLine> {
             ])),
         Expanded(
             child: PreloadingItemsContainer(
-                item: widget.model.prLine, model: widget.model, showLine1: widget.line1))
+                item: widget.model.prLine, model: widget.model, showLine1: widget.line1, parentState: (){setState((){});},))
       ],
     );
   }
@@ -218,7 +218,9 @@ class _PreloadingLines extends State<PreloadingLines> {
               const Divider(height: 20, color: Colors.transparent),
             ],
           ),
-          PreloadingItemsContainer(item: e, showLine1: widget.line1 ),
+          PreloadingItemsContainer(item: e, showLine1: widget.line1, model: widget.model, parentState: (){setState(() {
+
+          });},),
           const Divider(height: 20, color: Colors.transparent),
         ]
       ],

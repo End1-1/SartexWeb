@@ -2,11 +2,9 @@ import 'dart:core';
 
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-import 'package:sartex/data/data_sizes.dart';
 import 'package:sartex/data/sql.dart';
 import 'package:sartex/screen/preloading/preloading_data.dart';
 import 'package:sartex/screen/preloading/preloading_item.dart';
-import 'package:sartex/screen/preloading/preloading_size.dart';
 import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/utils/prefs.dart';

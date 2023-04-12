@@ -11,6 +11,7 @@ const locOrders = 'patver_data';
 const locLanguageEditor = 'Language editor';
 const locDocs = 'Docs';
 const locBarcum = 'barcum';
+const locProduction = 'production';
 
 abstract class DashboardState {
 

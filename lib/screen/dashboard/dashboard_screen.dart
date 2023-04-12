@@ -8,6 +8,7 @@ import 'package:sartex/data/docs.dart';
 import 'package:sartex/data/order_row.dart';
 import 'package:sartex/screen/dashboard/dashboard_model.dart';
 import 'package:sartex/screen/language_editor/language_screen.dart';
+import 'package:sartex/screen/production/production.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sartex/utils/consts.dart';
@@ -78,6 +79,9 @@ class _SartexDashboardScreen extends StatelessWidget {
               break;
             case locBarcum:
               _model = DashboardModel(BarcumDatasource(context: context, data: state.data));
+              break;
+            case locProduction:
+              _model = DashboardModel(ProductionDatasource(context: context, data: state.data));
               break;
             default:
               break;
@@ -222,12 +226,16 @@ class _SartexDashboardScreen extends StatelessWidget {
                                 SvgButton(
                                     onTap: () {
                                       BlocProvider.of<DashboardBloc>(context)
-                                          .eventToState(DashboardActionMenu(
-                                              false, false, false));
+                                          .eventToState(
+                                          DashboardActionLoadData(locProduction));
                                     },
                                     assetPath: 'svg/qrcode.svg'),
                                 TextMouseButton(
-                                    onTap: () {},
+                                    onTap: () {
+                                      BlocProvider.of<DashboardBloc>(context)
+                                          .eventToState(
+                                          DashboardActionLoadData(locProduction));
+                                    },
                                     caption: L.tr("Department of QR codes")),
                               ],
                             ),
@@ -433,6 +441,7 @@ class _SartexDashboardScreen extends StatelessWidget {
       case locOrders:
       case locDocs:
       case locBarcum:
+      case locProduction:
         return SfDataGrid(
             source: _model!.datasource, columns: _model!.datasource.columns);
       case locLanguageEditor:
@@ -455,6 +464,7 @@ class _SartexDashboardScreen extends StatelessWidget {
       case locOrders:
       case locDocs:
       case locBarcum:
+      case locProduction:
         return SvgButton(
             onTap: () {
               showDialog(

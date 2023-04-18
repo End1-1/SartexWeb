@@ -8,7 +8,9 @@ import 'package:sartex/data/docs.dart';
 import 'package:sartex/data/order_row.dart';
 import 'package:sartex/screen/dashboard/dashboard_model.dart';
 import 'package:sartex/screen/language_editor/language_screen.dart';
+import 'package:sartex/screen/plan_and_production/plan_and_production_screen.dart';
 import 'package:sartex/screen/production/production.dart';
+import 'package:sartex/screen/production/production_widget.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sartex/utils/consts.dart';
@@ -441,9 +443,10 @@ class _SartexDashboardScreen extends StatelessWidget {
       case locOrders:
       case locDocs:
       case locBarcum:
-      case locProduction:
         return SfDataGrid(
             source: _model!.datasource, columns: _model!.datasource.columns);
+      case locProduction:
+        return PlanAndProductionScreen();
       case locLanguageEditor:
         return LanguageScreen();
     }
@@ -464,7 +467,6 @@ class _SartexDashboardScreen extends StatelessWidget {
       case locOrders:
       case locDocs:
       case locBarcum:
-      case locProduction:
         return SvgButton(
             onTap: () {
               showDialog(

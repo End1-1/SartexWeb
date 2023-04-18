@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sartex/screen/popup_values_screen.dart';
-
 import '../data/sql.dart';
 import '../utils/consts.dart';
 import '../utils/http_sql.dart';

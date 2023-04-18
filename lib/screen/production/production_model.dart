@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -31,6 +32,7 @@ List<String> Lines = [
 ];
 
 class ProductionItem {
+  final bool canEditModel;
   final editBrand = STextEditingController();
   final editModel = STextEditingController();
   final editCommesa = STextEditingController();
@@ -110,19 +112,24 @@ class ProductionItem {
     TextEditingController(),
   ];
 
-  ProductionItem() {
-    HttpSqlQuery.post({
-      "sl":
-          "select distinct(pd.brand) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress'"
-    }).then((value) {
-      brandLevel.clear();
-      for (var e in value) {
-        brandLevel.add(e['brand']);
-      }
-    });
+  ProductionItem(this.canEditModel) {
+    if (canEditModel) {
+      HttpSqlQuery.post({
+        "sl":
+        "select distinct(pd.brand) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress'"
+      }).then((value) {
+        brandLevel.clear();
+        for (var e in value) {
+          brandLevel.add(e['brand']);
+        }
+      });
+    }
   }
 
   Future<void> buildModelLevel(String brand) async {
+    if (!canEditModel) {
+      return;
+    }
     HttpSqlQuery.post({
       "sl":
           "select distinct(pd.Model) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand'"
@@ -135,6 +142,9 @@ class ProductionItem {
   }
 
   Future<void> buildCommesaLevel(String brand, String model) async {
+    if (!canEditModel) {
+      return;
+    }
     var value = await HttpSqlQuery.post({
       "sl":
           "select distinct(pd.PatverN) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model'"
@@ -146,7 +156,11 @@ class ProductionItem {
   }
 
   Future<void> buildCountryLevel(
+
       String brand, String model, String commesa) async {
+    if (!canEditModel) {
+      return;
+    }
     var value = await HttpSqlQuery.post({
       "sl":
           "select distinct(pd.country) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa'"
@@ -159,6 +173,9 @@ class ProductionItem {
 
   Future<void> buildColorLevel(
       String brand, String model, String commesa, String country) async {
+    if (!canEditModel) {
+      return;
+    }
     var value = await HttpSqlQuery.post({
       "sl": "select distinct(pd.Colore) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
           "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country'"
@@ -171,6 +188,9 @@ class ProductionItem {
 
   Future<void> buildVariantLevel(String brand, String model, String commesa,
       String country, String color) async {
+    if (!canEditModel) {
+      return;
+    }
     var value = await HttpSqlQuery.post({
       "sl": "select distinct(pd.variant_prod) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
           "and brand='$brand' and Model='$model' and PatverN='$commesa' and Colore='$color' and country='$country'"
@@ -183,6 +203,9 @@ class ProductionItem {
 
   Future<void> getSizes(String brand, String model, String commesa,
       String country, String color, String variant) async {
+    if (!canEditModel) {
+      return;
+    }
     List<dynamic> l = await HttpSqlQuery.post({
       "sl": "select pd.size_standart, pd.id from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
           "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country' and Colore='$color' and variant_prod='$variant'"
@@ -295,50 +318,80 @@ class ProductionLine {
 }
 
 class ProductionModel {
-  final editDate = TextEditingController();
-  final editDocN = TextEditingController();
-  final StreamController linesController = StreamController();
-  final List<ProductionLine> lines = [];
+  final StreamController linesController = StreamController.broadcast();
+  final ProductionLine lines = ProductionLine();
 
-  ProductionModel() {}
+  ProductionModel({required String line}) {
+    lines.name = line;
+  }
 
   Future<String> save() async {
     String err = '';
     bool totalEmpty = false;
-    bool lineName = false;
-    if (editDate.text.isEmpty) {
-      err += '${L.tr('Select date')}\r\n';
-    }
-    for (var e in lines) {
-      if (!lineName && e.name.isEmpty) {
-        lineName = true;
-        err += '${L.tr('Select line')}\r\n';
-      }
-      for (var f in e.items) {
+
+      for (var f in lines.items) {
         if (!totalEmpty && (int.tryParse(f.sumOfNewValues()) ?? 0) == 0) {
           totalEmpty = true;
           err += '${L.tr('Check quantity')}\r\n';
         }
       }
-    }
+
     if (err.isNotEmpty) {
       return err;
     }
     late List<dynamic> l;
-    String date = DateFormat('yyyy-MM-dd')
-        .format(DateFormat('dd/MM/yyyy').parse(editDate.text));
-    for (var e in lines) {
-      for (var f in e.items) {
+      for (var f in lines.items) {
         for (int i = 0; i < 12; i++) {
-          if (f.newvalues[i].text.isNotEmpty) {
-            await HttpSqlQuery.post({
-              'sl': "insert into Production (branch, date, line, apr_id, LineQanak, RestQanak) values (" +
-                  "'${prefs.getString(key_user_branch)}', '$date', '${e.name}', '${f.preSize.aprId[i]}', '${f.newvalues[i].text}', '${f.newvalues[i].text}')"
-            });
+          if (f.preSize.prodId[i].isEmpty) {
+            if (f.newvalues[i].text.isNotEmpty) {
+              await HttpSqlQuery.post({
+                'sl': "insert into Production (branch, date, line, apr_id, LineQanak, RestQanak) values (" +
+                    "'${prefs.getString(key_user_branch)}', '${DateFormat('yyyy-MM-dd').format(DateTime.now())}', '${lines
+                        .name}', '${f.preSize.aprId[i]}', '${f.newvalues[i]
+                        .text}', '${f.newvalues[i].text}')"
+              });
+            }
+          } else {
+            await HttpSqlQuery.post({'sl': "update Production set LineQanak='${f.newvalues[i].text}' where id='${f.preSize.prodId[i]}'"});
           }
         }
       }
-    }
+
     return err;
+  }
+
+  Future<void> open() async {
+    lines.items.clear();
+    List<dynamic> l = await HttpSqlQuery.post({'sl': "select pr.id as prodId, pd.brand,pd.model,pd.modelCod,pd.PatverN, pd.country, pd.Colore,pd.variant_prod, a.apr_id, a.patver as pat_mnac, a.size_number, sum(pr.LineQanak-(pr.LineQanak-pr.RestQanak)) as LineQanak, a.pid from Production pr left join Apranq a on pr.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pr.line='${lines.name}'  and pd.branch='${prefs.getString(key_user_branch)}' group by a.apr_id"});
+    Map<String, ProductionItem> pidRow = {};
+    for (var e in l) {
+      if (!pidRow.containsKey(e['pid'])) {
+        var pi = ProductionItem(false);
+        pi.editBrand.text = e['brand'];
+        pi.editModel.text = e['model'];
+        pi.editCommesa.text = e['PatverN'];
+        pi.editCountry.text = e['country'];
+        pi.editColor.text = e['Colore'];
+        pi.editVariant.text = e['variant_prod'];
+        lines.items.add(pi);
+
+        var ll = await HttpSqlQuery.post({
+          'sl': "select * from Sizes where code in (select size_standart from patver_data where id='${e['pid']}')"
+        });
+        if (ll.isNotEmpty) {
+          for (int i = 0; i < 12; i++) {
+            pi.sizes[i].text =
+                ll[0]['size${(i + 1).toString().padLeft(2, '0')}'] ?? '';
+          }
+        }
+        pidRow[e['pid']] = pi;
+      } 
+      var pi = pidRow[e['pid']]!;
+      int index = int.tryParse(e['size_number'].substring(e['size_number'].length -  2)) ?? 0;
+      pi.preSize.prodId[index] = e['prodId'];
+      pi.preSize.aprId[index] = e['apr_id'];
+      pi.remains[index].text = e['pat_mnac'];
+      pi.newvalues[index].text = e['LineQanak'];
+    }
   }
 }

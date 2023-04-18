@@ -51,6 +51,6 @@ class ProductionDatasource extends SartexDataGridSource {
 
   @override
   Widget getEditWidget(String id) {
-    return ProductionWidget();
+    return ProductionWidget(line: '');
   }
 }

@@ -2,6 +2,7 @@
 import 'package:sartex/utils/http_sql.dart';
 
 class PreloadingSize {
+  List<String> prodId = ['', '', '', '', '', '', '', '', '', '', '', ''];
   List<String> aprId = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
   List<String> size = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
 

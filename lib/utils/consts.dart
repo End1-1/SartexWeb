@@ -11,6 +11,7 @@ final server_uri = Uri.parse(server_http_address);
 
 const route_root = '/';
 const route_dashboard = 'dashboard';
+const route_tv = 'tv';
 
 const key_error = 'key_error';
 const key_empty = 'empty';

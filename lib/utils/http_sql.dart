@@ -11,12 +11,23 @@ class HttpSqlQuery {
     return '';
   }
 
-  static Future<String> postString(Map<String, dynamic> body) async {
+  static Future<String> postString(Map<String, dynamic> body, {String type = 'sql'}) async {
     try {
       body['user'] = _user;
-      body['sl'] = 'j,Vasil,Vasil_2023,sql,${body['sl']}';
+      body['sl'] = 'j,Vasil,Vasil_2023,$type,${body['sl']}';
       print('HTTP query: ${body}');
       http.Response response = await http.post(server_uri, body: body);
+      print(utf8.decode(response.bodyBytes));
+      return utf8.decode(response.bodyBytes);
+    } catch (e) {
+      return 'error: ${e.toString()}';
+    }
+  }
+
+  static Future<String> getStringT({String type = 'sql'}) async {
+    try {
+      print('$server_uri/?user=$_user&sl=j,Vasil,Vasil_2023,$type');
+      http.Response response = await http.get(Uri.parse('$server_uri/?user=$_user&sl=j,Vasil,Vasil_2023,$type'));
       print(utf8.decode(response.bodyBytes));
       return utf8.decode(response.bodyBytes);
     } catch (e) {

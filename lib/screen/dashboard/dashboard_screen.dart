@@ -165,13 +165,11 @@ class _SartexDashboardScreen extends StatelessWidget {
                               children: [
                                 SvgButton(
                                     onTap: () {
-                                      BlocProvider.of<DashboardBloc>(context)
-                                          .eventToState(DashboardActionMenu(
-                                              false, false, false));
+                                      Navigator.pushNamed(context, route_tv);
                                     },
                                     assetPath: 'svg/tv.svg'),
                                 TextMouseButton(
-                                    onTap: () {}, caption: L.tr('TV'))
+                                    onTap: () {Navigator.pushNamed(context, route_tv);}, caption: L.tr('TV'))
                               ],
                             ),
                             Row(

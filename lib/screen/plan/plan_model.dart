@@ -178,9 +178,11 @@ class PlanModel {
   Future<void> open() async {
     var l = await HttpSqlQuery.post({
       'sl':
-          "select pd.brand, pd.model, pr.line, sum(pr.RestQanak) as RestQanak from Production pr left join Apranq a on pr.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pd.branch='${prefs.getString(key_user_branch)}'  group by 1, 2, 3"
+          "select pd.brand, pd.model, pr.line, sum(pr.RestQanak) as RestQanak from Production pr left join Apranq a on pr.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pd.branch='${prefs.getString(key_user_branch)}'  group by 1, 2, 3 having sum(pr.RestQanak)>0"
     });
-    linesData.clear();
+    for (var e in linesData.values) {
+      e.clear();
+    }
     for (var e in l) {
       PlanRowEdit pr = PlanRowEdit();
       pr.editRemain.text = e['RestQanak'];

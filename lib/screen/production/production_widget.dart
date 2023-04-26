@@ -89,7 +89,7 @@ class ProductionWidget extends EditWidget {
                                 onTap: () {
                                   _model.lines.items.add(
                                       ProductionItem(true, _model.lines.name)
-                                        ..canEditQty = true);
+                                        ..canEditQty = false);
                                   _model.linesController.add(null);
                                 },
                                 assetPath: 'svg/plus.svg'),
@@ -622,18 +622,8 @@ class ProductionWidget extends EditWidget {
                                                           controller:
                                                               l.remains[i])))))
                                     ],
-                                    //LLINE QANAK
-                                    Container(
-                                        width: i == 12 ? 100 : 60,
-                                        decoration: const BoxDecoration(
-                                            color: Colors.white,
-                                            border: Border.fromBorderSide(
-                                                BorderSide(
-                                                    color: Colors.black26,
-                                                    width: 0.2))),
-                                        child: editValue(i, l)),
                                     //REST QANAK
-                                    if (!l.canEditModel && l.canEditQty) ...[
+                                    if (!l.canEditModel) ...[
                                       Container(
                                           width: i == 12 ? 100 : 60,
                                           decoration: const BoxDecoration(
@@ -644,19 +634,30 @@ class ProductionWidget extends EditWidget {
                                                       width: 0.2))),
                                           child: TextFormField(
                                               readOnly:
-                                                  i > 11 || !l.canEditModel,
+                                              i > 11 || !l.canEditModel,
                                               decoration: formDecor,
                                               controller: l.restQanak[i]))
-                                    ]
+                                    ],
+                                    //LLINE QANAK
+                                    if (l.canEditQty || l.canEditModel) ... [
+                                    Container(
+                                        width: i == 12 ? 100 : 60,
+                                        decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.fromBorderSide(
+                                                BorderSide(
+                                                    color: Colors.black26,
+                                                    width: 0.2))),
+                                        child: editValue(i, l))],
                                   ],
                                 ),
                               ),
                             ],
                             Row(children: [
-                              Container(
+                              if (!l.canEditModel)...[Container(
                                   child: SvgButton(
                                 onTap: () {
-                                  if (l.canEditQty) {
+                                  if (l.canEditQty && !l.canEditModel) {
                                     for (int i = 0;
                                         i < l.newvalues.length - 2;
                                         i++) {
@@ -687,7 +688,7 @@ class ProductionWidget extends EditWidget {
                                 darkMode: false,
                                 height: 20,
                                 width: 20,
-                              )),
+                              ))],
                               if (l.canEditModel) ...[
                                 SvgButton(
                                   onTap: () {
@@ -700,7 +701,7 @@ class ProductionWidget extends EditWidget {
                                   width: 20,
                                 )
                               ],
-                              if (l.canEditQty) ...[
+                              if (l.canEditQty && !l.canEditModel) ...[
                                 SvgButton(
                                   onTap: () {
                                     l.canEditQty = false;

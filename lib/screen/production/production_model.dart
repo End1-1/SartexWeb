@@ -164,6 +164,7 @@ class ProductionItem {
 
   ProductionItem(this.canEditModel, this.name) {
     if (canEditModel) {
+      canEditQty = false;
       HttpSqlQuery.post({
         "sl":
         "select distinct(pd.brand) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress'"
@@ -274,7 +275,7 @@ class ProductionItem {
     }
     l = await HttpSqlQuery.post({
       "sl":
-          "select a.apr_id, m.mnacord as pahest_mnac, a.patver as pat_mnac, a.size_number from Apranq a left join Mnacord m on m.apr_id=a.apr_id where pid='$pid'"
+          "select a.apr_id, m.mnacord as pahest_mnac, a.patver-coalesce(pr.LineQanak, 0) as pat_mnac, a.size_number from Apranq a left join Mnacord m on m.apr_id=a.apr_id left join (select apr_id, sum(LineQanak) as LineQanak from Production group by 1) as pr on pr.apr_id=a.apr_id where pid='$pid'"
     });
     for (var e in l) {
       int index = int.tryParse(
@@ -440,7 +441,7 @@ class ProductionModel {
               });
             }
           } else {
-            await HttpSqlQuery.post({'sl': "update Production set LineQanak='${f.newvalues[i].text}' where id='${f.preSize.prodId[i]}'"});
+            //await HttpSqlQuery.post({'sl': "update Production set LineQanak='${f.newvalues[i].text}' where id='${f.preSize.prodId[i]}'"});
           }
         }
       }

@@ -46,55 +46,57 @@ class _SartexDashboardScreen extends StatelessWidget {
     return Scaffold(
         body: BlocListener<DashboardBloc, DashboardState>(
             listener: (context, state) {
-        if (_dashboardState.locationName != state.locationName) {
-          switch (state.locationName) {
-            case locUsers:
-              _model = DashboardModel(
-                  UserDataSource(context: context, data: state.data));
-              break;
-            case locDepartement:
-              _model = DashboardModel(
-                  DepartmentDataSource(context: context, data: state.data));
-              break;
-            case locProducts:
-              _model = DashboardModel(
-                  ProductsDatasource(context: context, data: state.data));
-              break;
-            case locSizes:
-              _model = DashboardModel(
-                  SizeDatasource(context: context, data: state.data));
-              break;
-            case locPathners:
-              _model = DashboardModel(
-                  PartnerDatasource(context: context, data: state.data));
-              break;
-            case locProductStatuses:
-              _model = DashboardModel(
-                  ProductStatusDatasource(context: context, data: state.data));
-              break;
-            case locOrders:
-              _model = DashboardModel(
-                  OrderRowDatasource(context: context, data: state.data));
-              break;
-            case locDocs:
-              _model = DashboardModel(DocsDatasource(context: context, data: state.data));
-              break;
-            case locBarcum:
-              _model = DashboardModel(BarcumDatasource(context: context, data: state.data));
-              break;
-            case locProduction:
-              _model = DashboardModel(ProductionDatasource(context: context, data: state.data));
-              break;
-            default:
-              break;
-          }
-        } else {
-          if (state.data != null) {
-            _model!.datasource.data.addAll(state.data);
-          }
+      if (_dashboardState.locationName != state.locationName) {
+        switch (state.locationName) {
+          case locUsers:
+            _model = DashboardModel(
+                UserDataSource(context: context, data: state.data));
+            break;
+          case locDepartement:
+            _model = DashboardModel(
+                DepartmentDataSource(context: context, data: state.data));
+            break;
+          case locProducts:
+            _model = DashboardModel(
+                ProductsDatasource(context: context, data: state.data));
+            break;
+          case locSizes:
+            _model = DashboardModel(
+                SizeDatasource(context: context, data: state.data));
+            break;
+          case locPathners:
+            _model = DashboardModel(
+                PartnerDatasource(context: context, data: state.data));
+            break;
+          case locProductStatuses:
+            _model = DashboardModel(
+                ProductStatusDatasource(context: context, data: state.data));
+            break;
+          case locOrders:
+            _model = DashboardModel(
+                OrderRowDatasource(context: context, data: state.data));
+            break;
+          case locDocs:
+            _model = DashboardModel(
+                DocsDatasource(context: context, data: state.data));
+            break;
+          case locBarcum:
+            _model = DashboardModel(
+                BarcumDatasource(context: context, data: state.data));
+            break;
+          case locProduction:
+            _model = DashboardModel(
+                ProductionDatasource(context: context, data: state.data));
+            break;
+          default:
+            break;
         }
-        _dashboardState = state;
-
+      } else {
+        if (state.data != null) {
+          _model!.datasource.data.addAll(state.data);
+        }
+      }
+      _dashboardState = state;
     }, child: BlocBuilder<DashboardBloc, DashboardState>(
                 builder: (context, state) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -169,7 +171,10 @@ class _SartexDashboardScreen extends StatelessWidget {
                                     },
                                     assetPath: 'svg/tv.svg'),
                                 TextMouseButton(
-                                    onTap: () {Navigator.pushNamed(context, route_tv);}, caption: L.tr('TV'))
+                                    onTap: () {
+                                      Navigator.pushNamed(context, route_tv);
+                                    },
+                                    caption: L.tr('TV'))
                               ],
                             ),
                             Row(
@@ -195,15 +200,15 @@ class _SartexDashboardScreen extends StatelessWidget {
                                 SvgButton(
                                     onTap: () {
                                       BlocProvider.of<DashboardBloc>(context)
-                                          .eventToState(
-                                              DashboardActionLoadData(locBarcum));
+                                          .eventToState(DashboardActionLoadData(
+                                              locBarcum));
                                     },
                                     assetPath: 'svg/truck.svg'),
                                 TextMouseButton(
                                     onTap: () {
                                       BlocProvider.of<DashboardBloc>(context)
-                                          .eventToState(
-                                              DashboardActionLoadData(locBarcum));
+                                          .eventToState(DashboardActionLoadData(
+                                              locBarcum));
                                     },
                                     caption: L.tr('Loading'))
                               ],
@@ -213,30 +218,17 @@ class _SartexDashboardScreen extends StatelessWidget {
                                 SvgButton(
                                     onTap: () {
                                       BlocProvider.of<DashboardBloc>(context)
-                                          .eventToState(DashboardActionMenu(
-                                              false, false, false));
+                                          .eventToState(DashboardActionLoadData(
+                                              locProduction));
                                     },
                                     assetPath: 'svg/calendar.svg'),
                                 TextMouseButton(
-                                    onTap: () {}, caption: L.tr('Plans'))
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                SvgButton(
                                     onTap: () {
                                       BlocProvider.of<DashboardBloc>(context)
-                                          .eventToState(
-                                          DashboardActionLoadData(locProduction));
+                                          .eventToState(DashboardActionLoadData(
+                                              locProduction));
                                     },
-                                    assetPath: 'svg/qrcode.svg'),
-                                TextMouseButton(
-                                    onTap: () {
-                                      BlocProvider.of<DashboardBloc>(context)
-                                          .eventToState(
-                                          DashboardActionLoadData(locProduction));
-                                    },
-                                    caption: L.tr("Department of QR codes")),
+                                    caption: L.tr('Plans'))
                               ],
                             ),
                             Row(

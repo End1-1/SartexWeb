@@ -72,7 +72,7 @@ class PlanRowEdit {
 class PlanModel {
   final dateRangeController = StreamController();
   final tableHeaderController = StreamController();
-  final tableDataController = StreamController();
+  final tableDataController = StreamController.broadcast();
   DateTime date = DateTime.now();
   final List<String> lines = [];
   final Map<String, List<PlanRowEdit>> linesData = {};
@@ -110,7 +110,7 @@ class PlanModel {
   }
   
   Future<String> getPlanIdForDate(DateTime d, String line, String model, String brand) async {
-      var e = await HttpSqlQuery.post({'sl': "select id from Art where plan>0 and date='${DateFormat('yyyy-MM-dd').format(d)}' and model='$model' and brand='$brand' and line='$line' and branch='${prefs.getString(key_user_branch)}'"});
+      var e = await HttpSqlQuery.post({'sl': "select id from Plan where plan>0 and date='${DateFormat('yyyy-MM-dd').format(d)}' and model='$model' and brand='$brand' and line='$line' and branch='${prefs.getString(key_user_branch)}'"});
       if (e.isEmpty) {
         return '';
       }
@@ -121,57 +121,57 @@ class PlanModel {
     String id = await getPlanIdForDate(dateOfWeekDay(1), e.line, e.editModel.text, e.editBrand.text);
     int qty = int.tryParse(e.editMo.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Art (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(1))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(1))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Art set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
     }
 
     id = await getPlanIdForDate(dateOfWeekDay(2),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editTo.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Art (branch, line, date,brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(2))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date,brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(2))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Art set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
     }
 
     id = await getPlanIdForDate(dateOfWeekDay(3),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editWe.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Art (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(3))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(3))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Art set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
     }
 
     id = await getPlanIdForDate(dateOfWeekDay(4),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editTh.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Art (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(4))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(4))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Art set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
     }
 
     id = await getPlanIdForDate(dateOfWeekDay(5),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editFr.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Art (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(5))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(5))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Art set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
     }
 
     id = await getPlanIdForDate(dateOfWeekDay(6),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editSa.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Art (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(6))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(6))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Art set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
     }
 
     id = await getPlanIdForDate(dateOfWeekDay(7),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editSu.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Art (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(7))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(7))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Art set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
     }
   }
 
@@ -180,6 +180,7 @@ class PlanModel {
       'sl':
           "select pd.brand, pd.model, pr.line, sum(pr.RestQanak) as RestQanak from Production pr left join Apranq a on pr.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pd.branch='${prefs.getString(key_user_branch)}'  group by 1, 2, 3"
     });
+    linesData.clear();
     for (var e in l) {
       PlanRowEdit pr = PlanRowEdit();
       pr.editRemain.text = e['RestQanak'];
@@ -205,7 +206,7 @@ class PlanModel {
         e.editSu.clear();
       }
     });
-    var l = await HttpSqlQuery.post({'sl': " select brand, model, plan, date, line from Art where plan>0 and branch='${prefs.getString(key_user_branch)}' and date between '${DateFormat('yyyy-MM-dd').format(firstDate())}' and '${DateFormat('yyyy-MM-dd').format(endDate())}'"});
+    var l = await HttpSqlQuery.post({'sl': " select brand, model, plan, date, line from Plan where plan>0 and branch='${prefs.getString(key_user_branch)}' and date between '${DateFormat('yyyy-MM-dd').format(firstDate())}' and '${DateFormat('yyyy-MM-dd').format(endDate())}'"});
     for (var e in l) {
       List<PlanRowEdit>? prl = linesData[e['line']];
       if (prl == null) {

@@ -8,7 +8,7 @@ import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/svg_button.dart';
 
 class PlanScreen extends StatelessWidget {
-  final model = PlanModel();
+  var model = PlanModel();
 
   PlanScreen({super.key});
 
@@ -26,10 +26,17 @@ class PlanScreen extends StatelessWidget {
             header(context),
             week(context),
             tableHeader(context),
-            BlocProvider<PlanBloc>(
-                create: (_) =>
-                    PlanBloc(PlanSRefresh())..add(PlanERefresh(model)),
-                child:
+             BlocListener<PlanBloc, PlanState>(
+                listener: (previouse, current) {
+                  if (current is PlanSRefresh) {
+                    if (current.planModel == null) {
+                      BlocProvider.of<PlanBloc>(context).add(PlanERefresh(model));
+                    } else {
+                      model = current.planModel!;
+                    }
+                  }
+                },
+                    child:
                     BlocBuilder<PlanBloc, PlanState>(builder: (context, state) {
                   return Expanded(child: lines(context));
                 }))

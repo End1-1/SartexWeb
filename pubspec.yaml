@@ -35,6 +35,10 @@ dev_dependencies:
   json_serializable: ^6.6.1
 
 flutter:
+  fonts:
+    - family: Agency FB
+      fonts:
+        - asset: assets/fonts/agencyfb_reg.ttf
 
   uses-material-design: true
   assets:

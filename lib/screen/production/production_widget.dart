@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sartex/screen/plan/plan_bloc.dart';
 import 'package:sartex/screen/plan_and_production/pp_bloc.dart';
 import 'package:sartex/screen/production/production_model.dart';
 import 'package:sartex/utils/consts.dart';
@@ -19,6 +22,12 @@ class ProductionWidget extends EditWidget {
       border: InputBorder.none,
       contentPadding: EdgeInsets.fromLTRB(5, 15, 5, 15));
 
+  final InputDecoration errorDecor = InputDecoration(
+      prefixIcon: SvgPicture.asset('svg/error.svg', width: 10, height: 10),
+      isDense: true,
+      border: InputBorder.none,
+      contentPadding: const EdgeInsets.fromLTRB(5, 15, 5, 15));
+
   ProductionWidget({super.key, required String line}) {
     _model = ProductionModel(line: line);
   }
@@ -27,7 +36,9 @@ class ProductionWidget extends EditWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Container(
-            decoration: const BoxDecoration(border: Border.fromBorderSide(BorderSide(color: Color(0xffaabbff)))),
+            decoration: const BoxDecoration(
+                border: Border.fromBorderSide(
+                    BorderSide(color: Color(0xffaabbff)))),
             margin: const EdgeInsets.fromLTRB(10, 0, 10, 2),
             height: MediaQuery.of(context).size.height * 0.39,
             child: BlocBuilder<PPBloc, PPState>(
@@ -48,9 +59,15 @@ class ProductionWidget extends EditWidget {
                             const BoxDecoration(color: Colors.blueAccent),
                         child: Row(
                           children: [
-                            const SizedBox(width: 10), Text(L.tr('Production line'), style: const TextStyle(color: Colors.white, fontSize: 18)),
                             const SizedBox(width: 10),
-                            Expanded(child: Text(_model.lines.name, style: const TextStyle(color: Colors.white, fontSize: 18))),
+                            Text(L.tr('Production line'),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 18)),
+                            const SizedBox(width: 10),
+                            Expanded(
+                                child: Text(_model.lines.name,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 18))),
                             SvgButton(
                                 onTap: () {
                                   appDialogYesNo(
@@ -60,14 +77,19 @@ class ProductionWidget extends EditWidget {
                                         appDialog(context, value);
                                         return;
                                       }
-                                      BlocProvider.of<PPBloc>(context).add(PARefresh());
+                                      BlocProvider.of<PPBloc>(context)
+                                          .add(PARefresh());
+                                      BlocProvider.of<PlanBloc>(context)
+                                          .add(PlanERefresh(null));
                                     });
                                   }, () {});
                                 },
                                 assetPath: 'svg/save.svg'),
                             SvgButton(
                                 onTap: () {
-                                  _model.lines.items.add(ProductionItem(true));
+                                  _model.lines.items.add(
+                                      ProductionItem(true, _model.lines.name)
+                                        ..canEditQty = true);
                                   _model.linesController.add(null);
                                 },
                                 assetPath: 'svg/plus.svg'),
@@ -138,6 +160,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        readOnly: true,
                                         decoration: formDecor,
                                         controller: l.editBrand,
                                         onTap: () {
@@ -191,6 +214,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        readOnly: true,
                                         decoration: formDecor,
                                         controller: l.editModel
                                           ..addListener(() {
@@ -264,6 +288,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        readOnly: true,
                                         decoration: formDecor,
                                         controller: l.editCommesa
                                           ..addListener(() {
@@ -339,6 +364,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        readOnly: true,
                                         decoration: formDecor,
                                         controller: l.editCountry
                                           ..addListener(() {
@@ -415,6 +441,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        readOnly: true,
                                         decoration: formDecor,
                                         controller: l.editColor
                                           ..addListener(() {
@@ -494,6 +521,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        readOnly: true,
                                         decoration: formDecor,
                                         controller: l.editVariant
                                           ..addListener(() {
@@ -559,36 +587,42 @@ class ProductionWidget extends EditWidget {
                                           decoration: labelDecor,
                                           controller: l.sizes[i],
                                         )),
-                                    Container(
-                                        width: i == 12 ? 100 : 60,
-                                        decoration: const BoxDecoration(
-                                            color: Colors.yellow,
-                                            border: Border.fromBorderSide(
-                                                BorderSide(
-                                                    color: Colors.black26,
-                                                    width: 0.2))),
-                                        child: MouseRegion(
-                                            child: InkWell(
-                                                onTap: () {
-                                                  if (i < 12) {
-                                                    l.newvalues[i].text =
-                                                        l.remains[i].text;
-                                                  } else {
-                                                    for (int n = 0;
-                                                        n < 12;
-                                                        n++) {
-                                                      l.newvalues[n].text =
-                                                          l.remains[n].text;
+                                    if (l.canEditModel) ...[
+                                      Container(
+                                          width: i == 12 ? 100 : 60,
+                                          decoration: const BoxDecoration(
+                                              color: Colors.yellow,
+                                              border: Border.fromBorderSide(
+                                                  BorderSide(
+                                                      color: Colors.black26,
+                                                      width: 0.2))),
+                                          child: MouseRegion(
+                                              child: InkWell(
+                                                  onTap: () {
+                                                    if (!l.canEditModel) {
+                                                      return;
                                                     }
-                                                  }
-                                                },
-                                                child: IgnorePointer(
-                                                    ignoring: true,
-                                                    child: TextFormField(
-                                                        readOnly: true,
-                                                        decoration: formDecor,
-                                                        controller:
-                                                            l.remains[i]))))),
+                                                    if (i < 12) {
+                                                      l.newvalues[i].text =
+                                                          l.remains[i].text;
+                                                    } else {
+                                                      for (int n = 0;
+                                                          n < 12;
+                                                          n++) {
+                                                        l.newvalues[n].text =
+                                                            l.remains[n].text;
+                                                      }
+                                                    }
+                                                  },
+                                                  child: IgnorePointer(
+                                                      ignoring: true,
+                                                      child: TextFormField(
+                                                          readOnly: true,
+                                                          decoration: formDecor,
+                                                          controller:
+                                                              l.remains[i])))))
+                                    ],
+                                    //LLINE QANAK
                                     Container(
                                         width: i == 12 ? 100 : 60,
                                         decoration: const BoxDecoration(
@@ -597,33 +631,123 @@ class ProductionWidget extends EditWidget {
                                                 BorderSide(
                                                     color: Colors.black26,
                                                     width: 0.2))),
-                                        child: TextFormField(
-                                            readOnly: i > 11,
-                                            decoration: formDecor,
-                                            controller: l.newvalues[i]
-                                              ..addListener(() {
-                                                l
-                                                    .newvalues[
-                                                        l.newvalues.length - 1]
-                                                    .text = l.sumOfNewValues();
-                                                if ((int.tryParse(l.newvalues[i]
-                                                            .text) ??
-                                                        0) >
-                                                    (int.tryParse(l
-                                                            .remains[i].text) ??
-                                                        0)) {
-                                                  l.newvalues[i].clear();
-                                                }
-                                              })))
+                                        child: editValue(i, l)),
+                                    //REST QANAK
+                                    if (!l.canEditModel && l.canEditQty) ...[
+                                      Container(
+                                          width: i == 12 ? 100 : 60,
+                                          decoration: const BoxDecoration(
+                                              color: Color(0xffe0ffff),
+                                              border: Border.fromBorderSide(
+                                                  BorderSide(
+                                                      color: Colors.black26,
+                                                      width: 0.2))),
+                                          child: TextFormField(
+                                              readOnly:
+                                                  i > 11 || !l.canEditModel,
+                                              decoration: formDecor,
+                                              controller: l.restQanak[i]))
+                                    ]
                                   ],
                                 ),
-                              )
-                            ]
+                              ),
+                            ],
+                            Row(children: [
+                              Container(
+                                  child: SvgButton(
+                                onTap: () {
+                                  if (l.canEditQty) {
+                                    for (int i = 0;
+                                        i < l.newvalues.length - 2;
+                                        i++) {
+                                      if (l.error(i)) {
+                                        appDialog(
+                                                context, L.tr("Check quantity"))
+                                            .then((value) {
+                                          _model.linesController.add(null);
+                                        });
+                                        return;
+                                      }
+                                    }
+                                    l.save();
+                                    _model.linesController.add(null);
+                                    _model.open().then((value) {
+                                      BlocProvider.of<PPBloc>(context).add(
+                                          PALine(
+                                              line: _model.lines.name,
+                                              open: false));
+                                    });
+                                  }
+                                  l.canEditQty = !l.canEditQty;
+                                  _model.linesController.add(null);
+                                },
+                                assetPath: l.canEditQty
+                                    ? 'svg/save.svg'
+                                    : 'svg/edit.svg',
+                                darkMode: false,
+                                height: 20,
+                                width: 20,
+                              )),
+                              if (l.canEditModel) ...[
+                                SvgButton(
+                                  onTap: () {
+                                    _model.lines.items.remove(l);
+                                    _model.linesController.add(null);
+                                  },
+                                  assetPath: 'svg/delete.svg',
+                                  darkMode: false,
+                                  height: 20,
+                                  width: 20,
+                                )
+                              ],
+                              if (l.canEditQty) ...[
+                                SvgButton(
+                                  onTap: () {
+                                    l.canEditQty = false;
+                                    _model.open().then((value) {
+                                      BlocProvider.of<PPBloc>(context).add(
+                                          PALine(
+                                              line: _model.lines.name,
+                                              open: false));
+                                    });
+                                  },
+                                  assetPath: 'svg/cancel.svg',
+                                  darkMode: false,
+                                  height: 20,
+                                  width: 20,
+                                )
+                              ]
+                            ])
                           ]))
                 ],
               ])
             ],
           );
         });
+  }
+
+  Widget editValue(int i, ProductionItem l) {
+    return TextFormField(
+        readOnly: (i > 11 || !l.canEditModel) && !l.canEditQty,
+        decoration: l.error(i) ? errorDecor : formDecor,
+        controller: l.newvalues[i]
+          ..addListener(() {
+            if (i == 12) {
+              return;
+            }
+            if ( !l.canEditModel && !l.canEditQty) {
+              return;
+            }
+            if (l.canEditQty) {
+              if ((int.tryParse(l.newvalues[i].text) ?? 0) >
+                  (int.tryParse(l.oldvalues[i].text) ?? 0)) {
+                l.newvalues[i].text = l.oldvalues[i].text;}
+            } else {
+            if ((int.tryParse(l.newvalues[i].text) ?? 0) >
+                (int.tryParse(l.remains[i].text) ?? 0)) {
+              l.newvalues[i].clear();
+            }}
+            l.newvalues[l.newvalues.length - 1].text = l.sumOfNewValues();
+          }));
   }
 }

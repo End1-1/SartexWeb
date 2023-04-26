@@ -32,7 +32,9 @@ List<String> Lines = [
 ];
 
 class ProductionItem {
+  String name = '';
   final bool canEditModel;
+  var canEditQty = true;
   final editBrand = STextEditingController();
   final editModel = STextEditingController();
   final editCommesa = STextEditingController();
@@ -95,6 +97,22 @@ class ProductionItem {
     //total
     TextEditingController(),
   ];
+  final List<TextEditingController> oldvalues = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    //total
+    TextEditingController(),
+  ];
   final List<TextEditingController> pahest = [
     TextEditingController(),
     TextEditingController(),
@@ -111,8 +129,40 @@ class ProductionItem {
     //total
     TextEditingController(),
   ];
+  final List<TextEditingController> restQanak = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    //total
+    TextEditingController(),
+  ];
+  final List<TextEditingController> oldRestQanak = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    //total
+    TextEditingController(),
+  ];
 
-  ProductionItem(this.canEditModel) {
+  ProductionItem(this.canEditModel, this.name) {
     if (canEditModel) {
       HttpSqlQuery.post({
         "sl":
@@ -238,7 +288,7 @@ class ProductionItem {
     }
     l = await HttpSqlQuery.post({
       "sl":
-      "select a.apr_id, a.patver as pat_mnac, a.size_number, sum(pr.LineQanak) as LineQanak from Production pr left join Apranq a on pr.apr_id=a.apr_id  where pid='$pid' group by 1"
+      "select a.apr_id, a.patver as pat_mnac, a.size_number, sum(pr.LineQanak) as LineQanak, sum(pr.RestQanak) as RestQanak from Production pr left join Apranq a on pr.apr_id=a.apr_id  where pid='$pid' group by 1"
     });
     for (var e in l) {
       int index = int.tryParse(
@@ -246,6 +296,7 @@ class ProductionItem {
           -1;
       index--;
       remains[index].text = ((int.tryParse(remains[index].text) ?? 0) - (int.tryParse(e['LineQanak']) ?? 0)).toString();
+      restQanak[index].text = ((int.tryParse(e['RestQanak']) ?? 0)).toString();
     }
     remains[remains.length - 1].text = sumOfMnacord();
     pahest[pahest.length - 1].text = sumOfPahest();
@@ -308,6 +359,43 @@ class ProductionItem {
       newvalues[i].clear();
     }
   }
+
+  bool error(int index) {
+    if (canEditModel) {
+      return false;
+    } else {
+      if (canEditQty) {
+        if (index == 12) {
+          return false;
+        }
+        int diff = (int.tryParse(oldvalues[index].text) ?? 0) - (int.tryParse(newvalues[index].text) ?? 0);
+        if (diff > (int.tryParse(restQanak[index].text) ?? 0)) {
+          return true;
+        }
+
+      }
+    }
+    return false;
+  }
+
+  Future<void> save() async {
+      for (int i = 0; i < 12; i++) {
+        if (preSize.prodId[i].isEmpty) {
+          // if (newvalues[i].text.isNotEmpty) {
+          //   await HttpSqlQuery.post({
+          //     'sl': "insert into Production (branch, date, line, apr_id, LineQanak, RestQanak) values (" +
+          //         "'${prefs.getString(key_user_branch)}', '${DateFormat('yyyy-MM-dd').format(DateTime.now())}', '$name', '${preSize.aprId[i]}', '${newvalues[i]
+          //             .text}', '${newvalues[i].text}')"
+          //   });
+          // }
+        } else {
+          int diff = (int.tryParse(oldvalues[i].text) ?? 0) - (int.tryParse(newvalues[i].text) ?? 0);
+          await HttpSqlQuery.post({'sl': "update Production set LineQanak=LineQanak-$diff, RestQanak=RestQanak-$diff where id='${preSize.prodId[i]}'"});
+        }
+      }
+
+  }
+
 }
 
 class ProductionLine {
@@ -362,11 +450,13 @@ class ProductionModel {
 
   Future<void> open() async {
     lines.items.clear();
-    List<dynamic> l = await HttpSqlQuery.post({'sl': "select pr.id as prodId, pd.brand,pd.model,pd.modelCod,pd.PatverN, pd.country, pd.Colore,pd.variant_prod, a.apr_id, a.patver as pat_mnac, a.size_number, sum(pr.LineQanak-(pr.LineQanak-pr.RestQanak)) as LineQanak, a.pid from Production pr left join Apranq a on pr.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pr.line='${lines.name}'  and pd.branch='${prefs.getString(key_user_branch)}' group by a.apr_id"});
+    // List<dynamic> l = await HttpSqlQuery.post({'sl': "select pr.id as prodId, pd.brand,pd.model,pd.modelCod,pd.PatverN, pd.country, pd.Colore,pd.variant_prod, a.apr_id, a.patver as pat_mnac, a.size_number, sum(pr.LineQanak-(pr.LineQanak-pr.RestQanak)) as LineQanak, sum(pr.RestQanak) as RestQanak, a.pid from Production pr left join Apranq a on pr.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pr.line='${lines.name}'  and pd.branch='${prefs.getString(key_user_branch)}' group by a.apr_id having sum(pr.LineQanak-(pr.LineQanak-pr.RestQanak))>0 "});
+    List<dynamic> l = await HttpSqlQuery.post({'sl': "select pr.id as prodId, pd.brand,pd.model,pd.modelCod,pd.PatverN, pd.country, pd.Colore,pd.variant_prod, a.apr_id, a.patver as pat_mnac, a.size_number, sum(pr.LineQanak) as LineQanak, sum(pr.RestQanak) as RestQanak, a.pid from Production pr left join Apranq a on pr.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pr.line='${lines.name}'  and pd.branch='${prefs.getString(key_user_branch)}' group by a.apr_id having sum(pr.LineQanak-(pr.LineQanak-pr.RestQanak))>0 "});
     Map<String, ProductionItem> pidRow = {};
     for (var e in l) {
       if (!pidRow.containsKey(e['pid'])) {
-        var pi = ProductionItem(false);
+        var pi = ProductionItem(false, lines.name);
+        pi.canEditQty = false;
         pi.editBrand.text = e['brand'];
         pi.editModel.text = e['model'];
         pi.editCommesa.text = e['PatverN'];
@@ -392,6 +482,15 @@ class ProductionModel {
       pi.preSize.aprId[index] = e['apr_id'];
       pi.remains[index].text = e['pat_mnac'];
       pi.newvalues[index].text = e['LineQanak'];
+      pi.oldvalues[index].text = e['LineQanak'];
+      pi.restQanak[index].text = e['RestQanak'];
+      pi.oldRestQanak[index].text = e['RestQanak'];
+    }
+    for (var e in lines.items) {
+      e.newvalues[e.newvalues.length - 1].text = e.sumOfNewValues();
+      e.restQanak[e.restQanak.length - 1].text = e.sumOfList(e.restQanak);
+      e.remains[e.remains.length - 1].text = e.sumOfList(e.remains);
+      e.pahest[e.pahest.length - 1].text = e.sumOfList(e.pahest);
     }
   }
 }

@@ -433,7 +433,9 @@ class _SartexDashboardScreen extends StatelessWidget {
       case locOrders:
       case locDocs:
       case locBarcum:
-        return SfDataGrid(
+        return SfDataGrid(allowColumnsResizing: true,
+          columnSizer: _ColumnSizer(),
+          allowFiltering: true, allowSorting: true, columnWidthMode: ColumnWidthMode.auto,
             source: _model!.datasource, columns: _model!.datasource.columns);
       case locProduction:
         return PlanAndProductionScreen();
@@ -471,5 +473,14 @@ class _SartexDashboardScreen extends StatelessWidget {
             assetPath: 'svg/plusfolder.svg');
     }
     return Container();
+  }
+}
+
+
+class _ColumnSizer extends ColumnSizer {
+
+  @override
+  double computeHeaderCellWidth(GridColumn column, TextStyle style) {
+    return super.computeHeaderCellWidth(column, style) * 2;
   }
 }

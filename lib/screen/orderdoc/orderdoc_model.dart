@@ -9,7 +9,13 @@ import '../../data/sql.dart';
 import '../../utils/text_editing_controller.dart';
 
 class OrderDocModel {
-  OrderDocModel();
+  final Map<String, String> modelList = {};
+  final Map<String, String> sizesList = {};
+  final List<String> sizesOfModel = [];
+
+  OrderDocModel() {
+
+  }
 
   String? _orderId;
 
@@ -30,7 +36,7 @@ class OrderDocModel {
   final TextEditingController executorController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
   final TextEditingController brandController = STextEditingController();
-  final TextEditingController modelController = TextEditingController();
+  final TextEditingController modelController = STextEditingController();
   final TextEditingController modelCodeController = STextEditingController();
   final TextEditingController sizeStandartController = TextEditingController();
   final List<TextEditingController> detailsControllers = [
@@ -47,23 +53,9 @@ class OrderDocModel {
     TextEditingController(),
     TextEditingController(),
     TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
   ];
-
-  List<String> modelOf(String brand) {
-    return datasource.modelList[brand] ?? [];
-  }
-
-  Future<void> loadOrder() async {
-    await HttpSqlQuery.postString({
-      'sl':
-          "${sqlList['open_patver_data'].toString().replaceAll('%where1%', "where IDPatver='$_orderId'").replaceAll('%where2%', " where IDPatver='$_orderId' ")}"
-    }).then((value) {
-      OrderRowList orl = OrderRowList.fromJson({'list': jsonDecode(value)});
-      for (var e in orl.list) {
-        details.add(e);
-      }
-    });
-  }
 
   void countTotalOfDetailsRow(int r) {
     OrderRow or = details[r];
@@ -76,7 +68,9 @@ class OrderDocModel {
         (double.tryParse(or.Size07!) ?? 0) +
         (double.tryParse(or.Size08!) ?? 0) +
         (double.tryParse(or.Size09!) ?? 0) +
-        (double.tryParse(or.Size10!) ?? 0);
+        (double.tryParse(or.Size10!) ?? 0) +
+        (double.tryParse(or.Size11!) ?? 0) +
+        (double.tryParse(or.Size12!) ?? 0);
     details[r] = or.copyWith(Total: '$total');
   }
 }

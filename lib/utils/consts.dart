@@ -63,8 +63,6 @@ const table_body_boxdecoration = BoxDecoration(
 const table_default_row_height = 40.0;
 const text_style_white_bold =
     TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold);
-const datagrid_text_style =
-    TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.normal);
 const TextStyle tsDialogHeader = TextStyle(color: Color(0xff0000ff), fontSize: 30, fontWeight: FontWeight.bold);
 
 Future<void> appDialog(BuildContext context, String msg) async {

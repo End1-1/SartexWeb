@@ -42,13 +42,13 @@ class DepartmentDataSource extends SartexDataGridSource {
   
   DepartmentDataSource({required super.context, required List data}) {
     addRows(data);
-    addColumn('edit', 'Edit', 100);
-    addColumn('id', 'Id', 40);
-    addColumn('branch', 'Branch', 100);
-    addColumn('department', 'Department', 200);
-    addColumn('patasxanatu', 'Responsible', 200);
-    addColumn('short_name', 'Short name', 200);
-    addColumn('type', 'Type', 200);
+    addColumn('edit');
+    addColumn( 'Id');
+    addColumn( 'Branch');
+    addColumn('Department');
+    addColumn( 'Responsible');
+    addColumn( 'Short name');
+    addColumn('Type');
     HttpSqlQuery.listDistinctOf('department', 'type').then((value) => typeList = value);
     branchList = ['Sartex', 'Itex'];
   }

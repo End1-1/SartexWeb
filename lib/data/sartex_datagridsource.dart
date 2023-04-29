@@ -26,19 +26,17 @@ abstract class SartexDataGridSource extends DataGridSource {
 
   void addRows(List<dynamic> d);
 
-  void addColumn(String columnName, String label, double width) {
+  void addColumn(String columnName, {double width = 0}) {
     columns.add(GridColumn(
-        width: width,
+        allowSorting: columnName != 'edit',
+        allowFiltering: columnName != 'edit',
         columnName: columnName,
+        autoFitPadding: const EdgeInsets.all(8),
         label: Container(
-            decoration: const BoxDecoration(
-                color: color_table_header,
-                border: Border.fromBorderSide(
-                    BorderSide(color: color_table_header_border, width: 0.5))),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             alignment: Alignment.center,
-            child: Text(L.tr(label),
-                style: const TextStyle(color: Colors.white, fontSize: 13)))));
+            child: Text(L.tr(columnName)))));
   }
 
   @override
@@ -71,7 +69,7 @@ abstract class SartexDataGridSource extends DataGridSource {
                         },
                         child: delePic))
               ])
-            : Text(e.value.toString(), style: datagrid_text_style),
+            : Text(e.value.toString()),
       );
     }).toList());
   }
@@ -115,9 +113,9 @@ abstract class SartexDataGridSource extends DataGridSource {
             children: [getEditWidget(id)],
           );
         }).then((value) {
-          if (value != null) {
-            print(value);
-          }
+      if (value != null) {
+        print(value);
+      }
     });
   }
 
@@ -129,9 +127,9 @@ abstract class SartexDataGridSource extends DataGridSource {
             children: [getEditWidget('')],
           );
         }).then((value) {
-          if (value != null) {
-            print(value);
-          }
+      if (value != null) {
+        print(value);
+      }
     });
   }
 }

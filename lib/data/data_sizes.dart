@@ -85,23 +85,23 @@ class SizeList with _$SizeList {
 class SizeDatasource extends SartexDataGridSource {
   SizeDatasource({required super.context, required List data}){
     addRows(data);
-    addColumn('edit', 'Edit', 100);
-    addColumn('id', 'Id', 40);
-    addColumn('code', 'Code', 100);
-    addColumn('country', 'Country', 200);
-    addColumn('name', 'Name', 200);
-    addColumn('size01', '1', 70);
-    addColumn('size02', '2', 70);
-    addColumn('size03', '3', 70);
-    addColumn('size04', '4', 70);
-    addColumn('size05', '5', 70);
-    addColumn('size06', '6', 70);
-    addColumn('size07', '7', 70);
-    addColumn('size08', '8', 70);
-    addColumn('size09', '9', 70);
-    addColumn('size10', '10', 70);
-    addColumn('size11', '11', 70);
-    addColumn('size12', '12', 70);
+    addColumn('Edit');
+    addColumn('Id');
+    addColumn('Code');
+    addColumn('Country');
+    addColumn('Name');
+    addColumn('size01');
+    addColumn('size02');
+    addColumn('size03');
+    addColumn('size04');
+    addColumn('size05');
+    addColumn('size06');
+    addColumn('size07');
+    addColumn('size08');
+    addColumn('size09');
+    addColumn('size10');
+    addColumn('size11');
+    addColumn('size12');
   }
 
   @override

@@ -36,16 +36,16 @@ class DocsDatasource extends SartexDataGridSource {
 
   DocsDatasource({required super.context, required List data}) {
     addRows(data);
-    addColumn('edit', 'Edit', 100);
-    addColumn('id', 'Id', 40);
-    addColumn('date', 'Date', 100);
-    addColumn('branch', 'Branch', 100);
-    addColumn('country', 'Country', 200);
-    addColumn('receiver', 'Receiver', 200);
-    addColumn('auto', 'Auto', 200);
-    addColumn('pahest', 'Store', 200);
-    addColumn('qanak', 'Quantity', 200);
-    addColumn('status', 'Status', 200);
+    addColumn('edit');
+    addColumn('Id');
+    addColumn( 'Date');
+    addColumn( 'Branch');
+    addColumn( 'Country');
+    addColumn( 'Receiver');
+    addColumn('Auto');
+    addColumn('Store');
+    addColumn('Quantity',);
+    addColumn( 'Status');
   }
 
   @override

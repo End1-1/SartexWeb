@@ -11,18 +11,46 @@ class TVScreen extends StatelessWidget {
   static const _color1 = Color(0xff6bc26a);
   static const _color2 = Color(0xff565656);
   final _standartPadding = const EdgeInsets.all(10);
-  final _textHeader1 = const TextStyle(color: Colors.white, height: 1.5, fontSize: 28, fontFamily: 'Agency FB', );
-  final _textHeader2 = const TextStyle(color: Colors.black87, fontSize: 24, height: 1.5, fontFamily: 'Agency FB');
-  final _textHeader3 = const TextStyle(color: Colors.white, fontSize: 26, height: 1.5, fontFamily: 'Agency FB', fontWeight: FontWeight.bold);
+  final _textHeader1 = const TextStyle(
+    color: Colors.white,
+    height: 1.5,
+    fontSize: 28,
+    fontFamily: 'Agency FB',
+  );
+  final _textHeader2 = const TextStyle(
+      color: Colors.black87,
+      fontSize: 24,
+      height: 1.5,
+      fontFamily: 'Agency FB');
+  final _textHeader3 = const TextStyle(
+      color: Colors.white,
+      fontSize: 26,
+      height: 1.5,
+      fontFamily: 'Agency FB',
+      fontWeight: FontWeight.bold);
   final _textTableHeader = const TextStyle(
       color: Colors.black87,
       fontSize: 28,
-      height: 1.5, fontFamily: 'Agency FB');
-  final _textLine = const TextStyle(color: Colors.black87, fontSize: 32, height: 1.5, fontFamily: 'Agency FB', fontWeight: FontWeight.bold);
-  final _textTotal = const TextStyle(color: Colors.black87, fontSize: 32, fontWeight: FontWeight.w900, height: 1.5, fontFamily: 'Agency FB');
-  final _textPlan = const TextStyle(color: Colors.red, fontSize: 32, fontWeight: FontWeight.w900, height: 1.5, fontFamily: 'Agency FB');
-
-
+      height: 1.5,
+      fontFamily: 'Agency FB');
+  final _textLine = const TextStyle(
+      color: Colors.black87,
+      fontSize: 32,
+      height: 1.5,
+      fontFamily: 'Agency FB',
+      fontWeight: FontWeight.bold);
+  final _textTotal = const TextStyle(
+      color: Colors.black87,
+      fontSize: 32,
+      fontWeight: FontWeight.w900,
+      height: 1.5,
+      fontFamily: 'Agency FB');
+  final _textPlan = const TextStyle(
+      color: Colors.red,
+      fontSize: 32,
+      fontWeight: FontWeight.w900,
+      height: 1.5,
+      fontFamily: 'Agency FB');
 
   final _t1 = const BoxDecoration(
       color: _color0,
@@ -34,53 +62,54 @@ class TVScreen extends StatelessWidget {
       color: _color1,
       gradient: LinearGradient(
           begin: Alignment.topCenter,
-          end: Alignment.bottomCenter, colors: [
-        Colors.white,
-        Color(0xFF00FF3D)]),
+          end: Alignment.bottomCenter,
+          colors: [Colors.white, Color(0xFF00FF3D)]),
       border: Border.fromBorderSide(BorderSide(color: Colors.black12)));
   final _t4 = const BoxDecoration(
       color: _color2,
       border: Border.fromBorderSide(BorderSide(color: Colors.black12)));
 
-  final _t5 = const BoxDecoration(color: Colors.white,border: Border.fromBorderSide(BorderSide(color: Colors.black12)));
-  final _t6 = const BoxDecoration(gradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-    Colors.white,
-    Color(0xFF97FFFA)]),
+  final _t5 = const BoxDecoration(
+      color: Colors.white,
+      border: Border.fromBorderSide(BorderSide(color: Colors.black12)));
+  final _t6 = const BoxDecoration(
+      gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.white, Color(0xFF97FFFA)]),
       border: Border.fromBorderSide(BorderSide(color: Colors.black12)));
 
-  final _t7 = const BoxDecoration(gradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        Colors.white,
-        Color(0xFF4BC7FD)]),
+  final _t7 = const BoxDecoration(
+      gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.white, Color(0xFF4BC7FD)]),
       border: Border.fromBorderSide(BorderSide(color: Colors.black12)));
 
-  final _t8 = const BoxDecoration(gradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        Colors.white,
-        Color(0xFF036C14),
-        Color(0xFF006510),
-        Color(0xFF006510)]),
+  final _t8 = const BoxDecoration(
+      gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.white,
+            Color(0xFF036C14),
+            Color(0xFF006510),
+            Color(0xFF006510)
+          ]),
       border: Border.fromBorderSide(BorderSide(color: Colors.black12)));
 
-  final _t9 = const BoxDecoration(gradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        Colors.white,
-        Color(0xFFFF2C8B),
-        Color(0xFFFF2C8B),
-        Color(0xFFFF2C8B),
-        Color(0xFFFF2C8B)]),
+  final _t9 = const BoxDecoration(
+      gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.white,
+            Color(0xFFFF2C8B),
+            Color(0xFFFF2C8B),
+            Color(0xFFFF2C8B),
+            Color(0xFFFF2C8B)
+          ]),
       border: Border.fromBorderSide(BorderSide(color: Colors.black12)));
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -90,14 +119,19 @@ class TVScreen extends StatelessWidget {
                 stream: _model.streamController.stream,
                 builder: (context, snapshot) {
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       _header(),
                       _tableHeader(),
-                      Expanded(
-                          child: SingleChildScrollView(
-                              child: Column(children: [
-                        for (var e in snapshot.data ?? []) ...[_tableRow(e)]
-                      ]))),
+                      Expanded(child:
+                      Transform.scale(
+                              alignment: Alignment.topLeft,
+                              scaleY: (MediaQuery.of(context).size.height -
+                                      120) /
+                                  ((snapshot.data?.length ?? 0) * rowHeight),
+                              child: SingleChildScrollView(child: Column(children: [ for (var e in snapshot.data ?? [])...[_tableRow(e)]]))
+                                )),
                       _totalRow()
                     ],
                   );
@@ -360,7 +394,6 @@ class TVScreen extends StatelessWidget {
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(L.tr("Grand total"), style: _textHeader3)),
-
 
         //10.30
         Container(

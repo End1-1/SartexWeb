@@ -33,14 +33,14 @@ class BarcumDatasource extends SartexDataGridSource {
 
   BarcumDatasource({required super.context, required List data}) {
     addRows(data);
-    addColumn('edit', 'Edit', 100);
-    addColumn('id', 'Document', 120);
-    addColumn('date', 'Date', 100);
-    addColumn('country', 'Country', 200);
-    addColumn('receiver', 'Receipant', 200);
-    addColumn('avto', 'Avto', 200);
-    addColumn('pahest', 'Store', 200);
-    addColumn('total', 'Total', 200);
+    addColumn('edit');
+    addColumn('Document');
+    addColumn( 'Date');
+    addColumn('Country');
+    addColumn('Receipant');
+    addColumn( 'Avto');
+    addColumn('Store');
+    addColumn( 'Total');
   }
 
   @override

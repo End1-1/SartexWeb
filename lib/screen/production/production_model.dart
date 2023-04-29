@@ -287,18 +287,18 @@ class ProductionItem {
       remains[index].text = e['pat_mnac'] ?? '0';
       pahest[index].text = e['pahest_mnac'] ?? '0';
     }
-    l = await HttpSqlQuery.post({
-      "sl":
-      "select a.apr_id, a.patver as pat_mnac, a.size_number, sum(pr.LineQanak) as LineQanak, sum(pr.RestQanak) as RestQanak from Production pr left join Apranq a on pr.apr_id=a.apr_id  where pid='$pid' group by 1"
-    });
-    for (var e in l) {
-      int index = int.tryParse(
-          e['size_number'].substring(e['size_number'].length - 2)) ??
-          -1;
-      index--;
-      remains[index].text = ((int.tryParse(remains[index].text) ?? 0) - (int.tryParse(e['LineQanak']) ?? 0)).toString();
-      restQanak[index].text = ((int.tryParse(e['RestQanak']) ?? 0)).toString();
-    }
+    // l = await HttpSqlQuery.post({
+    //   "sl":
+    //   "select a.apr_id, a.patver as pat_mnac, a.size_number, sum(pr.LineQanak) as LineQanak, sum(pr.RestQanak) as RestQanak from Production pr left join Apranq a on pr.apr_id=a.apr_id  where pid='$pid' group by 1"
+    // });
+    // for (var e in l) {
+    //   int index = int.tryParse(
+    //       e['size_number'].substring(e['size_number'].length - 2)) ??
+    //       -1;
+    //   index--;
+    //   //remains[index].text = ((int.tryParse(remains[index].text) ?? 0) - (int.tryParse(e['LineQanak']) ?? 0)).toString();
+    //   restQanak[index].text = ((int.tryParse(e['RestQanak']) ?? 0)).toString();
+    // }
     remains[remains.length - 1].text = sumOfMnacord();
     pahest[pahest.length - 1].text = sumOfPahest();
   }

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sartex/data/sartex_datagridsource.dart';
+import 'package:sartex/utils/http_sql.dart';
+import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/edit_widget.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -41,16 +43,16 @@ class ProductList with _$ProductList {
 class ProductsDatasource extends SartexDataGridSource {
   ProductsDatasource({required super.context, required List data}) {
     addRows(data);
-    addColumn('edit', 'Edit', 100);
-    addColumn('id', 'Id', 40);
-    addColumn('branch', 'Branch', 100);
-    addColumn('brand', 'Brand', 200);
-    addColumn('model', 'Model', 200);
-    addColumn('modelCode', 'ModelCode', 200);
-    addColumn('size_standart', 'Standart', 200);
-    addColumn('productstypecode', 'Products type code', 200);
-    addColumn('netto', 'Netto', 200);
-    addColumn('brutto', 'Brutto', 200);
+    addColumn('edit');
+    addColumn('Id');
+    addColumn('Branch');
+    addColumn('Brand');
+    addColumn('Model',);
+    addColumn('ModelCode');
+    addColumn('Standart');
+    addColumn('Products type code');
+    addColumn('Netto');
+    addColumn('Brutto');
   }
 
   @override
@@ -93,7 +95,8 @@ class ProductsDatasource extends SartexDataGridSource {
 
 class ProductEditWidget extends EditWidget {
   late Product product;
-  late ProductsDatasource source;
+  final List<String> sizes = [];
+  ProductsDatasource? source;
 
   final TextEditingController _editBrand = TextEditingController();
   final TextEditingController _editModelCode = TextEditingController();
@@ -105,6 +108,11 @@ class ProductEditWidget extends EditWidget {
   final TextEditingController _editBrutto = TextEditingController();
 
   ProductEditWidget({super.key, required this.product, required this.source}) {
+    HttpSqlQuery.post({'sl':"select code from Sizes"}).then((value) {
+      for (var e in value) {
+        sizes.add(e['code']);
+      }
+    });
     _editBrand.text = product.brand ?? '';
     _editModel.text = product.model ?? '';
     _editModelCode.text = product.modelCode ?? '';
@@ -117,8 +125,23 @@ class ProductEditWidget extends EditWidget {
 
   @override
   void save(BuildContext context, String table, object) {
+    String err = '';
+    if (_editBrand.text.isEmpty) {
+      err += L.tr('Select brand') + '\r\n';
+    }
+    if (_editModelCode.text.isEmpty) {
+      err += L.tr('Select model code') + '\r\n';
+    }
+    if (_editSizeStandart.text.isEmpty) {
+      err += L.tr('Select size standart') + '\r\n';
+    }
+    if (err.isNotEmpty) {
+      appDialog(context, err);
+      return;
+    }
     product = product.copyWith(
       branch: prefs.getString(key_user_branch) ?? 'Unknown',
+      brand: _editBrand.text,
       model: _editModel.text,
       modelCode: _editModelCode.text,
       size_standart: _editSizeStandart.text,
@@ -142,7 +165,9 @@ class ProductEditWidget extends EditWidget {
             textFieldColumn(context: context, title: 'Model code', textEditingController: _editModelCode),
           ]),
           Row(children: [
-            textFieldColumn(context: context, title: 'Size', textEditingController: _editSizeStandart),
+            textFieldColumn(context: context, title: 'Size', textEditingController: _editSizeStandart, onTap: (){
+              valueOfList(context, sizes, _editSizeStandart);
+            }),
             textFieldColumn(context: context, title: 'Packaging', textEditingController: _editPackaging),
             textFieldColumn(context: context, title: 'ProductsTypeCode', textEditingController: _editProductsTypeCode),
           ]),

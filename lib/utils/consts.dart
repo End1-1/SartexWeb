@@ -12,6 +12,16 @@ final server_uri = Uri.parse(server_http_address);
 const route_root = '/';
 const route_dashboard = 'dashboard';
 const route_tv = 'tv';
+const route_patver_data = 'patver_data';
+const route_barcum = 'barcum';
+const route_production = 'production';
+const route_users = 'users';
+const route_department = 'department';
+const route_product = 'products';
+const route_product_statuses = 'product_statuses';
+const route_partners = 'partners';
+const route_sizes = 'sizes';
+const route_language_editor = 'language_editor';
 
 const key_error = 'key_error';
 const key_empty = 'empty';
@@ -30,8 +40,6 @@ const key_full_name = "key_full_name";
 
 const color_menu_background1 = Color(0xff1e2757);
 const color_menu_background2 = Color(0xff042b4a);
-const color_datagrid_odd = Color(0xffffffff);
-const color_datagrid_even = Color(0xffdae0ff);
 const color_table_header = Color(0xff777777);
 const color_table_header_border = Color(0xff362c2c);
 const color_textbox_border = Color(0xff11182f);
@@ -124,7 +132,7 @@ Future<void> appDialogYesNo(BuildContext context, String msg, Function yes, Func
       });
 }
 
-void dateDialog(BuildContext context, TextEditingController controller) {
+void dateDialog(BuildContext context, TextEditingController controller, {bool firstDay = true}) {
   showDialog(
       context: context,
       builder: (context) {
@@ -135,7 +143,7 @@ void dateDialog(BuildContext context, TextEditingController controller) {
                 focusedDay: controller.text.isEmpty
                     ? DateTime.now()
                     : DateFormat('dd/MM/yyyy').parse(controller.text),
-                firstDay: DateTime.now(),
+                firstDay: firstDay ? DateTime.now() : DateTime.now().add(const Duration(days: -1000)),
                 lastDay: DateTime.now().add(const Duration(days: 700)),
                 onDaySelected: (d1, d2) {
                   controller.text = DateFormat('dd/MM/yyyy').format(d1);

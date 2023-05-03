@@ -117,6 +117,8 @@ class TVModel {
           Prod: tprod.toString(),
           Magaz: tmagaz.toString(),
           Pref: (tplan == 0 ? 0 : (tprod / (tplan) * 100)).truncate().toString());
+      // for (int i = 0; i < 7; i++)
+      //   rows.add(ModelRow(line: 'L${i+1}', brand: 'BRNAD', Model: 'MODEL', t1030: '1', t1230: '2', t1530: '3', t1730: '4', Ext: '5', Total: '6', Past: '8', Plan: '7', Prod: '8', Magaz: '7', Pref: '7'));
       streamController.add(rows);
     });
   }

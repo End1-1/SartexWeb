@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/scheduler/ticker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:sartex/screen/preloading/preloading_bloc.dart';
 import 'package:sartex/screen/preloading/preloading_item.dart';
 import 'package:sartex/screen/preloading/preloading_model.dart';
@@ -9,11 +9,11 @@ import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/edit_widget.dart';
 import 'package:sartex/widgets/svg_button.dart';
-import 'package:intl/intl.dart';
 
 class PreloadingScreen extends EditWidget {
   final PreloadingModel _model = PreloadingModel();
   String? docNum;
+
 
   PreloadingScreen({super.key, this.docNum});
 
@@ -89,6 +89,7 @@ class PreloadingScreen extends EditWidget {
               //MainWindow
               DefaultTabController(
                   length: 2,
+                  initialIndex: (docNum ?? '').length == 0 ? 0 : 1,
                   child: SizedBox(
                       height: 800,
                       width: MediaQuery.of(context).size.width * 0.9,

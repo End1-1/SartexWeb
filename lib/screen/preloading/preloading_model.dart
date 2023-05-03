@@ -108,7 +108,8 @@ class PreloadingModel {
   }
 
   void open(String docNum) {
-    HttpSqlQuery.post({'sl':"select pd.brand, pd.Model, pd.PatverN, pd.Colore, pd.variant_prod, pd.country, a.pat_mnac, d.qanak from Docs d left join Apranq a on a.apr_id=d.apr_id left join patver_data pd on pd.id=a.pid where d.docnum='$docNum'"}).then((value) {
+    HttpSqlQuery.post({'sl':"select pd.brand, pd.Model, pd.PatverN, pd.Colore, pd.variant_prod, pd.country, a.pat_mnac, d.qanak from Docs d "
+        + "left join Apranq a on a.apr_id=d.apr_id left join patver_data pd on pd.id=a.pid where d.docnum='$docNum' "}).then((value) {
       for (var e in value) {
 
       }

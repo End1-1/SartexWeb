@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:sartex/data/data_product.dart';
-import 'package:sartex/data/order_row.dart';
+import 'package:sartex/screen/patver_data/order_row.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_bloc.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_event.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_header.dart';
@@ -41,6 +41,7 @@ class OrderDocScreen extends EditWidget {
   ];
 
   final OrderDocModel model = OrderDocModel();
+  final scaffoldKey = GlobalKey();
 
   OrderDocScreen(
       {super.key, required OrderRowDatasource datasource, String? orderId}) {
@@ -56,6 +57,7 @@ class OrderDocScreen extends EditWidget {
               ? OrderDocEventIdle()
               : OrderDocEventOpen(model.orderId!)),
         child: SizedBox(
+          key: scaffoldKey,
             height: MediaQuery.of(context).size.height * 0.8,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,6 +254,8 @@ class OrderDocScreen extends EditWidget {
                           Size11: '',
                           Size12: '',
                           Total: '0',
+                          executed: '0',
+                          nextload: '0',
                           discarded: '',
                           appended: ''));
                       model.rowEditMode = model.details.length - 1;

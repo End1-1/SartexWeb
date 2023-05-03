@@ -31,21 +31,17 @@ class ProductionList with _$ProductionList {
 }
 
 class ProductionDatasource extends SartexDataGridSource {
-  ProductionDatasource({required super.context, required List? data}) {
-    if (data != null) {
-      addRows(data);
+  ProductionDatasource() {
       addColumn('edit');
       addColumn('Date');
       addColumn('Doc number');
       addColumn('Brand');
       addColumn('Model');
       addColumn('Country');
-    }
   }
 
   @override
   void addRows(List d) {
-    data.addAll(d);
     rows.addAll(d.map((e) => DataGridRow(cells: [
           DataGridCell(columnName: 'editdata', value: e.DocN),
           DataGridCell(columnName: 'date', value: e.date),
@@ -57,7 +53,7 @@ class ProductionDatasource extends SartexDataGridSource {
   }
 
   @override
-  Widget getEditWidget(String id) {
+  Widget getEditWidget(BuildContext context, String id) {
     return ProductionWidget(line: '');
   }
 }

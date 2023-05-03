@@ -5,6 +5,8 @@ import 'package:sartex/data/data_product.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_bloc.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_screen.dart';
 import 'package:sartex/utils/consts.dart';
+import 'package:sartex/utils/http_sql.dart';
+import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/widgets/svg_button.dart';
 
 import 'orderdoc_event.dart';
@@ -119,41 +121,35 @@ extension OrderDocHeader on OrderDocScreen {
               title: 'Size standart',
               textEditingController: model.sizeStandartController,
               list: []),
-          Align(
-              alignment: Alignment.center,
+          if (model.orderId!.isEmpty)...[Container(margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),  child: Align(
+              alignment: Alignment.centerLeft,
               child: SvgButton(
                   onTap: () {
                     showDialog(
                         context: context,
                         builder: (context) {
                           return SimpleDialog(children: [
-                            ProductEditWidget(
-                                product: const Product(
-                                  id: '',
-                                  branch: '',
-                                  brand: '',
-                                  model: '',
-                                  modelCode: '',
-                                  size_standart: '',
-                                  ProductsTypeCode: '',
-                                  Packaging: '',
-                                  Netto: '',
-                                  Brutto: '',
-                                ),
-                                source: null)
+                            ProductEditWidget(id: '')
                           ]);
-                        }).then((value) {
+                        }).then((value) async {
                           if (value != null) {
+                            final val = await HttpSqlQuery.get(
+                                "select brand, model, modelCode,  size_standart  from Products where brand='${value.brand}' and branch='${prefs.getString(key_user_branch)}'");
+                            for (var e in val) {
+                              model.modelList[e['model']] = e['modelCode'];
+                              model.sizesList[e['model']] = e['size_standart'];
+                            }
                             model.brandController.text = value.brand;
                             model.modelController.text = value.model;
                             model.modelCodeController.text = value.modelCode;
                             model.sizeStandartController.text =
                                 value.size_standart;
+                            BlocProvider.of<OrderDocBloc>(scaffoldKey.currentContext!).add(OrderDocModelChanged(model.sizeStandartController.text));
                           }
                     });
                   },
                   assetPath: 'svg/plus.svg',
-                  darkMode: false))
+                  darkMode: false)))]
         ],
       )
     ];

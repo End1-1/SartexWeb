@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sartex/data/order_row.dart';
+import 'package:sartex/screen/patver_data/order_row.dart';
 
 part 'orderdoc_state.freezed.dart';
 

@@ -28,7 +28,9 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
     if (docnum ==  null || docnum.isEmpty) {
       return;
     }
-    List<dynamic> data = await HttpSqlQuery.post({'sl': "select pd.brand, pd.Model, pd.PatverN, pd.Colore, pd.variant_prod, pd.country, a.pat_mnac, a.size_number, a.pid, d.qanak, d.pahest, d.line, a.pahest_mnac, d.date, d.avto, d.partner, a.apr_id, pd.size_standart from Docs d left join Apranq a on a.apr_id=d.apr_id left join patver_data pd on pd.id=a.pid where d.docNum='$docnum'"});
+    List<dynamic> data = await HttpSqlQuery.post({'sl': "select pd.brand, pd.Model, pd.PatverN, pd.Colore, pd.variant_prod, pd.country, a.pat_mnac, "
+        + "a.size_number, a.pid, d.qanak, d.pahest, d.line, a.pahest_mnac, d.date, d.avto, d.partner, a.apr_id, pd.size_standart "
+        + "from Docs d left join Apranq a on a.apr_id=d.apr_id left join patver_data pd on pd.id=a.pid where d.docNum='$docnum'"});
     Map<String,String> header = {};
     List<PreloadingFullItem> items = [];
     Map<String, PreloadingItem> pid = {};
@@ -64,6 +66,7 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
       i.commesa.text = d['PatverN'];
       String sizen = d['size_number'];
       int index = int.tryParse(sizen.substring(sizen.length - 2)) ?? -1;
+      index --;
       i.preSize!.aprId[index] = d['apr_id']!;
       i.remains[index].text = d['pat_mnac'];
       i.newvalues[index].text = d['qanak'];

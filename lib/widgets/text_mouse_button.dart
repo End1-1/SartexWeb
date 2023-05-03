@@ -14,7 +14,7 @@ class TextMouseButton extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: InkWell(
           onTap: onTap,
-          child: Text(caption, style: const TextStyle(color: Colors.white))
+          child: Text(caption, maxLines: 1, overflow: TextOverflow.clip, style: const TextStyle(color: Colors.white))
         ),
       )
     );

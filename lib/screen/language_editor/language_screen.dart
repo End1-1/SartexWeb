@@ -2,59 +2,28 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sartex/screen/app/app_screen.dart';
 import 'package:sartex/screen/language_editor/language_bloc.dart';
-import 'package:sartex/screen/language_editor/language_event.dart';
 import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/widgets/svg_button.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../utils/translator.dart';
 import 'language_model.dart';
 import 'language_state.dart';
 
-class LanguageScreen extends StatelessWidget {
-  final LanguageModel _model = LanguageModel();
+class LanguageScreen extends App {
+  LanguageScreen() : super(title: L.tr('Translator'), model: LanguageModel());
 
   @override
-  Widget build(BuildContext context) {
+  Widget body(BuildContext context) {
     var bloc = BlocProvider<LanguageBloc>(
         create: (_) => LanguageBloc(LanguageStateIdle()));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(children: [
-          Container(
-              height: table_default_row_height,
-              decoration: table_header_boxdecoration,
-              width: 300,
-              child: Align(
-                  alignment: Alignment.center,
-                  child: Text(L.tr('Key'), style: text_style_white_bold))),
-          Container(
-              height: table_default_row_height,
-              decoration: table_header_boxdecoration,
-              width: 300,
-              child: Align(
-                  alignment: Alignment.center,
-                  child: Text(L.tr('Armenia'), style: text_style_white_bold))),
-          Container(
-              height: table_default_row_height,
-              decoration: table_header_boxdecoration,
-              width: 300,
-              child: Align(
-                  alignment: Alignment.center,
-                  child: Text(L.tr('Italy'), style: text_style_white_bold))),
-          Container(
-            height: table_default_row_height,
-            decoration: table_header_boxdecoration,
-            width: 200,
-          )
-        ]),
-        Expanded(
-            child: SingleChildScrollView(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: _children(context)))),
+        Expanded(child: _table()),
         Padding(
             padding: const EdgeInsets.fromLTRB(10, 40, 40, 40),
             child: OutlinedButton(
@@ -78,9 +47,24 @@ class LanguageScreen extends StatelessWidget {
     );
   }
 
+  Widget _table() {
+    return SfDataGrid(
+        columnWidthMode: ColumnWidthMode.auto,
+        allowEditing: true,
+        selectionMode: SelectionMode.single,
+        navigationMode: GridNavigationMode.cell,
+        source: LanguageDatasource(),
+        columns: [
+          GridColumn(
+              columnName: 'Key', label: Text('Key'), allowEditing: false),
+          GridColumn(columnName: 'Am', label: Text('Am'), allowEditing: true),
+          GridColumn(columnName: 'It', label: Text('It'), allowEditing: true),
+        ]);
+  }
+
   List<Widget> _children(BuildContext context) {
     List<Widget> l = [];
-    final List<TranslatorItem> list = _model.filteredItem();
+    final List<TranslatorItem> list = (model as LanguageModel).filteredItem();
     for (int i = 0; i < list.length; i++) {
       final e = list.elementAt(i);
       l.add(Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -104,9 +88,8 @@ class LanguageScreen extends StatelessWidget {
                   }
                 },
                 child: TextFormField(
-                  decoration: text_form_field_decoration,
-                  controller: e.amController..text = e.am
-                ))),
+                    decoration: text_form_field_decoration,
+                    controller: e.amController..text = e.am))),
         Container(
             height: table_default_row_height,
             decoration: table_body_boxdecoration,
@@ -118,14 +101,13 @@ class LanguageScreen extends StatelessWidget {
                   }
                 },
                 child: TextFormField(
-              decoration: text_form_field_decoration,
-              controller: e.itController..text = e.it)
-            )),
+                    decoration: text_form_field_decoration,
+                    controller: e.itController..text = e.it))),
         Container(
             height: table_default_row_height,
             width: 200,
             decoration: table_body_boxdecoration,
-            child: _model.editRowNumber == i
+            child: (model as LanguageModel).editRowNumber == i
                 ? SvgButton(onTap: () {}, assetPath: 'svg/save.svg')
                 : SvgButton(onTap: () {}, assetPath: 'svg/edit.svg'))
       ]));

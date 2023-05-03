@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sartex/data/sartex_datagridsource.dart';
+import 'package:sartex/utils/translator.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 part 'data_partner.freezed.dart';
@@ -28,26 +29,24 @@ class PartnerList with _$PartnerList {
 }
 
 class PartnerDatasource extends SartexDataGridSource {
-  PartnerDatasource({required super.context, required List data}) {
-    addRows(data);
-    addColumn('edit');
-    addColumn('Id');
-    addColumn('Branch');
-    addColumn('Country');
-    addColumn('Name');
-    addColumn('Type');
+  PartnerDatasource() {
+    addColumn(L.tr('Id'));
+    addColumn(L.tr('Branch'));
+    addColumn(L.tr('Country'));
+    addColumn(L.tr('Name'));
+    addColumn(L.tr('Type'));
   }
 
   @override
   void addRows(List d) {
-    data.addAll(d);
-    rows.addAll(d.map<DataGridRow>((e) => DataGridRow(cells: [
-          DataGridCell(columnName: 'editdata', value: e.id),
-          DataGridCell(columnName: 'id', value: e.id),
-          DataGridCell(columnName: 'branch', value: e.branch),
-          DataGridCell(columnName: 'country', value: e.country),
-          DataGridCell(columnName: 'name', value: e.name),
-          DataGridCell(columnName: 'type', value: e.type),
-        ])));
+    PartnerList pl = PartnerList.fromJson({'partners': d});
+    rows.addAll(pl.partners.map<DataGridRow>((e) { int i = 0;
+      return DataGridRow(cells: [
+          DataGridCell(columnName: columnNames[i++], value: e.id),
+          DataGridCell(columnName: columnNames[i++], value: e.branch),
+          DataGridCell(columnName: columnNames[i++], value: e.country),
+          DataGridCell(columnName: columnNames[i++], value: e.name),
+          DataGridCell(columnName: columnNames[i++], value: e.type),
+        ]);}));
   }
 }

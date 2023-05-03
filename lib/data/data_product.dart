@@ -11,6 +11,7 @@ import '../utils/consts.dart';
 import '../utils/prefs.dart';
 
 part 'data_product.freezed.dart';
+
 part 'data_product.g.dart';
 
 @freezed
@@ -18,14 +19,14 @@ class Product with _$Product {
   const factory Product(
       {required String id,
       required String? branch,
-        required String? brand,
+      required String? brand,
       required String? model,
       required String? modelCode,
-        required String? size_standart,
-        required String? Packaging,
-        required String? ProductsTypeCode,
-        required String? Netto,
-        required String? Brutto}) = _Product;
+      required String? size_standart,
+      required String? Packaging,
+      required String? ProductsTypeCode,
+      required String? Netto,
+      required String? Brutto}) = _Product;
 
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
@@ -33,70 +34,64 @@ class Product with _$Product {
 
 @freezed
 class ProductList with _$ProductList {
-  const factory ProductList({
-    required List<Product> products
-}) = _ProductList;
+  const factory ProductList({required List<Product> products}) = _ProductList;
 
-  factory ProductList.fromJson(Map<String, dynamic> json) => _$ProductListFromJson(json);
+  factory ProductList.fromJson(Map<String, dynamic> json) =>
+      _$ProductListFromJson(json);
 }
 
 class ProductsDatasource extends SartexDataGridSource {
-  ProductsDatasource({required super.context, required List data}) {
-    addRows(data);
-    addColumn('edit');
-    addColumn('Id');
-    addColumn('Branch');
-    addColumn('Brand');
-    addColumn('Model',);
-    addColumn('ModelCode');
-    addColumn('Standart');
-    addColumn('Products type code');
-    addColumn('Netto');
-    addColumn('Brutto');
+  ProductsDatasource() {
+    ProductEditWidget.init();
+    addColumn(L.tr('Id'));
+    addColumn(L.tr('Branch'));
+    addColumn(L.tr('Brand'));
+    addColumn(L.tr('Model'));
+    addColumn(L.tr('ModelCode'));
+    addColumn(L.tr('Standart'));
+    addColumn(L.tr('Products type code'));
+    addColumn(L.tr('Netto'));
+    addColumn(L.tr('Brutto'));
   }
 
   @override
   void addRows(List d) {
-    data.addAll(d);
-    rows.addAll(d.map<DataGridRow>((e) => DataGridRow(cells: [
-      DataGridCell(columnName: 'editdata', value: e.id),
-      DataGridCell(columnName: 'id', value: e.id),
-      DataGridCell(columnName: 'branch', value: e.branch),
-      DataGridCell(columnName: 'brand', value: e.brand),
-      DataGridCell(columnName: 'model', value: e.model),
-      DataGridCell(columnName: 'modelCode', value: e.modelCode),
-      DataGridCell(columnName: 'size_standart', value: e.size_standart),
-      DataGridCell(columnName: 'productstypecode', value: e.ProductsTypeCode),
-      DataGridCell(columnName: 'Netto', value: e.Netto),
-      DataGridCell(columnName: 'Brutto', value: e.Brutto)
-    ])));
+    ProductList pl = ProductList.fromJson({'products': d});
+    rows.addAll(pl.products.map<DataGridRow>((e) {
+      int i = 0;
+      return DataGridRow(cells: [
+        DataGridCell(columnName: columnNames[i++], value: e.id),
+        DataGridCell(columnName: columnNames[i++], value: e.branch),
+        DataGridCell(columnName: columnNames[i++], value: e.brand),
+        DataGridCell(columnName: columnNames[i++], value: e.model),
+        DataGridCell(columnName: columnNames[i++], value: e.modelCode),
+        DataGridCell(columnName: columnNames[i++], value: e.size_standart),
+        DataGridCell(columnName: columnNames[i++], value: e.ProductsTypeCode),
+        DataGridCell(columnName: columnNames[i++], value: e.Netto),
+        DataGridCell(columnName: columnNames[i++], value: e.Brutto)
+      ]);
+    }));
   }
 
   @override
-  Widget getEditWidget(String id) {
-    if (id.isEmpty) {
-      return ProductEditWidget(product: const Product(id: '',
-          branch: '',
-          brand: '',
-          model: '',
-          modelCode: '',
-          size_standart: '',
-          ProductsTypeCode: '',
-      Packaging: '',
-      Netto: '',
-      Brutto: '',), source: this);
-    } else {
-      return ProductEditWidget(product: data
-          .where((e) => e.id == id)
-          .first, source: this);
-    }
+  Widget getEditWidget(BuildContext context, String id) {
+    return ProductEditWidget(id: id);
   }
 }
 
 class ProductEditWidget extends EditWidget {
-  late Product product;
-  final List<String> sizes = [];
-  ProductsDatasource? source;
+  Product product = const Product(
+      id: '',
+      branch: '',
+      brand: '',
+      model: '',
+      modelCode: '',
+      size_standart: '',
+      Packaging: '',
+      ProductsTypeCode: '',
+      Netto: '',
+      Brutto: '');
+  static List<String> sizes = [];
 
   final TextEditingController _editBrand = TextEditingController();
   final TextEditingController _editModelCode = TextEditingController();
@@ -107,33 +102,42 @@ class ProductEditWidget extends EditWidget {
   final TextEditingController _editNetto = TextEditingController();
   final TextEditingController _editBrutto = TextEditingController();
 
-  ProductEditWidget({super.key, required this.product, required this.source}) {
-    HttpSqlQuery.post({'sl':"select code from Sizes"}).then((value) {
-      for (var e in value) {
-        sizes.add(e['code']);
-      }
-    });
-    _editBrand.text = product.brand ?? '';
-    _editModel.text = product.model ?? '';
-    _editModelCode.text = product.modelCode ?? '';
-    _editSizeStandart.text = product.size_standart ?? '';
-    _editPackaging.text = product.Packaging ?? '';
-    _editProductsTypeCode.text = product.ProductsTypeCode ?? '';
-    _editNetto.text = product.Netto ?? '';
-    _editBrutto.text = product.Brutto ?? '';
+  static Future<void> init() async {
+    var value = await HttpSqlQuery.post({'sl': "select code from Sizes"});
+    sizes.clear();
+    for (var e in value) {
+      sizes.add(e['code']);
+    }
+  }
+
+  ProductEditWidget({super.key, required String id}) {
+    if (id.isNotEmpty) {
+      HttpSqlQuery.post({'sl': "select * from Products where id=${id}"})
+          .then((value) {
+        product = Product.fromJson(value[0]);
+        _editBrand.text = product.brand ?? '';
+        _editModel.text = product.model ?? '';
+        _editModelCode.text = product.modelCode ?? '';
+        _editSizeStandart.text = product.size_standart ?? '';
+        _editPackaging.text = product.Packaging ?? '';
+        _editProductsTypeCode.text = product.ProductsTypeCode ?? '';
+        _editNetto.text = product.Netto ?? '';
+        _editBrutto.text = product.Brutto ?? '';
+      });
+    }
   }
 
   @override
   void save(BuildContext context, String table, object) {
     String err = '';
     if (_editBrand.text.isEmpty) {
-      err += L.tr('Select brand') + '\r\n';
+      err += '${L.tr('Select brand')}\r\n';
     }
     if (_editModelCode.text.isEmpty) {
-      err += L.tr('Select model code') + '\r\n';
+      err += '${L.tr('Select model code')}\r\n';
     }
     if (_editSizeStandart.text.isEmpty) {
-      err += L.tr('Select size standart') + '\r\n';
+      err += '${L.tr('Select size standart')}\r\n';
     }
     if (err.isNotEmpty) {
       appDialog(context, err);
@@ -148,7 +152,7 @@ class ProductEditWidget extends EditWidget {
       ProductsTypeCode: _editProductsTypeCode.text,
       Packaging: _editPackaging.text,
       Netto: double.tryParse(_editNetto.text)?.toString() ?? '0',
-      Brutto: double.tryParse(_editBrutto.text)?.toString() ?? '0' ,
+      Brutto: double.tryParse(_editBrutto.text)?.toString() ?? '0',
     );
     super.save(context, table, product);
   }
@@ -160,21 +164,46 @@ class ProductEditWidget extends EditWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Row(children: [
-            textFieldColumn(context: context, title: 'Brand', textEditingController: _editBrand),
-            textFieldColumn(context: context, title: 'Model', textEditingController: _editModel),
-            textFieldColumn(context: context, title: 'Model code', textEditingController: _editModelCode),
+            textFieldColumn(
+                context: context,
+                title: 'Brand',
+                textEditingController: _editBrand),
+            textFieldColumn(
+                context: context,
+                title: 'Model',
+                textEditingController: _editModel),
+            textFieldColumn(
+                context: context,
+                title: 'Model code',
+                textEditingController: _editModelCode),
           ]),
           Row(children: [
-            textFieldColumn(context: context, title: 'Size', textEditingController: _editSizeStandart, onTap: (){
-              valueOfList(context, sizes, _editSizeStandart);
-            }),
-            textFieldColumn(context: context, title: 'Packaging', textEditingController: _editPackaging),
-            textFieldColumn(context: context, title: 'ProductsTypeCode', textEditingController: _editProductsTypeCode),
+            textFieldColumn(
+                context: context,
+                title: 'Size',
+                textEditingController: _editSizeStandart,
+                onTap: () {
+                  valueOfList(context, sizes, _editSizeStandart);
+                }),
+            textFieldColumn(
+                context: context,
+                title: 'Packaging',
+                textEditingController: _editPackaging),
+            textFieldColumn(
+                context: context,
+                title: 'ProductsTypeCode',
+                textEditingController: _editProductsTypeCode),
           ]),
           Row(
             children: [
-              textFieldColumn(context: context, title: 'Netto', textEditingController: _editNetto),
-              textFieldColumn(context: context, title: 'Brutto', textEditingController: _editBrutto),
+              textFieldColumn(
+                  context: context,
+                  title: 'Netto',
+                  textEditingController: _editNetto),
+              textFieldColumn(
+                  context: context,
+                  title: 'Brutto',
+                  textEditingController: _editBrutto),
             ],
           ),
           saveWidget(context, product)
@@ -185,5 +214,4 @@ class ProductEditWidget extends EditWidget {
   String getTable() {
     return 'Products';
   }
-
 }

@@ -457,8 +457,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                                 e)
                                             .then((value) {
                                           for (int i = 1; i < 11; i++) {
-                                            e.sizes[i - 1].text +=
-                                                ' / ${e.preSize!.aprId[i - 1]}';
+                                            e.sizes[i - 1].text;
                                           }
                                         });
                                       });

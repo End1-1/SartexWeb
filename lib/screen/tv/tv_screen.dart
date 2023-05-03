@@ -5,8 +5,11 @@ import 'package:sartex/screen/tv/tv_model.dart';
 import 'package:sartex/utils/translator.dart';
 
 class TVScreen extends StatelessWidget {
+  final dw = <double>[100, 200, 200, 100,100, 100, 100,100, 100, 100, 100, 100, 100, 100];
+  List<double> cw = [];
   final _model = TVModel();
-  final double rowHeight = 90;
+  final double rowHeight = 80;
+  final double headerHeight = 80;
   static const _color0 = Color(0xFF0035FF);
   static const _color1 = Color(0xff6bc26a);
   static const _color2 = Color(0xff565656);
@@ -113,6 +116,17 @@ class TVScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    cw.clear();
+    cw.addAll(dw);
+    double t = 0;
+    for (var e in cw) {
+      t += e;
+    }
+    t = (MediaQuery.of(context).size.width - t) / cw.length;
+    t -= 2;
+    for (int i = 0; i < cw.length; i++) {
+      cw[i] = cw[i] + t;
+    }
     return Scaffold(
         body: SafeArea(
             child: StreamBuilder<List<ModelRow>>(
@@ -127,11 +141,12 @@ class TVScreen extends StatelessWidget {
                       Expanded(child:
                       Transform.scale(
                               alignment: Alignment.topLeft,
-                              scaleY: (MediaQuery.of(context).size.height -
-                                      120) /
-                                  ((snapshot.data?.length ?? 0) * rowHeight),
-                              child: SingleChildScrollView(child: Column(children: [ for (var e in snapshot.data ?? [])...[_tableRow(e)]]))
-                                )),
+                              scaleY: (snapshot.data?.length ?? 0) > 8 ? (MediaQuery.of(context).size.height -
+                                      220) /
+                                  ((snapshot.data?.length ?? 0) * rowHeight) : 1,
+                              child: Column(children: [ for (var e in snapshot.data ?? [])...[_tableRow(e)]]))
+                                ),
+                      //SingleChildScrollView(child: Column(children: [ for (var e in snapshot.data ?? [])...[_tableRow(e)]]))),
                       _totalRow()
                     ],
                   );
@@ -142,14 +157,16 @@ class TVScreen extends StatelessWidget {
     return Row(
       children: [
         Container(
-            width: 1350,
+          height: 60,
+            width: cw[0] + cw[1] + cw[2] + cw[3] + cw[4] + cw[5] + cw[6] + cw[7] + cw[8] + cw[9] + cw[10],
             padding: _standartPadding,
             decoration: const BoxDecoration(color: Color(0xffffffff)),
             child: Text(DateFormat('dd/MM/yyyy').format(DateTime.now()),
                 textAlign: TextAlign.center, style: _textHeader2)),
-        SizedBox.fromSize(size: const Size(100, 0)),
+        Expanded(child:  Container()),
         Container(
-            width: 330,
+            height: 60,
+            width: cw[11] + cw[12] + cw[13],
             padding: _standartPadding,
             decoration: const BoxDecoration(color: Color(0xffffffff)),
             child: Text(DateFormat('MMMM').format(DateTime.now()),
@@ -159,103 +176,118 @@ class TVScreen extends StatelessWidget {
   }
 
   Widget _tableHeader() {
+    int i = 0;
     return Row(
       children: [
         //line
         Container(
-            width: 150,
+          height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t1,
             alignment: Alignment.center,
             child: Text("Line", style: _textHeader1)),
         //brand
         Container(
-            width: 200,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t1,
             alignment: Alignment.center,
             child: Text("Brand", style: _textHeader1)),
         //model
         Container(
-            width: 200,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t1,
             alignment: Alignment.center,
             child: Text("Model", style: _textHeader1)),
         //10.30
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t1,
             alignment: Alignment.center,
             child: Text(L.tr("10:30"), style: _textHeader1)),
         //12.30
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t1,
             alignment: Alignment.center,
             child: Text(L.tr("12:30"), style: _textHeader1)),
         //15.30
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t1,
             alignment: Alignment.center,
             child: Text(L.tr("15:30"), style: _textHeader1)),
         //17.30
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t1,
             alignment: Alignment.center,
             child: Text(L.tr("17:30"), style: _textHeader1)),
         //Ext.
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t1,
             alignment: Alignment.center,
             child: Text(L.tr("Ext"), style: _textHeader1)),
         //total
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t1,
             alignment: Alignment.center,
             child: Text("Total", style: _textHeader1)),
         //PAST
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t1,
             alignment: Alignment.center,
             child: Text(L.tr("Past"), style: _textHeader1)),
         //plan
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t2,
             alignment: Alignment.center,
             child: Text("Plan", style: _textHeader1)),
-        SizedBox.fromSize(size: const Size(100, 0)),
+        Expanded(child: Container()),
         //Prod
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t3,
             alignment: Alignment.center,
             child: Text(L.tr("Prod"), style: _textHeader2)),
         //Stock
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t3,
             alignment: Alignment.center,
             child: Text(L.tr("Stock"), style: _textHeader2)),
         //Pref
         Container(
-            width: 130,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
@@ -265,11 +297,12 @@ class TVScreen extends StatelessWidget {
   }
 
   Widget _tableRow(ModelRow r) {
+    int i = 0;
     return Row(
       children: [
         //line
         Container(
-            width: 150,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t5,
@@ -277,7 +310,7 @@ class TVScreen extends StatelessWidget {
             child: Text(r.line!, style: _textLine)),
         //brand
         Container(
-            width: 200,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t5,
@@ -285,7 +318,7 @@ class TVScreen extends StatelessWidget {
             child: Text(r.brand!, style: _textTableHeader)),
         //model
         Container(
-            width: 200,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t5,
@@ -293,7 +326,7 @@ class TVScreen extends StatelessWidget {
             child: Text(r.Model!, style: _textTableHeader)),
         //10.30
         Container(
-            width: 100,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t6,
@@ -301,7 +334,7 @@ class TVScreen extends StatelessWidget {
             child: Text(r.t1030!, style: _textTableHeader)),
         //12.30
         Container(
-            width: 100,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t6,
@@ -309,7 +342,7 @@ class TVScreen extends StatelessWidget {
             child: Text(r.t1230!, style: _textTableHeader)),
         //15.30
         Container(
-            width: 100,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t6,
@@ -317,7 +350,7 @@ class TVScreen extends StatelessWidget {
             child: Text(r.t1530!, style: _textTableHeader)),
         //17.30
         Container(
-            width: 100,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t6,
@@ -325,7 +358,7 @@ class TVScreen extends StatelessWidget {
             child: Text(r.t1730!, style: _textTableHeader)),
         //Ext.
         Container(
-            width: 100,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t6,
@@ -333,7 +366,7 @@ class TVScreen extends StatelessWidget {
             child: Text(r.Ext!, style: _textTableHeader)),
         //total
         Container(
-            width: 100,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t7,
@@ -341,7 +374,7 @@ class TVScreen extends StatelessWidget {
             child: Text(r.Total!, style: _textTotal)),
         //PAST
         Container(
-            width: 100,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t5,
@@ -349,16 +382,16 @@ class TVScreen extends StatelessWidget {
             child: Text(r.Past!, style: _textTableHeader)),
         //plan
         Container(
-            width: 100,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t8,
             alignment: Alignment.center,
             child: Text(r.Plan!, style: _textPlan)),
-        SizedBox.fromSize(size: const Size(100, 0)),
+        Expanded(child: Container()),
         //PAST
         Container(
-            width: 100,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t3,
@@ -366,7 +399,7 @@ class TVScreen extends StatelessWidget {
             child: Text(r.Prod!, style: _textTableHeader)),
         //plan
         Container(
-            width: 100,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t3,
@@ -374,7 +407,7 @@ class TVScreen extends StatelessWidget {
             child: Text(r.Magaz!, style: _textTableHeader)),
         //perf
         Container(
-            width: 130,
+            width: cw[i++],
             height: rowHeight,
             padding: _standartPadding,
             decoration: _t9,
@@ -385,11 +418,13 @@ class TVScreen extends StatelessWidget {
   }
 
   Widget _totalRow() {
+    int i = 3;
     return Row(
       children: [
         //line
         Container(
-            width: 550,
+            height: headerHeight,
+            width: cw[0] + cw[1] + cw[2],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
@@ -397,78 +432,89 @@ class TVScreen extends StatelessWidget {
 
         //10.30
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(_model.totalRow.t1030!, style: _textHeader3)),
         //12.30
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(_model.totalRow.t1230!, style: _textHeader3)),
         //15.30
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(_model.totalRow.t1530!, style: _textHeader3)),
         //17.30
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(_model.totalRow.t1730!, style: _textHeader3)),
         //Ext.
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(_model.totalRow.Ext!, style: _textHeader3)),
         //total
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(_model.totalRow.Total!, style: _textHeader3)),
         //PAST
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(_model.totalRow.Past!, style: _textHeader3)),
         //plan
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(_model.totalRow.Plan!, style: _textHeader3)),
-        SizedBox.fromSize(size: const Size(100, 0)),
+        Expanded(child: Container()),
         //PAST
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(_model.totalRow.Prod!, style: _textHeader3)),
         //plan
         Container(
-            width: 100,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(_model.totalRow.Magaz!, style: _textHeader3)),
         //perf
         Container(
-            width: 130,
+            height: headerHeight,
+            width: cw[i++],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,

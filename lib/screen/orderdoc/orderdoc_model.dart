@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-import 'package:sartex/data/order_row.dart';
-import 'package:sartex/utils/http_sql.dart';
+import 'package:sartex/screen/patver_data/order_row.dart';
 
-import '../../data/sql.dart';
 import '../../utils/text_editing_controller.dart';
 
 class OrderDocModel {

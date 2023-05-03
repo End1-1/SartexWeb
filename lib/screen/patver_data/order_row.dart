@@ -48,6 +48,8 @@ class OrderRow with _$OrderRow {
       required String? Size11,
       required String? Size12,
       required String? Total,
+      required String? executed,
+        required String? nextload,
       required String? discarded,
       required String? appended}) = _OrderRow;
 
@@ -67,13 +69,11 @@ class OrderRowDatasource extends SartexDataGridSource {
   late List<String> executors;
   late List<String> brands;
 
-  OrderRowDatasource({required super.context, required List data}) {
-    addRows(data);
+  OrderRowDatasource() {
     addColumn('edit');
     addColumn(L.tr('Id'));
     addColumn(L.tr('Date'));
     addColumn(L.tr('NN'));
-    addColumn(L.tr('Customer'));
     addColumn(L.tr('Brand'));
     addColumn(L.tr('Model'));
     addColumn(L.tr('Model code'));
@@ -81,8 +81,8 @@ class OrderRowDatasource extends SartexDataGridSource {
     addColumn(L.tr('+'));
     addColumn(L.tr('-'));
     addColumn(L.tr('Total'));
-    addColumn(L.tr('Executed'));
-    addColumn(L.tr('Executed %'));
+    addColumn(L.tr('Exec.'));
+    addColumn(L.tr('Exec. %'));
     addColumn(L.tr('Remain'));
     addColumn(L.tr('Next loading'));
     addColumn(L.tr('Need execute'));
@@ -90,37 +90,41 @@ class OrderRowDatasource extends SartexDataGridSource {
     addColumn(L.tr('Status'));
     HttpSqlQuery.listOfQuery("select name from Parthners where type='Արտադրող'")
         .then((value) => executors = value);
-    HttpSqlQuery.listDistinctOf('Products', 'brand');
   }
 
   @override
   void addRows(List d) {
-    data.addAll(d);
-    rows.addAll(d.map<DataGridRow>((e) => DataGridRow(cells: [
-          DataGridCell(columnName: 'edit', value: e.IDPatver),
-          DataGridCell(columnName: L.tr('Id'), value: e.id),
-          DataGridCell(columnName: L.tr('Date'), value: e.date),
-          DataGridCell(columnName: L.tr('NN'), value: e.PatverN),
-          DataGridCell(columnName: L.tr('Customer'), value: e.Patviratu),
-          DataGridCell(columnName: L.tr('Brand'), value: e.brand),
-          DataGridCell(columnName: L.tr('Model'), value: e.Model),
-          DataGridCell(columnName: L.tr('Model code'), value: e.ModelCod),
-          DataGridCell(columnName: L.tr('Executor'), value: e.Katarox),
-          DataGridCell(columnName: '+', value: e.appended),
-          DataGridCell(columnName: '-', value: e.discarded),
-          DataGridCell(columnName: L.tr('Total'), value: e.Total),
-          DataGridCell(columnName: L.tr('Executed'), value: 'HARCNEL'),
-          DataGridCell(columnName: L.tr('Executed %'), value: 'HARCNEL'),
-          DataGridCell(columnName: L.tr('Remain'), value: 'HARCNEL'),
-          DataGridCell(columnName: L.tr('Next loading'), value: 'HARC'),
-          DataGridCell(columnName: L.tr('Need execute'), value: 'HARC'),
-          DataGridCell(columnName: L.tr('Execute date'), value: e.PatverDate),
-          DataGridCell(columnName: L.tr('Status'), value: e.status),
-        ])));
+    var o = OrderRowList.fromJson({'list': d});
+    rows.addAll(o.list.map<DataGridRow>((e) { int i = 0;
+      return DataGridRow(cells: [
+          DataGridCell(columnName: columnNames[i++], value: e.IDPatver),
+          DataGridCell(columnName: columnNames[i++], value: e.id),
+          DataGridCell(columnName: columnNames[i++], value: e.date),
+          DataGridCell(columnName: columnNames[i++], value: e.PatverN),
+          DataGridCell(columnName: columnNames[i++], value: e.brand),
+          DataGridCell(columnName: columnNames[i++], value: e.Model),
+          DataGridCell(columnName: columnNames[i++], value: e.ModelCod),
+          DataGridCell(columnName: columnNames[i++], value: e.Katarox),
+          DataGridCell(columnName: columnNames[i++], value: e.appended),
+          DataGridCell(columnName: columnNames[i++], value: e.discarded),
+          DataGridCell(columnName: columnNames[i++], value: e.Total),
+          DataGridCell(columnName: columnNames[i++], value: e.executed),
+          DataGridCell(
+              columnName: columnNames[i++],
+              value: (double.tryParse(e.Total ?? '0') ?? 0) > 0
+                  ? (((double.tryParse(e.executed ?? '0') ?? 0) /
+                      (double.tryParse(e.Total ?? '0') ?? 0)) * 100).truncateToDouble()
+                  : 0),
+          DataGridCell(columnName: columnNames[i++], value: (double.tryParse(e.Total ?? '0') ?? 0) - (double.tryParse(e.executed ?? '0') ?? 0)),
+          DataGridCell(columnName: columnNames[i++], value: e.nextload),
+          DataGridCell(columnName: columnNames[i++], value: ((double.tryParse(e.Total ?? '0') ?? 0) - (double.tryParse(e.executed ?? '0') ?? 0)) - (double.tryParse(e.nextload ?? '0') ?? 0) ),
+          DataGridCell(columnName: columnNames[i++], value: e.PatverDate),
+          DataGridCell(columnName: columnNames[i++], value: e.status),
+        ]);}));
   }
 
   @override
-  Widget getEditWidget(String id) {
+  Widget getEditWidget(BuildContext context, String id) {
     return OrderDocScreen(orderId: id, datasource: this);
   }
 }

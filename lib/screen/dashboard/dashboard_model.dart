@@ -1,7 +1,14 @@
-class DashboardModel<T> {
-  late T datasource;
+import 'package:sartex/screen/app/app_model.dart';
 
-  DashboardModel(T t) {
-    datasource = t;
+class DashboardModel extends AppModel {
+  @override
+  String sql() {
+    return "";
   }
+
+  @override
+  createDatasource() {
+
+  }
+
 }

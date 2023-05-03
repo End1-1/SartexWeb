@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sartex/data/sartex_datagridsource.dart';
+import 'package:sartex/utils/translator.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 part 'data_sizes.freezed.dart';
@@ -83,48 +84,47 @@ class SizeList with _$SizeList {
 }
 
 class SizeDatasource extends SartexDataGridSource {
-  SizeDatasource({required super.context, required List data}){
-    addRows(data);
-    addColumn('Edit');
-    addColumn('Id');
-    addColumn('Code');
-    addColumn('Country');
-    addColumn('Name');
-    addColumn('size01');
-    addColumn('size02');
-    addColumn('size03');
-    addColumn('size04');
-    addColumn('size05');
-    addColumn('size06');
-    addColumn('size07');
-    addColumn('size08');
-    addColumn('size09');
-    addColumn('size10');
-    addColumn('size11');
-    addColumn('size12');
+  SizeDatasource(){
+    addColumn(L.tr('Id'));
+    addColumn(L.tr('Code'));
+    addColumn(L.tr('Country'));
+    addColumn(L.tr('Name'));
+    addColumn(L.tr('size01'));
+    addColumn(L.tr('size02'));
+    addColumn(L.tr('size03'));
+    addColumn(L.tr('size04'));
+    addColumn(L.tr('size05'));
+    addColumn(L.tr('size06'));
+    addColumn(L.tr('size07'));
+    addColumn(L.tr('size08'));
+    addColumn(L.tr('size09'));
+    addColumn(L.tr('size10'));
+    addColumn(L.tr('size11'));
+    addColumn(L.tr('size12'));
   }
 
   @override
   void addRows(List d) {
-    data.addAll(d);
-    rows.addAll(d.map<DataGridRow>((e) => DataGridRow(cells: [
-      DataGridCell(columnName: 'editdata', value: e.id),
-      DataGridCell(columnName: 'id', value: e.id),
-      DataGridCell(columnName: 'code', value: e.code),
-      DataGridCell(columnName: 'country', value: e.country),
-      DataGridCell(columnName: 'name', value: e.name),
-      DataGridCell(columnName: 'size01', value: e.size01),
-      DataGridCell(columnName: 'size02', value: e.size02),
-      DataGridCell(columnName: 'size03', value: e.size03),
-      DataGridCell(columnName: 'size04', value: e.size04),
-      DataGridCell(columnName: 'size05', value: e.size05),
-      DataGridCell(columnName: 'size06', value: e.size06),
-      DataGridCell(columnName: 'size07', value: e.size07),
-      DataGridCell(columnName: 'size08', value: e.size08),
-      DataGridCell(columnName: 'size09', value: e.size09),
-      DataGridCell(columnName: 'size10', value: e.size10),
-      DataGridCell(columnName: 'size11', value: e.size11),
-      DataGridCell(columnName: 'size12', value: e.size12),
-    ])));
+    SizeList sl = SizeList.fromJson({'sizes':d});
+    rows.addAll(sl.sizes.map<DataGridRow>((e) {
+      int i = 0;
+        return DataGridRow(cells: [
+      DataGridCell(columnName: columnNames[i++], value: e.id),
+      DataGridCell(columnName: columnNames[i++], value: e.code),
+      DataGridCell(columnName: columnNames[i++], value: e.country),
+      DataGridCell(columnName: columnNames[i++], value: e.name),
+      DataGridCell(columnName: columnNames[i++], value: e.size01),
+      DataGridCell(columnName: columnNames[i++], value: e.size02),
+      DataGridCell(columnName: columnNames[i++], value: e.size03),
+      DataGridCell(columnName: columnNames[i++], value: e.size04),
+      DataGridCell(columnName: columnNames[i++], value: e.size05),
+      DataGridCell(columnName: columnNames[i++], value: e.size06),
+      DataGridCell(columnName: columnNames[i++], value: e.size07),
+      DataGridCell(columnName: columnNames[i++], value: e.size08),
+      DataGridCell(columnName: columnNames[i++], value: e.size09),
+      DataGridCell(columnName: columnNames[i++], value: e.size10),
+      DataGridCell(columnName: columnNames[i++], value: e.size11),
+      DataGridCell(columnName: columnNames[i++], value: e.size12),
+    ]);}));
   }
 }

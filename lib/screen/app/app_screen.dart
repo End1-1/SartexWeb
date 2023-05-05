@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sartex/screen/app/app_left_menu.dart';
 import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/prefs.dart';
@@ -15,6 +16,16 @@ abstract class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if ((prefs.getInt(key_user_id) ?? 0) == 0) {
+      print(ModalRoute.of(context)?.settings.name);
+      if (ModalRoute.of(context)?.settings.name != '/') {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Navigator.pushReplacementNamed(context, '/');
+          return const SizedBox(
+              height: 36, width: 36, child: CircularProgressIndicator());
+        });
+      }
+    }
     return Scaffold(
       body: SafeArea(
           child: Stack(alignment: Alignment.topLeft, children: [
@@ -38,10 +49,21 @@ abstract class App extends StatelessWidget {
                           const TextStyle(color: Colors.white, fontSize: 20)),
                   for (final e in titleWidget(context)) ...[e],
                   Expanded(child: Container()),
-                  SvgButton(
-                    onTap: () {},
-                    assetPath: 'svg/user.svg',
-                    caption: prefs.getString(key_full_name)!,
+                  PopupMenuButton<int>(
+                    onSelected: (v) {
+                      switch (v) {
+                        case 1:
+                          prefs.setInt(key_user_id, 0);
+                          Navigator.pushNamed(context, '/');
+                      }
+                    },
+                    icon: SvgPicture.asset('svg/user.svg'),
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        PopupMenuItem(child: Text(prefs.getString(key_full_name)!)),
+                        PopupMenuItem(value: 1, child: Text(L.tr('Logout'))),
+                      ];
+                  },
                   )
                 ],
               )),

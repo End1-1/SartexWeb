@@ -22,6 +22,7 @@ const route_product_statuses = 'product_statuses';
 const route_partners = 'partners';
 const route_sizes = 'sizes';
 const route_language_editor = 'language_editor';
+const route_users_role = 'users_role';
 
 const key_error = 'key_error';
 const key_empty = 'empty';
@@ -30,6 +31,7 @@ const key_language = 'language';
 const key_language_am = 'language_am';
 const key_language_it = 'language_it';
 
+const key_user_id = 'key_user_id';
 const key_user_branch = 'key_user_branch';
 const key_user_is_active = 'key_user_is_active';
 const key_user_firstname = 'key_user_firstname';
@@ -37,6 +39,7 @@ const key_user_lastname = 'key_user_lastname';
 const key_user_position = 'key_user_position';
 const key_user_role = 'key_user_role';
 const key_full_name = "key_full_name";
+const key_role = 'key_role';
 
 const color_menu_background1 = Color(0xff1e2757);
 const color_menu_background2 = Color(0xff042b4a);

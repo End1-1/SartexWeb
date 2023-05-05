@@ -1,10 +1,7 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sartex/data/sartex_datagridsource.dart';
 import 'package:sartex/data/sql.dart';
-import 'package:sartex/screen/popup_values_screen.dart';
 import 'package:sartex/utils/http_sql.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -12,7 +9,6 @@ import '../../utils/translator.dart';
 import '../../widgets/edit_widget.dart';
 
 part 'data_user.freezed.dart';
-
 part 'data_user.g.dart';
 
 @freezed
@@ -134,7 +130,7 @@ class UserEditWidget extends EditWidget {
     value = await HttpSqlQuery.listOfQuery(
         'select distinct(type) from Users where type is not null');
     typeList = value;
-    value = await HttpSqlQuery.listDistinctOf('Users', 'role');
+    value = await HttpSqlQuery.listDistinctOf('RoleNames', 'name');
     roleList = value;
   }
 
@@ -245,6 +241,7 @@ class UserEditWidget extends EditWidget {
         active: _tecActive.text,
         department: _tecDepartment.text,
         position: _tecPosition.text,
+        role: _tecRole.text,
         tabelNumber: _tecTabelNN.text);
     String sql;
     if (user.id.isEmpty) {
@@ -252,12 +249,13 @@ class UserEditWidget extends EditWidget {
       json.remove('id');
       sql = Sql.insert('Users', json);
     } else {
-      String updatePassword = _tecPosition.text.isNotEmpty
+      String updatePassword = _tecPassword.text.isNotEmpty
           ? ",password='${_tecPassword.text}'"
           : "";
       sql =
           "update Users set branch='${user.branch}', active='${user.active}', department='${user.department}',"
           "firstName='${user.firstName}', lastName='${user.lastName}', middleName='${user.middleName}', "
+          "role='${user.role}', "
           "email='${user.email}', position='${user.position}' $updatePassword where id='${user.id}'";
     }
     HttpSqlQuery.get(sql).then((value) {

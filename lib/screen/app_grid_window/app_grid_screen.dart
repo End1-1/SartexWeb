@@ -35,12 +35,12 @@ abstract class AppGridScreen extends App {
                   color: Colors.red,
                   fontSize: 14,
                 )),
-            child: SfDataGrid(
+            child: MouseRegion(cursor: SystemMouseCursors.move, child: SfDataGrid(
                 allowColumnsResizing: true,
                 allowFiltering: true,
                 allowSorting: true,
                 isScrollbarAlwaysShown: true,
-                onCellDoubleTap: (details) {
+                onCellTap: (details) {
                   var id = model.datasource
                       .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                       .getCells()[0]
@@ -51,7 +51,7 @@ abstract class AppGridScreen extends App {
                 },
                 columnWidthMode: state.data.isEmpty ? ColumnWidthMode.fitByColumnName : ColumnWidthMode.auto,
                 source: model!.datasource,
-                columns: model!.datasource.columns));
+                columns: model!.datasource.columns)));
       }
       return const Align(
           alignment: Alignment.center, child: CircularProgressIndicator());

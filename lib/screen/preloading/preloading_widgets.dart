@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sartex/screen/preloading/preloading_model.dart';
 import 'package:sartex/utils/consts.dart';
+import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/svg_button.dart';
 
@@ -699,6 +700,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                 ],
               ),
     //RemoveButton
+              if (prefs.roleWrite('2'))
               SizedBox(
                   width: 60,
                   height: 70,

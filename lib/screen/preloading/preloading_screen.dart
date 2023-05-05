@@ -6,6 +6,7 @@ import 'package:sartex/screen/preloading/preloading_item.dart';
 import 'package:sartex/screen/preloading/preloading_model.dart';
 import 'package:sartex/screen/preloading/preloading_widgets.dart';
 import 'package:sartex/utils/consts.dart';
+import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/edit_widget.dart';
 import 'package:sartex/widgets/svg_button.dart';
@@ -70,6 +71,7 @@ class PreloadingScreen extends EditWidget {
                       }, () {});
                     },
                     assetPath: 'svg/cancel.svg'),
+                if (prefs.roleWrite('2'))
                 SvgButton(
                     darkMode: false,
                     onTap: () {
@@ -104,11 +106,12 @@ class PreloadingScreen extends EditWidget {
                         ),
                         body: TabBarView(
                           children: [
+                            prefs.roleWrite("2") ?
                             Container(
                                 alignment: Alignment.topLeft,
                                 padding:
                                     const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                                child: PreloadingLine(model: _model, line1: true)),
+                                child: PreloadingLine(model: _model, line1: true)) : Container(),
                             Container(
                                 alignment: Alignment.topLeft,
                                 padding:

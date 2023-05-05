@@ -139,7 +139,13 @@ class OrderDocScreen extends EditWidget {
                       }),
                 ),
                 const Divider(height: 30, color: Colors.transparent),
-                saveWidget(context, Object())
+                prefs.roleWrite("1") ? saveWidget(context, Object()) :
+                Padding(padding: const EdgeInsets.all(5), child: OutlinedButton(
+                    style: outlined_button_style,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(L.tr('Close'), style: const TextStyle()))),
               ],
             )));
   }
@@ -214,7 +220,7 @@ class OrderDocScreen extends EditWidget {
               height: rowheight,
               width: columnWidths[i],
               decoration: decoration,
-              child: Align(
+              child: prefs.roleWrite("1") ? Align(
                   alignment: Alignment.center,
                   child: SvgButton(
                     onTap: () {
@@ -263,7 +269,9 @@ class OrderDocScreen extends EditWidget {
                           .add(OrderDocNewRow());
                     },
                     assetPath: 'svg/plusfolder.svg',
-                  ))));
+                  )
+              ) : Container()
+          ));
           break;
       }
     }
@@ -762,7 +770,7 @@ class OrderDocScreen extends EditWidget {
                                           },
                                           assetPath: 'svg/edit.svg',
                                           darkMode: false))
-                                  : SizedBox(
+                                  : prefs.roleWrite("1") ? SizedBox(
                                       height: rowheight,
                                       child: SvgButton(
                                           width: 20,
@@ -793,8 +801,8 @@ class OrderDocScreen extends EditWidget {
                                                 .add(OrderDocNewRow());
                                           },
                                           assetPath: 'svg/plus.svg',
-                                          darkMode: false)),
-                              SizedBox(
+                                          darkMode: false)) : Container(),
+                            prefs.roleWrite("1") ? SizedBox(
                                   height: rowheight,
                                   child: SvgButton(
                                       width: 20,
@@ -831,7 +839,7 @@ class OrderDocScreen extends EditWidget {
                                             .add(OrderDocNewRow());
                                       },
                                       assetPath: 'svg/minus.svg',
-                                      darkMode: false)),
+                                      darkMode: false)) : Container(),
                               SizedBox(
                                   height: rowheight,
                                   child: SvgButton(
@@ -950,15 +958,19 @@ class OrderDocScreen extends EditWidget {
       s.remove('appended');
       s.remove('discarded');
       s.remove('main');
+      s.remove('executed');
+      s.remove('nextload');
       if (or.id.isEmpty) {
         s.remove('id');
         sql = Sql.insert('patver_data', s);
       } else {
-        sql = Sql.update('patver_data', s);
+        //sql = Sql.update('patver_data', s);
       }
-      await HttpSqlQuery.get(sql);
-      int index = model.details.indexOf(e);
-      model.details[index] = or;
+      if (sql.isNotEmpty) {
+        await HttpSqlQuery.get(sql);
+        int index = model.details.indexOf(e);
+        model.details[index] = or;
+      }
     }
     await appDialog(context, L.tr('Saved'));
     Navigator.pop(context, uuid);

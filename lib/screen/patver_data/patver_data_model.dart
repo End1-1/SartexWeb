@@ -26,7 +26,7 @@ class PatverDataModel extends AppModel<OrderRowDatasource> {
         + "from patver_data pd "
         + "left join (select parent_id, sum(cast(Total as unsigned)) as executed from patver_data where action='done' group by 1) as ex on ex.parent_id=pd.parent_id  "
         + "left join (select pn.parent_id, sum(d.qanak) as nextload from Docs d left join Apranq a on a.apr_id=d.apr_id left join patver_data pn on pn.id=a.pid) as nl on nl.parent_id=pd.parent_id "
-        + "where pd.date between '${DateFormat('yyyy-MM-dd').format(d1)}' and '${DateFormat('yyyy-MM-dd').format(d2)}' and pd.status in (${getStatuses()})"
+        + "where pd.id>0 ${getDates()} and pd.status in (${getStatuses()})"
         "group by IDPatver order by 10";
   }
 
@@ -38,6 +38,14 @@ class PatverDataModel extends AppModel<OrderRowDatasource> {
   @override
   String filterString() {
     return '${DateFormat('dd/MM/yyyy').format(d1)} - ${DateFormat('dd/MM/yyyy').format(d2)}';
+  }
+
+  String getDates() {
+    if (statusValues[1]) {
+      return "and pd.PatverDate between '${DateFormat('yyyy-MM-dd').format(d1)}' and '${DateFormat('yyyy-MM-dd').format(d2)}' ";
+    } else {
+      return "";
+    }
   }
 
   String getStatuses() {

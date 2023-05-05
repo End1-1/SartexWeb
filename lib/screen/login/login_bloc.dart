@@ -8,7 +8,6 @@ import 'login_states.dart';
 class LoginBloc extends Bloc<LoginAction, LoginState> {
 
   LoginBloc(super.initialState) {
-    mapEventToState(LoginActionStartApp());
   }
 
   Future<void> mapEventToState(LoginAction event) async {

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sartex/utils/consts.dart';
+import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/svg_button.dart';
 import 'package:sartex/widgets/text_mouse_button.dart';
@@ -43,10 +44,7 @@ class _LeftMenu extends State<LeftMenu> {
                 children: [
                   SvgButton(
                       onTap: () {
-                        setState(() {
-                          expanded = false;
-                          Navigator.pushNamed(context, route_tv);
-                        });
+
                       },
                       assetPath: 'svg/management.svg'),
                   Expanded(
@@ -54,6 +52,7 @@ class _LeftMenu extends State<LeftMenu> {
                           onTap: () {}, caption: L.tr('Management')))
                 ],
               ),
+              if (prefs.roleRead("4"))
               Row(
                 children: [
                   SvgButton(
@@ -71,6 +70,7 @@ class _LeftMenu extends State<LeftMenu> {
                           caption: L.tr('TV')))
                 ],
               ),
+              if (prefs.roleRead("1"))
               Row(
                 children: [
                   SvgButton(
@@ -88,6 +88,7 @@ class _LeftMenu extends State<LeftMenu> {
                           caption: L.tr('Orders')))
                 ],
               ),
+              if (prefs.roleRead("2"))
               Row(
                 children: [
                   SvgButton(
@@ -105,6 +106,7 @@ class _LeftMenu extends State<LeftMenu> {
                           caption: L.tr('Loading')))
                 ],
               ),
+              if (prefs.roleRead("3"))
               Row(
                 children: [
                   SvgButton(
@@ -128,6 +130,7 @@ class _LeftMenu extends State<LeftMenu> {
                     child:
                         TextMouseButton(onTap: () {}, caption: L.tr('Reports')))
               ]),
+              if (prefs.readDirectoriesCount() > 0)
               Row(
                 children: [
                   SvgButton(
@@ -151,7 +154,7 @@ class _LeftMenu extends State<LeftMenu> {
                 ],
               ),
               AnimatedContainer(
-                  height: expandedDirectory ? 40 * 7 : 0,
+                  height: expandedDirectory ? 40 * prefs.readDirectoriesCount() : 0,
                   duration: const Duration(milliseconds: 200),
                   child: SingleChildScrollView(
                     child: Column(
@@ -159,34 +162,43 @@ class _LeftMenu extends State<LeftMenu> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: [
+                        if (prefs.roleRead("6"))
                         TextMouseButton(
                             onTap: () {
                               Navigator.pushNamed(context, route_users);
                             },
                             caption: L.tr('Users')),
+                        if (prefs.roleRead("7"))
                         TextMouseButton(
                             onTap: () {
                               Navigator.pushNamed(context, route_department);
                             },
                             caption: L.tr('Departments')),
+                        if (prefs.roleRead("7"))
                         TextMouseButton(
                             onTap: () {
                               Navigator.pushNamed(context, route_product);
                             },
                             caption: L.tr('Products')),
+                        if (prefs.roleRead("7"))
                         TextMouseButton(
                             onTap: () {
                               Navigator.pushNamed(
                                   context, route_product_statuses);
                             },
                             caption: L.tr('Products states')),
+                        if (prefs.roleRead("7"))
                         TextMouseButton(
                             onTap: () {
                               Navigator.pushNamed(context, route_partners);
                             },
                             caption: L.tr('Partners')),
+                        if (prefs.roleRead("5"))
                         TextMouseButton(
-                            onTap: () {}, caption: L.tr('Permissions')),
+                            onTap: () {
+                              Navigator.pushNamed(context, route_users_role);
+                            }, caption: L.tr('Permissions')),
+                        if (prefs.roleRead("7"))
                         TextMouseButton(
                             onTap: () {
                               Navigator.pushNamed(context, route_sizes);
@@ -195,6 +207,7 @@ class _LeftMenu extends State<LeftMenu> {
                       ],
                     ),
                   )),
+              if (prefs.roleRead("8"))
               Row(
                 children: [
                   SvgButton(

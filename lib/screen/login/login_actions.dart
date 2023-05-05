@@ -1,7 +1,4 @@
-import 'dart:convert';
-import 'dart:html';
-import 'dart:io';
-import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../utils/consts.dart';
@@ -14,22 +11,6 @@ abstract class LoginAction {
   Future<void> proccesing();
 
   LoginState state = LoginStateDone();
-}
-
-class LoginActionStartApp extends LoginAction {
-  @override
-  Future<void> proccesing() async {
-    if (prefs.getString(key_session_id) != null &&
-        prefs.getString(key_session_id)!.isNotEmpty) {
-      List<dynamic> response = await HttpSqlQuery.get(
-          'select * from Sesions where sesion_id=\'${prefs.getString(key_session_id)!}\'');
-      if (response.isNotEmpty && !response[0].containsKey(key_error)) {
-        state = LoginStateLoginComplete();
-        return;
-      }
-    }
-    state = LoginStateDone();
-  }
 }
 
 class LoginActionAuth extends LoginAction {
@@ -72,7 +53,9 @@ class LoginActionAuth extends LoginAction {
       state = SartexAppStateError(errorString);
       return;
     }
-    print(userData);
+    if (kDebugMode) {
+      print(userData);
+    }
 
     var uuid = (const Uuid().v1() + const Uuid().v1()).replaceAll("-", "");
     map['sl'] =
@@ -86,6 +69,7 @@ class LoginActionAuth extends LoginAction {
     }
     await prefs.setString(key_session_id, uuid);
 
+    await prefs.setInt(key_user_id, int.tryParse(userData[0]['id']) ?? 0);
     await prefs.setString(key_user_branch, userData[0]['branch']);
     await prefs.setBool(key_user_is_active, userData[0]['active'] == 'yes');
     await prefs.setString(key_user_position, userData[0]['position']);
@@ -94,6 +78,17 @@ class LoginActionAuth extends LoginAction {
     await prefs.setString(key_user_role, userData[0]['role']);
     await prefs.setString(
         key_full_name, '${userData[0]['lastName']} ${userData[0]['firstName']}');
+
+    var result = await HttpSqlQuery.post({'sl': "select id from RoleNames where name='${userData[0]['role']}'"});
+    if (result.isEmpty) {
+      state = SartexAppStateError(L.tr('Role not assigned'));
+      return;
+    }
+
+    result = await HttpSqlQuery.post({'sl': "select action, read_flag, write_flag from RoleData where role_id=${result[0]['id']}"});
+    for (var e in result) {
+      prefs.setRoleAction(e['action'], e['read_flag'], e['write_flag']);
+    }
 
     state = LoginStateLoginComplete();
   }

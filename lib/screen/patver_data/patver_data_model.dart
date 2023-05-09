@@ -18,7 +18,7 @@ class PatverDataModel extends AppModel<OrderRowDatasource> {
 
   @override
   String sql() {
-    return "select id, branch, action, User, date, IDPatver, status, PatverN, PatverDate, "
+    return "select id, branch, action, User, date, IDPatver, status, PatverN, PatverDate, country, "
         + "if (cast(pd.parent_id as unsigned)=0, pd.id, pd.parent_id) as parent_id, Katarox, Patviratu, brand, Model, short_code, ModelCod, "
         + "sum(if(action='add', cast(Total as unsigned), 0)) as appended,sum(if(action='cancel', cast(Total as unsigned), 0)) as discarded, "
         + "sum(if(action='add', cast(Total as unsigned), 0)) - sum(if(action='cancel', cast(Total as unsigned), 0)) as Total, "

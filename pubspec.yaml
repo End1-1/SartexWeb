@@ -26,6 +26,8 @@ dependencies:
   syncfusion_flutter_datagrid: ^20.4.53
   table_calendar: ^3.0.9
   google_fonts: ^4.0.4
+  printing: ^5.10.3
+  syncfusion_flutter_datagrid_export: ^20.4.54-beta
 
 dev_dependencies:
   flutter_test:

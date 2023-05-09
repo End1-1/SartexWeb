@@ -75,11 +75,11 @@ class LoginActionAuth extends LoginAction {
     await prefs.setString(key_user_position, userData[0]['position']);
     await prefs.setString(key_user_firstname, userData[0]['firstName']);
     await prefs.setString(key_user_lastname, userData[0]['lastName']);
-    await prefs.setString(key_user_role, userData[0]['role']);
+    await prefs.setString(key_user_role, userData[0]['role_id'] ?? '');
     await prefs.setString(
         key_full_name, '${userData[0]['lastName']} ${userData[0]['firstName']}');
 
-    var result = await HttpSqlQuery.post({'sl': "select id from RoleNames where name='${userData[0]['role']}'"});
+    var result = await HttpSqlQuery.post({'sl': "select id from RoleNames where name='${userData[0]['role_id']}'"});
     if (result.isEmpty) {
       state = SartexAppStateError(L.tr('Role not assigned'));
       return;

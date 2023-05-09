@@ -39,6 +39,8 @@ class UsersRoleEditWidget extends EditWidget {
     "6": const RoleData(action: "6", read_flag: "0", write_flag: "0"),
     "7": const RoleData(action: "7", read_flag: "0", write_flag: "0"),
     "8": const RoleData(action: "8", read_flag: "0", write_flag: "0"),
+    "9": const RoleData(action: "9", read_flag: "0", write_flag: "0"),
+    "10": const RoleData(action: "10", read_flag: "0", write_flag: "0"),
   };
 
   @override
@@ -98,6 +100,8 @@ class UsersRoleEditWidget extends EditWidget {
                             child: Text(L.tr('Write')))),
                   ],
                 ),
+                const SizedBox(width: 20),
+                _Checkbox(rolesData, L.tr('Super admin'), "9"),
                 const SizedBox(height: 10),
                 _Checkbox(rolesData, L.tr('Orders'), "1"),
                 const SizedBox(height: 10),
@@ -114,6 +118,8 @@ class UsersRoleEditWidget extends EditWidget {
                 _Checkbox(rolesData, L.tr('Other directories'), "7"),
                 const SizedBox(width: 20),
                 _Checkbox(rolesData, L.tr('Translator'), "8"),
+                const SizedBox(width: 20),
+                _Checkbox(rolesData, L.tr('Execute production'), "10"),
                 const SizedBox(width: 20),
                 Row(children: [
                   Expanded(child: Container()),

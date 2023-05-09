@@ -37,22 +37,32 @@ void main() async {
   for (var e in tl.list) {
     L.items[e.key] = e;
   }
-  var result = await HttpSqlQuery.post({'sl' : "select user_id from Sesions where sesion_id='${prefs.session()}' and status=1"});
+  var result = await HttpSqlQuery.post({
+    'sl':
+        "select user_id from Sesions where sesion_id='${prefs.session()}' and status=1"
+  });
   if (result.isEmpty) {
     prefs.setInt(key_user_id, 0);
   } else {
     prefs.setInt(key_user_id, int.tryParse(result[0]['user_id']) ?? 0);
-    result = await HttpSqlQuery.post({'sl': "select role from Users where id=${result[0]['user_id']}"});
-    result = await HttpSqlQuery.post({'sl': "select id from RoleNames where name='${result[0]['role']}'"});
-    if (result.isEmpty) {
-      prefs.setInt(key_user_id, 0);
-    } else {
-      result = await HttpSqlQuery.post({
-        'sl': "select action, read_flag, write_flag from RoleData where role_id=${result[0]['id']}"
-      });
-      for (var e in result) {
-        prefs.setRoleAction(e['action'], e['read_flag'], e['write_flag']);
+    result = await HttpSqlQuery.post(
+        {'sl': "select role_id from Users where id=${result[0]['user_id']}"});
+    if (result.isNotEmpty) {
+      result = await HttpSqlQuery.post(
+          {'sl': "select id from RoleNames where name='${result[0]['role_id']}'"});
+      if (result.isEmpty) {
+        prefs.setInt(key_user_id, 0);
+      } else {
+        result = await HttpSqlQuery.post({
+          'sl':
+              "select action, read_flag, write_flag from RoleData where role_id=${result[0]['id']}"
+        });
+        for (var e in result) {
+          prefs.setRoleAction(e['action'], e['read_flag'], e['write_flag']);
+        }
       }
+    } else {
+      prefs.setInt(key_user_id, 0);
     }
   }
   runApp(MyApp());
@@ -68,7 +78,6 @@ class MyApp extends StatelessWidget {
         //   fontFamily: 'Sylfaen'
         // ),
         debugShowCheckedModeBanner: false,
-
         routes: {
           route_root: (context) => const SartexLogin(),
           route_dashboard: (context) => Dashboard(),

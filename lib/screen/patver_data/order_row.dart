@@ -77,6 +77,7 @@ class OrderRowDatasource extends SartexDataGridSource {
     addColumn(L.tr('Brand'));
     addColumn(L.tr('Model'));
     addColumn(L.tr('Model code'));
+    addColumn(L.tr('Country'));
     addColumn(L.tr('Executor'));
     addColumn(L.tr('+'));
     addColumn(L.tr('-'));
@@ -104,6 +105,7 @@ class OrderRowDatasource extends SartexDataGridSource {
           DataGridCell(columnName: columnNames[i++], value: e.brand),
           DataGridCell(columnName: columnNames[i++], value: e.Model),
           DataGridCell(columnName: columnNames[i++], value: e.ModelCod),
+          DataGridCell(columnName: columnNames[i++], value: e.country),
           DataGridCell(columnName: columnNames[i++], value: e.Katarox),
           DataGridCell(columnName: columnNames[i++], value: e.appended),
           DataGridCell(columnName: columnNames[i++], value: e.discarded),

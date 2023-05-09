@@ -89,6 +89,7 @@ class PreloadingModel {
           Map<String, String> bind = {};
           bind['branch'] = prefs.getString(key_user_branch)!;
           bind['type'] = 'OUT';
+          bind['muqt_elq'] = 'elq';
           bind['date'] = DateFormat('yyyy-MM-dd')
               .format(DateFormat('dd/MM/yyyy').parse(editDate.text));
           bind['docnum'] = docNumber!;

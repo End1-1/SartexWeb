@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sartex/data/sartex_datagridsource.dart';
 import 'package:sartex/data/sql.dart';
 import 'package:sartex/utils/http_sql.dart';
+import 'package:sartex/utils/prefs.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../utils/translator.dart';
@@ -24,6 +25,7 @@ class DataUser with _$DataUser {
       required String middleName,
       required String position,
       required String? role,
+      required String? role_id,
       required String? tabelNumber,
       required String? user_id,
       required String? type}) = _DataUser;
@@ -54,6 +56,7 @@ class UserDataSource extends SartexDataGridSource {
     addColumn(L.tr('Active'));
     addColumn(L.tr('Tabel id'));
     addColumn(L.tr('Type'));
+    addColumn(L.tr('Role'));
   }
 
   @override
@@ -73,6 +76,7 @@ class UserDataSource extends SartexDataGridSource {
         DataGridCell(columnName: columnNames[i++], value: e.active),
         DataGridCell(columnName: columnNames[i++], value: e.tabelNumber),
         DataGridCell(columnName: columnNames[i++], value: e.type),
+        DataGridCell(columnName: columnNames[i++], value: e.role_id),
       ]);
     }));
   }
@@ -102,6 +106,7 @@ class UserEditWidget extends EditWidget {
       middleName: '',
       position: '',
       role: '',
+      role_id: '',
       tabelNumber: '',
       user_id: '',
       type: '');
@@ -144,10 +149,11 @@ class UserEditWidget extends EditWidget {
         _tecLastName.text = user!.lastName;
         _tecMiddleName.text = user!.middleName;
         _tecEmail.text = user.email;
+        _tecTabelNN.text = user.tabelNumber!;
         _tecPosition.text = user.position;
         _tecDepartment.text = user.department;
         _tecActive.text = user.active;
-        _tecRole.text = user.role ?? '';
+        _tecRole.text = user.role_id ?? '';
         _tecType.text = user.type ?? '';
       });
     }
@@ -222,6 +228,7 @@ class UserEditWidget extends EditWidget {
                 context: context,
                 title: 'Branch',
                 textEditingController: _tecBranch,
+                enabled: prefs.roleRead('9'),
                 list: branchList),
           ],
         ),
@@ -241,7 +248,7 @@ class UserEditWidget extends EditWidget {
         active: _tecActive.text,
         department: _tecDepartment.text,
         position: _tecPosition.text,
-        role: _tecRole.text,
+        role_id: _tecRole.text,
         tabelNumber: _tecTabelNN.text);
     String sql;
     if (user.id.isEmpty) {
@@ -255,7 +262,7 @@ class UserEditWidget extends EditWidget {
       sql =
           "update Users set branch='${user.branch}', active='${user.active}', department='${user.department}',"
           "firstName='${user.firstName}', lastName='${user.lastName}', middleName='${user.middleName}', "
-          "role='${user.role}', "
+          "role_id='${user.role_id}', "
           "email='${user.email}', position='${user.position}' $updatePassword where id='${user.id}'";
     }
     HttpSqlQuery.get(sql).then((value) {

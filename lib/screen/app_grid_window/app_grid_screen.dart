@@ -1,15 +1,19 @@
+import 'dart:html' as html;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sartex/screen/app/app_bloc.dart';
 import 'package:sartex/screen/app/app_screen.dart';
-import 'package:sartex/screen/patver_data/filter_widget.dart';
 import 'package:sartex/widgets/svg_button.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:syncfusion_flutter_datagrid_export/export.dart';
+import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 
 abstract class AppGridScreen extends App {
   final bool plusButton;
   final bool filterButton;
+  final gridKey = GlobalKey<SfDataGridState>();
 
   AppGridScreen(
       {super.key,
@@ -36,6 +40,7 @@ abstract class AppGridScreen extends App {
                   fontSize: 14,
                 )),
             child: MouseRegion(cursor: SystemMouseCursors.move, child: SfDataGrid(
+              key: gridKey,
                 allowColumnsResizing: true,
                 allowFiltering: true,
                 allowSorting: true,
@@ -85,7 +90,30 @@ abstract class AppGridScreen extends App {
               showFilter(context);
             },
             assetPath: 'svg/filter.svg')
-      ]
+      ],
+      SvgButton(
+          onTap: () async {
+
+            final Workbook workbook =
+            gridKey.currentState!.exportToExcelWorkbook();
+            final List<int> bytes = workbook.saveAsStream();
+            workbook.dispose();
+
+            final blob = html.Blob([bytes]);
+            final url = html.Url.createObjectUrlFromBlob(blob);
+            final anchor = html.document.createElement('a') as html.AnchorElement
+              ..href = url
+              ..style.display = 'none'
+              ..download = '$title.xlsx';
+            html.document.body?.children.add(anchor);
+            anchor.click();
+
+            html.document.body?.children.remove(anchor);
+            html.Url.revokeObjectUrl(url);
+
+
+          },
+          assetPath: 'svg/excel.svg')
     ];
   }
 

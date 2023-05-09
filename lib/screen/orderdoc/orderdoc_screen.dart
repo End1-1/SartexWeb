@@ -1,18 +1,21 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:sartex/data/data_product.dart';
-import 'package:sartex/screen/patver_data/order_row.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_bloc.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_event.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_header.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_model.dart';
+import 'package:sartex/screen/patver_data/order_row.dart';
 import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/widgets/edit_widget.dart';
 import 'package:uuid/uuid.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 import '../../data/sql.dart';
 import '../../utils/translator.dart';
@@ -21,9 +24,9 @@ import 'orderdoc_state.dart';
 
 class OrderDocScreen extends EditWidget {
   final List<double> columnWidths = [
-    200,
+    30,
     100,
-    50,
+    100,
     80,
     80,
     80,
@@ -38,6 +41,25 @@ class OrderDocScreen extends EditWidget {
     80,
     100,
     120,
+  ];
+  final List<double> printColumnWidths = [
+    30,
+    100,
+    100,
+    80,
+    80,
+    80,
+    80,
+    80,
+    80,
+    80,
+    80,
+    80,
+    80,
+    80,
+    80,
+    100,
+    200,
   ];
 
   final OrderDocModel model = OrderDocModel();
@@ -57,7 +79,7 @@ class OrderDocScreen extends EditWidget {
               ? OrderDocEventIdle()
               : OrderDocEventOpen(model.orderId!)),
         child: SizedBox(
-          key: scaffoldKey,
+            key: scaffoldKey,
             height: MediaQuery.of(context).size.height * 0.8,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,13 +161,17 @@ class OrderDocScreen extends EditWidget {
                       }),
                 ),
                 const Divider(height: 30, color: Colors.transparent),
-                prefs.roleWrite("1") ? saveWidget(context, Object()) :
-                Padding(padding: const EdgeInsets.all(5), child: OutlinedButton(
-                    style: outlined_button_style,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(L.tr('Close'), style: const TextStyle()))),
+                prefs.roleWrite("1")
+                    ? saveWidget(context, Object())
+                    : Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: OutlinedButton(
+                            style: outlined_button_style,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child:
+                                Text(L.tr('Close'), style: const TextStyle()))),
               ],
             )));
   }
@@ -159,7 +185,7 @@ class OrderDocScreen extends EditWidget {
     List<Widget> r = [];
     for (int i = 0; i < columnWidths.length; i++) {
       switch (i) {
-        case 0:
+        case 1:
           r.add(Container(
               height: rowheight,
               width: columnWidths[i],
@@ -168,7 +194,7 @@ class OrderDocScreen extends EditWidget {
                   alignment: Alignment.center,
                   child: Text(L.tr('Type'), style: ts))));
           break;
-        case 1:
+        case 0:
           r.add(Container(
             height: rowheight,
             width: columnWidths[i],
@@ -220,64 +246,64 @@ class OrderDocScreen extends EditWidget {
               height: rowheight,
               width: columnWidths[i],
               decoration: decoration,
-              child: prefs.roleWrite("1") ? Align(
-                  alignment: Alignment.center,
-                  child: SvgButton(
-                    onTap: () {
-                      model.details.add(OrderRow(
-                          main: '0',
-                          id: '',
-                          branch: 'branch',
-                          action: 'add',
-                          User: 'User',
-                          date: model.dateCreateController.text,
-                          IDPatver: model.orderId,
-                          status: 'inProgress',
-                          PatverN: model.orderIdController.text,
-                          PatverDate: model.dateCreateController.text,
-                          parent_id: '0',
-                          Katarox: model.executorController.text,
-                          Patviratu: '',
-                          Model: model.modelController.text,
-                          ModelCod: model.modelCodeController.text,
-                          brand: model.brandController.text,
-                          short_code: '',
-                          size_standart: model.sizeStandartController.text,
-                          country: model.countryController.text,
-                          variant_prod: '',
-                          Colore: '',
-                          line: '',
-                          Size01: '',
-                          Size02: '',
-                          Size03: '',
-                          Size04: '',
-                          Size05: '',
-                          Size06: '',
-                          Size07: '',
-                          Size08: '',
-                          Size09: '',
-                          Size10: '',
-                          Size11: '',
-                          Size12: '',
-                          Total: '0',
-                          executed: '0',
-                          nextload: '0',
-                          discarded: '',
-                          appended: ''));
-                      model.rowEditMode = model.details.length - 1;
-                      BlocProvider.of<OrderDocBloc>(context)
-                          .add(OrderDocNewRow());
-                    },
-                    assetPath: 'svg/plusfolder.svg',
-                  )
-              ) : Container()
-          ));
+              child: prefs.roleWrite("1")
+                  ? Align(
+                      alignment: Alignment.center,
+                      child: SvgButton(
+                        onTap: () {
+                          model.details.add(OrderRow(
+                              main: '0',
+                              id: '',
+                              branch: 'branch',
+                              action: 'add',
+                              User: 'User',
+                              date: model.dateCreateController.text,
+                              IDPatver: model.orderId,
+                              status: 'inProgress',
+                              PatverN: model.orderIdController.text,
+                              PatverDate: model.dateCreateController.text,
+                              parent_id: '0',
+                              Katarox: model.executorController.text,
+                              Patviratu: '',
+                              Model: model.modelController.text,
+                              ModelCod: model.modelCodeController.text,
+                              brand: model.brandController.text,
+                              short_code: '',
+                              size_standart: model.sizeStandartController.text,
+                              country: model.countryController.text,
+                              variant_prod: '',
+                              Colore: '',
+                              line: '',
+                              Size01: '',
+                              Size02: '',
+                              Size03: '',
+                              Size04: '',
+                              Size05: '',
+                              Size06: '',
+                              Size07: '',
+                              Size08: '',
+                              Size09: '',
+                              Size10: '',
+                              Size11: '',
+                              Size12: '',
+                              Total: '0',
+                              executed: '0',
+                              nextload: '0',
+                              discarded: '',
+                              appended: ''));
+                          model.rowEditMode = model.details.length - 1;
+                          BlocProvider.of<OrderDocBloc>(context)
+                              .add(OrderDocNewRow());
+                        },
+                        assetPath: 'svg/plusfolder.svg',
+                      ))
+                  : Container()));
           break;
       }
     }
     //r.add(const Divider(height: 2, color: Colors.transparent));
     return Padding(
-        padding: const EdgeInsets.only(left: 10, bottom: 2),
+        padding: const EdgeInsets.only(left: 22, bottom: 2),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: r));
   }
 
@@ -380,7 +406,7 @@ class OrderDocScreen extends EditWidget {
         }
 
         switch (j) {
-          case 0:
+          case 1:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -399,7 +425,7 @@ class OrderDocScreen extends EditWidget {
                     : Text(or.main == '0' ? or.variant_prod! : or.date!,
                         textAlign: TextAlign.center, style: ts)));
             break;
-          case 1:
+          case 0:
             onerow.add(Container(
                 alignment: Alignment.center,
                 padding: padding,
@@ -770,76 +796,83 @@ class OrderDocScreen extends EditWidget {
                                           },
                                           assetPath: 'svg/edit.svg',
                                           darkMode: false))
-                                  : prefs.roleWrite("1") ? SizedBox(
+                                  : prefs.roleWrite("1")
+                                      ? SizedBox(
+                                          height: rowheight,
+                                          child: SvgButton(
+                                              width: 20,
+                                              onTap: () {
+                                                OrderRow r = or.copyWith(
+                                                    id: '',
+                                                    date: DateFormat(
+                                                            'dd/MM/yyyy')
+                                                        .format(DateTime.now()),
+                                                    Size01: '',
+                                                    Size02: '',
+                                                    Size03: '',
+                                                    Size04: '',
+                                                    Size05: '',
+                                                    Size06: '',
+                                                    Size07: '',
+                                                    Size08: '',
+                                                    Size09: '',
+                                                    Size10: '',
+                                                    Size11: '',
+                                                    Size12: '',
+                                                    Colore: or.Colore,
+                                                    parent_id: or.id,
+                                                    variant_prod:
+                                                        or.variant_prod);
+                                                model.details.insert(i + 1, r);
+                                                model.rowEditMode = i + 1;
+                                                BlocProvider.of<OrderDocBloc>(
+                                                        context)
+                                                    .add(OrderDocNewRow());
+                                              },
+                                              assetPath: 'svg/plus.svg',
+                                              darkMode: false))
+                                      : Container(),
+                              prefs.roleWrite("1")
+                                  ? SizedBox(
                                       height: rowheight,
                                       child: SvgButton(
                                           width: 20,
                                           onTap: () {
-                                            OrderRow r = or.copyWith(
-                                                id: '',
-                                                date: DateFormat('dd/MM/yyyy')
-                                                    .format(DateTime.now()),
-                                                Size01: '',
-                                                Size02: '',
-                                                Size03: '',
-                                                Size04: '',
-                                                Size05: '',
-                                                Size06: '',
-                                                Size07: '',
-                                                Size08: '',
-                                                Size09: '',
-                                                Size10: '',
-                                                Size11: '',
-                                                Size12: '',
-                                                Colore: or.Colore,
-                                                parent_id: or.id,
-                                                variant_prod: or.variant_prod);
-                                            model.details.insert(i + 1, r);
-                                            model.rowEditMode = i + 1;
+                                            if (or.id.isEmpty) {
+                                              model.details.removeAt(i);
+                                              model.rowEditMode = -1;
+                                            } else {
+                                              model.details.insert(
+                                                  i + 1,
+                                                  or.copyWith(
+                                                      main: '',
+                                                      id: '',
+                                                      action: 'cancel',
+                                                      parent_id: or.id,
+                                                      Size01: '',
+                                                      Size02: '',
+                                                      Size03: '',
+                                                      Size04: '',
+                                                      Size05: '',
+                                                      Size06: '',
+                                                      Size07: '',
+                                                      Size08: '',
+                                                      Size09: '',
+                                                      Size10: '',
+                                                      Size11: '',
+                                                      Size12: '',
+                                                      Colore: or.Colore,
+                                                      variant_prod:
+                                                          or.variant_prod));
+                                              model.rowEditMode = i + 1;
+                                            }
                                             BlocProvider.of<OrderDocBloc>(
                                                     context)
                                                 .add(OrderDocNewRow());
                                           },
-                                          assetPath: 'svg/plus.svg',
-                                          darkMode: false)) : Container(),
-                            prefs.roleWrite("1") ? SizedBox(
-                                  height: rowheight,
-                                  child: SvgButton(
-                                      width: 20,
-                                      onTap: () {
-                                        if (or.id.isEmpty) {
-                                          model.details.removeAt(i);
-                                          model.rowEditMode = -1;
-                                        } else {
-                                          model.details.insert(
-                                              i + 1,
-                                              or.copyWith(
-                                                  main: '',
-                                                  id: '',
-                                                  action: 'cancel',
-                                                  parent_id: or.id,
-                                                  Size01: '',
-                                                  Size02: '',
-                                                  Size03: '',
-                                                  Size04: '',
-                                                  Size05: '',
-                                                  Size06: '',
-                                                  Size07: '',
-                                                  Size08: '',
-                                                  Size09: '',
-                                                  Size10: '',
-                                                  Size11: '',
-                                                  Size12: '',
-                                                  Colore: or.Colore,
-                                                  variant_prod:
-                                                      or.variant_prod));
-                                          model.rowEditMode = i + 1;
-                                        }
-                                        BlocProvider.of<OrderDocBloc>(context)
-                                            .add(OrderDocNewRow());
-                                      },
-                                      assetPath: 'svg/minus.svg',
-                                      darkMode: false)) : Container(),
+                                          assetPath: 'svg/minus.svg',
+                                          darkMode: false))
+                                  : Container(),
                               SizedBox(
                                   height: rowheight,
                                   child: SvgButton(
@@ -869,7 +902,8 @@ class OrderDocScreen extends EditWidget {
     }
 
     if (state is OrderDocStateLoaded) {
-      BlocProvider.of<OrderDocBloc>(context).add(OrderDocModelChanged(model.sizeStandartController.text));
+      BlocProvider.of<OrderDocBloc>(context)
+          .add(OrderDocModelChanged(model.sizeStandartController.text));
     }
     return l;
   }
@@ -962,6 +996,7 @@ class OrderDocScreen extends EditWidget {
       s.remove('nextload');
       if (or.id.isEmpty) {
         s.remove('id');
+        s.remove('parent_id');
         sql = Sql.insert('patver_data', s);
       } else {
         //sql = Sql.update('patver_data', s);
@@ -979,6 +1014,146 @@ class OrderDocScreen extends EditWidget {
   @override
   String getTable() {
     return "";
+  }
+
+  @override
+  Widget saveWidget(BuildContext context, Object o) {
+    return Padding(
+        padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+        child: Row(
+          children: [
+            OutlinedButton(
+                style: outlined_button_style,
+                onPressed: () {
+                  save(context, getTable(), o);
+                },
+                child: Text(L.tr('Save'), style: const TextStyle())),
+            const SizedBox(width: 20),
+            OutlinedButton(
+                style: outlined_button_style,
+                onPressed: () {
+                  printReport(context);
+                },
+                child: Text(L.tr('Print'), style: const TextStyle())),
+            const SizedBox(width: 20),
+            OutlinedButton(
+                style: outlined_button_style,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(L.tr('Cancel'), style: const TextStyle())),
+          ],
+        ));
+  }
+
+  void printReport(BuildContext context) {
+    if (model.orderId!.isEmpty) {
+      appDialog(context, L.tr('Save first'));
+      return;
+    }
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+              child:
+                PdfPreview(
+                canDebug: kDebugMode,
+                pageFormats: {'A4': PdfPageFormat.a4},
+                allowSharing: false,
+            build: (format) => _generatePdf(
+                format, '${L.tr('Order')} #${model.orderIdController.text}'),
+          ));
+        });
+  }
+
+  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {
+    final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
+    final font = await rootBundle.load('assets/fonts/Sylfaen.ttf');
+    final ttf = pw.Font.ttf(font);
+    final ts1 = pw.TextStyle(font: ttf, fontSize: 18);
+    final ts2 = pw.TextStyle(font: ttf, fontSize: 12);
+    final tdecor = pw.BoxDecoration(border: pw.Border.fromBorderSide(pw.BorderSide(color: PdfColor.fromHex("#165a72"), width: 0.01)));
+    int i1 = 0, i2 = 0;
+    double rowHeight = 20;
+    const padding = pw.EdgeInsets.fromLTRB(2, 2, 0, 0);
+
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        orientation: pw.PageOrientation.portrait,
+        build: (context) {
+          return pw.Column(
+            children: [
+              pw.SizedBox(
+                width: double.infinity,
+                child: pw.Align(
+                    alignment: pw.Alignment.center,
+                    child: pw.Text(title, style: ts1)),
+              ),
+              pw.SizedBox(height: 20),
+              pw.Row(children: [
+                pw.Container(
+                    width: 120, child: pw.Text(L.tr('Date'), style: ts2)),
+                pw.Container(
+                    width: 120,
+                    child:
+                        pw.Text(model.dateCreateController.text, style: ts2)),
+                pw.Expanded(child: pw.Container()),
+                pw.Container(
+                    width: 120,
+                    child: pw.Text(L.tr('Execute date'), style: ts2)),
+                pw.Container(
+                    width: 120,
+                    child: pw.Text(model.dateForController.text, style: ts2)),
+              ]),
+              pw.SizedBox(height: 20),
+              pw.Row(children:[
+                pw.Container(width: 120, child: pw.Text(L.tr('Executor'), style: ts2)),
+                pw.Container(width: 120, child: pw.Text(model.executorController.text, style: ts2)),
+                pw.Expanded(child: pw.Container()),
+                pw.Container(width: 120, child: pw.Text(L.tr('Country'), style: ts2)),
+                pw.Container(width: 120, child: pw.Text(model.countryController.text, style: ts2)),
+              ]),
+              pw.SizedBox(height: 20),
+              pw.Row(children: [
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[i1++], height: rowHeight, child: pw.Text(L.tr('+/-'), style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[i1++] / 2, height: rowHeight, child: pw.Text(L.tr('Type'), style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[i1++] / 2, height: rowHeight, child: pw.Text(L.tr('Color'), style: ts2)),
+                for (int s = 0; s < 12; s++) ... [
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[i1++] / 3, height: rowHeight, child: pw.Text(model.sizesOfModel[s], style: ts2))
+                ],
+                pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[i1++] / 3, height: rowHeight, child: pw.Text(L.tr('Tot.'), style: ts2))
+              ]),
+              for (var e in model.details) ... [
+                if (e.main! == "1")
+                pw.Row(children: [
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[i2 = 0], height: rowHeight, child: pw.Text(e.action! == 'add' ? '+' : e.action! =='cancel' ? '-' : '?', style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 2, height: rowHeight, child: pw.Text(e.variant_prod!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 2, height: rowHeight, child: pw.Text(e.Colore!, style: ts2)),
+
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size01!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size02!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size03!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size04!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size05!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size06!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size07!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size08!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size09!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size10!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size11!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size12!, style: ts2)),
+                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Total!, style: ts2)),
+
+                ]),
+              ]
+            ],
+          );
+        },
+      ),
+    );
+
+    return pdf.save();
   }
 }
 

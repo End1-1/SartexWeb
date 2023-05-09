@@ -6,6 +6,8 @@ import 'package:sartex/screen/plan/plan_bloc.dart';
 import 'package:sartex/screen/plan_and_production/pp_bloc.dart';
 import 'package:sartex/screen/production/production_model.dart';
 import 'package:sartex/utils/consts.dart';
+import 'package:sartex/utils/http_sql.dart';
+import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/edit_widget.dart';
 import 'package:sartex/widgets/svg_button.dart';
@@ -717,7 +719,33 @@ class ProductionWidget extends EditWidget {
                                   height: 20,
                                   width: 20,
                                 )
-                              ]
+                              ],
+                              //SUPER EDITOR MAKE ALL DONE
+                              if (prefs.roleRead("10") || prefs.roleWrite("10"))
+                                SvgButton(
+                                  onTap: ()  {
+                                    appDialogYesNo(context, L.tr('Execute whole line?'), () async {
+                                      for (int i = 0; i < l.sizes.length - 1; i++) {
+                                        int apr_id = int.tryParse(l.preSize.aprIdOf(i) ?? '0') ?? 0;
+                                        if (apr_id > 0) {
+                                          int qty = int.tryParse(l.restQanak[i].text) ?? 0;
+                                          String sql = "insert into History (branch, action, location, apr_id, date, time, qanak, real_status, user_id, codk, comp, dt) "
+                                            + "values (@branch, 'NOH_YND', '${l.name}', $apr_id, current_date(), current_time(), "
+                                            + "$qty, 'արտադրված', @user, @codk, @ip, current_timestamp()) ";
+                                          await HttpSqlQuery.post({'sl' : sql});
+                                        }
+                                      }
+                                      BlocProvider.of<PPBloc>(context)
+                                          .add(PARefresh());
+                                      BlocProvider.of<PlanBloc>(context)
+                                          .add(PlanERefresh(null));
+                                    }, null);
+                                  },
+                                  assetPath: 'svg/execute.svg',
+                                  darkMode: false,
+                                  height: 20,
+                                  width: 20,
+                                )
                             ])
                           ]))
                 ],

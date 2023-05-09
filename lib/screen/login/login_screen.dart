@@ -54,6 +54,7 @@ class _SartexLogin extends StatelessWidget {
                           ),
                           TextFormField(
                             controller: _passwordController,
+                            obscureText: true,
                             decoration:
                                 InputDecoration(labelText: L.tr("Password")),
                           ),

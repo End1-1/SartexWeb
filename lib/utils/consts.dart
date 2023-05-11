@@ -23,6 +23,7 @@ const route_partners = 'partners';
 const route_sizes = 'sizes';
 const route_language_editor = 'language_editor';
 const route_users_role = 'users_role';
+const route_login_pin = 'login_pin';
 
 const key_error = 'key_error';
 const key_empty = 'empty';

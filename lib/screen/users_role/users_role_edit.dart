@@ -41,6 +41,7 @@ class UsersRoleEditWidget extends EditWidget {
     "8": const RoleData(action: "8", read_flag: "0", write_flag: "0"),
     "9": const RoleData(action: "9", read_flag: "0", write_flag: "0"),
     "10": const RoleData(action: "10", read_flag: "0", write_flag: "0"),
+    "11": const RoleData(action: "11", read_flag: "0", write_flag: "0"),
   };
 
   @override
@@ -71,7 +72,7 @@ class UsersRoleEditWidget extends EditWidget {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             width: 400,
             height: 500,
-            child: Column(
+            child: SingleChildScrollView(child: Column(
               children: [
                 TextFormField(
                   decoration: InputDecoration(
@@ -121,6 +122,8 @@ class UsersRoleEditWidget extends EditWidget {
                 const SizedBox(width: 20),
                 _Checkbox(rolesData, L.tr('Execute production'), "10"),
                 const SizedBox(width: 20),
+                _Checkbox(rolesData, L.tr('TV only'), "11"),
+                const SizedBox(width: 20),
                 Row(children: [
                   Expanded(child: Container()),
                   OutlinedButton(
@@ -142,7 +145,7 @@ class UsersRoleEditWidget extends EditWidget {
                 Expanded(child: Container())])
               ],
             )
-          );
+          ));
         }));
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sartex/data/sartex_datagridsource.dart';
 import 'package:sartex/data/sql.dart';
+import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/utils/prefs.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -123,6 +124,7 @@ class UserEditWidget extends EditWidget {
   final TextEditingController _tecTabelNN = TextEditingController();
   final TextEditingController _tecRole = TextEditingController();
   final TextEditingController _tecType = TextEditingController();
+  final TextEditingController _tecUserId = TextEditingController();
 
   static Future<void> init() async {
     branchList = ['Sartex', 'Itex'];
@@ -155,7 +157,11 @@ class UserEditWidget extends EditWidget {
         _tecActive.text = user.active;
         _tecRole.text = user.role_id ?? '';
         _tecType.text = user.type ?? '';
+        _tecUserId.text = user.user_id ?? '';
       });
+    }
+    if (!prefs.roleRead('9')) {
+      _tecBranch.text = prefs.getString(key_user_branch) ?? '';
     }
   }
 
@@ -232,6 +238,14 @@ class UserEditWidget extends EditWidget {
                 list: branchList),
           ],
         ),
+        Row(
+          children: [
+            textFieldColumn(
+                context: context,
+                title: 'UserID',
+                textEditingController: _tecUserId),
+          ],
+        ),
         saveWidget(context, user)
       ],
     );
@@ -249,6 +263,8 @@ class UserEditWidget extends EditWidget {
         department: _tecDepartment.text,
         position: _tecPosition.text,
         role_id: _tecRole.text,
+        type: _tecType.text,
+        user_id: _tecUserId.text,
         tabelNumber: _tecTabelNN.text);
     String sql;
     if (user.id.isEmpty) {

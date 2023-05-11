@@ -9,6 +9,7 @@ import 'package:sartex/screen/dashboard/dashboard_screen.dart';
 import 'package:sartex/screen/departments/departments_screen.dart';
 import 'package:sartex/screen/language_editor/language_screen.dart';
 import 'package:sartex/screen/login/login_screen.dart';
+import 'package:sartex/screen/login_pin/login_pin_screen.dart';
 import 'package:sartex/screen/partners/partners_screen.dart';
 import 'package:sartex/screen/patver_data/patver_data_screen.dart';
 import 'package:sartex/screen/plan_and_production/plan_and_production_screen.dart';
@@ -100,6 +101,7 @@ class MyApp extends StatelessWidget {
           route_language_editor: (context) => LanguageScreen(),
           route_users_role: (_) => BlocProvider(
               create: (_) => AppBloc(GSIdle()), child: UsersRoleScreen()),
+          route_login_pin: (context) => LoginPinScreen()
         });
   }
 }

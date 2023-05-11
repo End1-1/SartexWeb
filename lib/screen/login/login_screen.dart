@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sartex/utils/prefs.dart';
 
 import 'login_actions.dart';
 import '../../utils/consts.dart';
@@ -30,8 +31,13 @@ class _SartexLogin extends StatelessWidget {
         body: BlocListener<LoginBloc, LoginState>(
             listener: (context, state) {
               if (state is LoginStateLoginComplete) {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, route_dashboard, (route) => false);
+                if (prefs.roleWrite('11') || prefs.roleRead('11')) {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, route_tv, (route) => false);
+                } else {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, route_dashboard, (route) => false);
+                }
               }
             },
             child: BlocBuilder<LoginBloc, LoginState>(

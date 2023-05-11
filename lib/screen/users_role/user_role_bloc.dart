@@ -31,6 +31,8 @@ class UserRoleBloc extends Bloc<UserRoleEvent, UserRoleState> {
       "7": {'read_flag': '0', 'write_flag': '0'},
       "8": {'read_flag': '0', 'write_flag': '0'},
       "9": {'read_flag': '0', 'write_flag': '0'},
+      "10": {'read_flag': '0', 'write_flag': '0'},
+      "11": {'read_flag': '0', 'write_flag': '0'},
     };
     var result = await HttpSqlQuery.post({'sl': "select name from RoleNames where id=${e.id}"});
     if (result.isEmpty) {

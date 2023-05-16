@@ -9,6 +9,12 @@ extension Prefs on SharedPreferences {
     setString('$key_role + $action + write', write);
   }
 
+  resetRoles() {
+    final Map<String, Map<String, String>> rm = {};
+    rm.addAll(roleMap);
+    rm.forEach((key, value) {setRoleAction(key, '0', '0');});
+  }
+
   bool roleRead(String action) {
     String value = getString('$key_role + $action + read') ?? '0';
     return value == '1';

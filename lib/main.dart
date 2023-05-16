@@ -14,6 +14,7 @@ import 'package:sartex/screen/partners/partners_screen.dart';
 import 'package:sartex/screen/patver_data/patver_data_screen.dart';
 import 'package:sartex/screen/plan_and_production/plan_and_production_screen.dart';
 import 'package:sartex/screen/products/products_screen.dart';
+import 'package:sartex/screen/remains/remains_screen.dart';
 import 'package:sartex/screen/sizes/sizes_screen.dart';
 import 'package:sartex/screen/tv/tv_screen.dart';
 import 'package:sartex/screen/users/users_screen.dart';
@@ -29,6 +30,7 @@ import 'data/sql.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   prefs = await SharedPreferences.getInstance();
+  prefs.resetRoles();
   await Sql.init();
   L.language = await prefs.getString(key_language) ?? key_language_am;
   String conf = await HttpSqlQuery.postString(
@@ -101,6 +103,8 @@ class MyApp extends StatelessWidget {
           route_language_editor: (context) => LanguageScreen(),
           route_users_role: (_) => BlocProvider(
               create: (_) => AppBloc(GSIdle()), child: UsersRoleScreen()),
+          route_remains: (_) => BlocProvider(
+              create: (_) => AppBloc(GSIdle()), child: RemainsScreen()),
           route_login_pin: (context) => LoginPinScreen()
         });
   }

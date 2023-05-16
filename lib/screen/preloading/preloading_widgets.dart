@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sartex/screen/preloading/preloading_model.dart';
 import 'package:sartex/utils/consts.dart';
+import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/svg_button.dart';
@@ -54,7 +55,11 @@ class PreloadingItemsContainer extends StatefulWidget {
   VoidCallback parentState;
 
   PreloadingItemsContainer(
-      {super.key, required this.item, required this.showLine1, required this.model, required this.parentState});
+      {super.key,
+      required this.item,
+      required this.showLine1,
+      required this.model,
+      required this.parentState});
 
   @override
   State<StatefulWidget> createState() => _PreloadingItemsContainer();
@@ -133,8 +138,9 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                           context,
                                           widget.model!.data.brandLevel,
                                           e.brand, done: () {
-                                        widget.model!.data
-                                            .buildModelList(e.brand.text);
+                                        widget.model!.data.buildModelList(
+                                            e.brand.text,
+                                            widget.model!.editStore.text);
                                         e.model.clear();
                                         e.commesa.clear();
                                         e.color.clear();
@@ -174,7 +180,9 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                               if (e.model.text.isNotEmpty) {
                                 widget.model!.data
                                     .buildCommesaLevel(
-                                        e.brand.text, e.model.text)
+                                        e.brand.text,
+                                        e.model.text,
+                                        widget.model!.editStore.text)
                                     .then((value) {
                                   if (widget.model!.data.commesaLevel.length ==
                                       1) {
@@ -201,13 +209,19 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                     for (var rm in e.remains) {
                                       rm.clear();
                                     }
-                                    widget.model!.data.buildCommesaLevel(
-                                        e.brand.text, e.model.text).then((value){
-                                      if (widget.model!.data.commesaLevel.length == 1) {
-                                        e.commesa.text = widget.model!.data.commesaLevel.first;
+                                    widget.model!.data
+                                        .buildCommesaLevel(
+                                            e.brand.text,
+                                            e.model.text,
+                                            widget.model!.editStore.text)
+                                        .then((value) {
+                                      if (widget.model!.data.commesaLevel
+                                              .length ==
+                                          1) {
+                                        e.commesa.text = widget
+                                            .model!.data.commesaLevel.first;
                                       }
                                     });
-
                                   });
                                 },
                         ))
@@ -243,7 +257,8 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                         .buildCountryLevel(
                                             e.brand.text,
                                             e.model.text,
-                                            e.commesa.text)
+                                            e.commesa.text,
+                                            widget.model!.editStore.text)
                                         .then((value) {
                                       if (widget.model!.data.countryLevel
                                               .length ==
@@ -270,13 +285,19 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                         for (var rm in e.remains) {
                                           rm.clear();
                                         }
-                                        widget.model!.data.buildCountryLevel(
-                                            e.brand.text,
-                                            e.model.text,
-                                            e.commesa.text).then((value) {
-                                              if (widget.model!.data.countryLevel.length == 1) {
-                                                e.country.text = widget.model!.data.countryLevel.first;
-                                              }
+                                        widget.model!.data
+                                            .buildCountryLevel(
+                                                e.brand.text,
+                                                e.model.text,
+                                                e.commesa.text,
+                                                widget.model!.editStore.text)
+                                            .then((value) {
+                                          if (widget.model!.data.countryLevel
+                                                  .length ==
+                                              1) {
+                                            e.country.text = widget
+                                                .model!.data.countryLevel.first;
+                                          }
                                         });
                                       });
                                     })),
@@ -304,15 +325,27 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                           child: TextFormField(
                               readOnly: true,
                               decoration: formDecor1,
-                              controller: e.country..addListener(() {
-                                if (e.country.text.isNotEmpty) {
-                                  widget.model!.data.buildColorLevel(e.brand.text, e.model.text, e.commesa.text, e.country.text).then((value) {
-                                    if (widget.model!.data.colorLevel.length == 1) {
-                                      e.color.text = widget.model!.data.colorLevel.first;
-                                    }
-                                  });
-                                }
-                              }),
+                              controller: e.country
+                                ..addListener(() {
+                                  if (e.country.text.isNotEmpty) {
+                                    widget.model!.data
+                                        .buildColorLevel(
+                                      e.brand.text,
+                                      e.model.text,
+                                      e.commesa.text,
+                                      e.country.text,
+                                      widget.model!.editStore.text,
+                                    )
+                                        .then((value) {
+                                      if (widget
+                                              .model!.data.colorLevel.length ==
+                                          1) {
+                                        e.color.text =
+                                            widget.model!.data.colorLevel.first;
+                                      }
+                                    });
+                                  }
+                                }),
                               onTap: widget.model == null
                                   ? null
                                   : () {
@@ -328,14 +361,20 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                         for (var rm in e.remains) {
                                           rm.clear();
                                         }
-                                        widget.model!.data.buildColorLevel(
-                                            e.brand.text,
-                                            e.model.text,
-                                            e.commesa.text,
-                                            e.country.text).then((value) {
-                                              if (widget.model!.data.colorLevel.length == 1) {
-                                                e.color.text = widget.model!.data.colorLevel.first;
-                                              }
+                                        widget.model!.data
+                                            .buildColorLevel(
+                                                e.brand.text,
+                                                e.model.text,
+                                                e.commesa.text,
+                                                e.country.text,
+                                                widget.model!.editStore.text)
+                                            .then((value) {
+                                          if (widget.model!.data.colorLevel
+                                                  .length ==
+                                              1) {
+                                            e.color.text = widget
+                                                .model!.data.colorLevel.first;
+                                          }
                                         });
                                       });
                                     })),
@@ -362,18 +401,25 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                           decoration: headerDecor1,
                           child: TextFormField(
                               decoration: formDecor1,
-                              controller: e.color..addListener(() {
-                                widget.model!.data.buildVariantLevel(
-                                    e.brand.text,
-                                    e.model.text,
-                                    e.commesa.text,
-                                    e.country.text,
-                                    e.color.text).then((value) {
-                                  if (widget.model!.data.variantLevel.length == 1) {
-                                    e.variant.text = widget.model!.data.variantLevel.first;
-                                  }
-                                });
-                              }),
+                              controller: e.color
+                                ..addListener(() {
+                                  widget.model!.data
+                                      .buildVariantLevel(
+                                          e.brand.text,
+                                          e.model.text,
+                                          e.commesa.text,
+                                          e.country.text,
+                                          e.color.text,
+                                          widget.model!.editStore.text)
+                                      .then((value) {
+                                    if (widget
+                                            .model!.data.variantLevel.length ==
+                                        1) {
+                                      e.variant.text =
+                                          widget.model!.data.variantLevel.first;
+                                    }
+                                  });
+                                }),
                               onTap: widget.model == null
                                   ? null
                                   : () {
@@ -388,15 +434,21 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                         for (var rm in e.remains) {
                                           rm.clear();
                                         }
-                                        widget.model!.data.buildVariantLevel(
-                                            e.brand.text,
-                                            e.model.text,
-                                            e.commesa.text,
-                                            e.country.text,
-                                            e.color.text).then((value) {
-                                              if (widget.model!.data.variantLevel.length == 1) {
-                                                e.variant.text = widget.model!.data.variantLevel.first;
-                                              }
+                                        widget.model!.data
+                                            .buildVariantLevel(
+                                                e.brand.text,
+                                                e.model.text,
+                                                e.commesa.text,
+                                                e.country.text,
+                                                e.color.text,
+                                                widget.model!.editStore.text)
+                                            .then((value) {
+                                          if (widget.model!.data.variantLevel
+                                                  .length ==
+                                              1) {
+                                            e.variant.text = widget
+                                                .model!.data.variantLevel.first;
+                                          }
                                         });
                                       });
                                     })),
@@ -423,24 +475,26 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                           decoration: headerDecor1,
                           child: TextFormField(
                               decoration: formDecor1,
-                              controller: e.variant..addListener(() {
-                                if (e.variant.text.isNotEmpty) {
-                                  widget.model!.data
-                                      .getSizes(
-                                      e.brand.text,
-                                      e.model.text,
-                                      e.commesa.text,
-                                      e.country.text,
-                                      e.color.text,
-                                      e)
-                                      .then((value) {
-                                    for (int i = 1; i < 11; i++) {
-                                      e.sizes[i - 1].text +=
-                                      ' / ${e.preSize!.aprId[i - 1]}';
-                                    }
-                                  });
-                                }
-                              }),
+                              controller: e.variant
+                                ..addListener(() {
+                                  if (e.variant.text.isNotEmpty) {
+                                    widget.model!.data
+                                        .getSizes(
+                                            e.brand.text,
+                                            e.model.text,
+                                            e.commesa.text,
+                                            e.country.text,
+                                            e.color.text,
+                                            e,
+                                            widget.model!.editStore.text)
+                                        .then((value) {
+                                      for (int i = 1; i < 11; i++) {
+                                        e.sizes[i - 1].text +=
+                                            ' / ${e.preSize!.aprId[i - 1]}';
+                                      }
+                                    });
+                                  }
+                                }),
                               onTap: widget.model == null
                                   ? null
                                   : () {
@@ -454,8 +508,9 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                                 e.model.text,
                                                 e.commesa.text,
                                                 e.country.text,
-                                            e.color.text,
-                                                e)
+                                                e.color.text,
+                                                e,
+                                                widget.model!.editStore.text)
                                             .then((value) {
                                           for (int i = 1; i < 11; i++) {
                                             e.sizes[i - 1].text;
@@ -699,37 +754,107 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                         ),
                 ],
               ),
-    //RemoveButton
+              //RemoveButton
               if (prefs.roleWrite('2'))
-              SizedBox(
-                  width: 60,
-                  height: 70,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            padding: padding,
-                            decoration: headerDecor1,
-                            child: Row(children: [
-                              Expanded(
-                                  child: SvgButton(darkMode: false, onTap: () {
-                                    appDialogYesNo(context, L.tr('Confirm to remove row'), (){
+                SizedBox(
+                    width: 60,
+                    height: 70,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              padding: padding,
+                              decoration: headerDecor1,
+                              child: Row(children: [
+                                Expanded(
+                                    child: SvgButton(
+                                  darkMode: false,
+                                  onTap: () {
+                                    appDialogYesNo(
+                                        context, L.tr('Confirm to remove row'),
+                                        () {
                                       if (widget.showLine1) {
                                         widget.item.items.remove(e);
-                                        setState((){});
+                                        setState(() {});
                                       } else {
-                                        widget.item.items.remove(e);
-                                        if (widget.item.items.isEmpty) {
-                                          widget.model?.prReadyLines.remove(widget.item);
-                                          widget.parentState();
-                                        } else {
-                                          setState(() {});
+                                        var aprIds = '';
+                                        var prodIds = '';
+                                        for (final f in widget.item.items) {
+                                          for (int i = 0; i < 12; i++) {
+                                            int aprId = int.tryParse(
+                                                    f.preSize?.aprIdOf(i) ??
+                                                        '') ??
+                                                0;
+                                            int prodId = int.tryParse(
+                                                    f.preSize?.prodIdOf(i) ??
+                                                        '') ??
+                                                0;
+                                            if (prodId > 0) {
+                                              if (prodIds.isNotEmpty) {
+                                                prodIds += ",";
+                                              }
+                                              prodIds += prodId.toString();
+                                            }
+                                          }
                                         }
+                                        HttpSqlQuery.post({
+                                          'sl': "select pd.brand, pd.Model, pd.ModelCod, a.size, d.qanak "
+                                              "from Docs d "
+                                              "left join Apranq a on a.apr_id=d.apr_id "
+                                              "left join patver_data pd on pd.id=a.pid "
+                                              "where d.id in($prodIds) and d.status='ok'"
+                                        }).then((value) {
+                                          if (value.isEmpty) {
+                                            HttpSqlQuery.post({
+                                              'sl':
+                                                  " delete from Docs where id in ($prodIds)"
+                                            });
+                                            widget.item.items.remove(e);
+                                            if (widget.item.items.isEmpty) {
+                                              widget.model?.prReadyLines
+                                                  .remove(widget.item);
+                                              widget.parentState();
+                                            } else {
+                                              setState(() {});
+                                            }
+                                          } else {
+                                            Widget w = Column(children: [
+                                              Row(children: [
+                                                SizedBox(
+                                                    width: 100,
+                                                    child: Text(L.tr('Size'))),
+                                                SizedBox(
+                                                    width: 100,
+                                                    child:
+                                                        Text(L.tr('Quantity')))
+                                              ]),
+                                              for (final e in value) ... [
+                                                Row(children: [SizedBox(
+                                                    width: 100,
+                                                    child: Text(e['size'])),
+                                                SizedBox(
+                                                    width: 100,
+                                                    child:
+                                                    Text(e['qanak']))])
+                                              ]
+                                            ]);
+                                            showDialog(
+                                              context: context,
+                                                builder: (context) {return SimpleDialog(
+                                                  alignment: Alignment.center,
+                                                contentPadding: const EdgeInsets.all(10),
+                                                title: Text(L.tr(
+                                                    'Cannot remove this row with OK status')),
+                                                children: [w]);});
+                                          }
+                                        });
                                       }
                                     }, null);
-                                  }, assetPath: 'svg/delete.svg', ))
-                            ]))])),
-
+                                  },
+                                  assetPath: 'svg/delete.svg',
+                                ))
+                              ]))
+                        ])),
             ])
           ]
         ],

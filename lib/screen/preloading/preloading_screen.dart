@@ -15,7 +15,6 @@ class PreloadingScreen extends EditWidget {
   final PreloadingModel _model = PreloadingModel();
   String? docNum;
 
-
   PreloadingScreen({super.key, this.docNum});
 
   @override
@@ -25,15 +24,16 @@ class PreloadingScreen extends EditWidget {
           ..add(PreloadingEventOpenDoc(docnum: docNum)),
         child: BlocBuilder<PreloadingBloc, PreloadingState>(
             builder: (context, state) {
-              if (state is PreloadingStateOpenDoc) {
-                if (state.items.isNotEmpty) {
-                  _model.editDate.text = DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(state.header['date']!));
-                  _model.editReceipant.text = state.header['receipant']!;
-                  _model.editStore.text = state.header['store']!;
-                  _model.editTruck.text = state.header['truck']!;
-                  _model.prReadyLines.addAll(state.items);
-                }
-              }
+          if (state is PreloadingStateOpenDoc) {
+            if (state.items.isNotEmpty) {
+              _model.editDate.text = DateFormat('dd/MM/yyyy').format(
+                  DateFormat('yyyy-MM-dd').parse(state.header['date']!));
+              _model.editReceipant.text = state.header['receipant']!;
+              _model.editStore.text = state.header['store']!;
+              _model.editTruck.text = state.header['truck']!;
+              _model.prReadyLines.addAll(state.items);
+            }
+          }
           return Column(
             children: [
               //Header
@@ -57,7 +57,8 @@ class PreloadingScreen extends EditWidget {
                 textFieldColumn(
                     context: context,
                     title: 'Store',
-                    textEditingController: _model.editStore, list: _model.storeNames),
+                    textEditingController: _model.editStore,
+                    list: _model.storeNames),
                 textFieldColumn(
                     context: context,
                     title: 'Receipant',
@@ -72,20 +73,20 @@ class PreloadingScreen extends EditWidget {
                     },
                     assetPath: 'svg/cancel.svg'),
                 if (prefs.roleWrite('2'))
-                SvgButton(
-                    darkMode: false,
-                    onTap: () {
-                      appDialogYesNo(context, L.tr('Save document?'), () {
-                        _model.save().then((value) {
-                          if (value.isNotEmpty) {
-                            appDialog(context, value);
-                            return;
-                          }
-                          Navigator.pop(context, _model.docNumber);
-                        });
-                      }, () {});
-                    },
-                    assetPath: 'svg/save.svg')
+                  SvgButton(
+                      darkMode: false,
+                      onTap: () {
+                        appDialogYesNo(context, L.tr('Save document?'), () {
+                          _model.save().then((value) {
+                            if (value.isNotEmpty) {
+                              appDialog(context, value);
+                              return;
+                            }
+                            Navigator.pop(context, _model.docNumber);
+                          });
+                        }, () {});
+                      },
+                      assetPath: 'svg/save.svg')
               ]),
               const Divider(height: 20, color: Colors.transparent),
               //MainWindow
@@ -106,17 +107,20 @@ class PreloadingScreen extends EditWidget {
                         ),
                         body: TabBarView(
                           children: [
-                            prefs.roleWrite("2") ?
+                            prefs.roleWrite("2")
+                                ? Container(
+                                    alignment: Alignment.topLeft,
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10, 20, 10, 10),
+                                    child: PreloadingLine(
+                                        model: _model, line1: true))
+                                : Container(),
                             Container(
                                 alignment: Alignment.topLeft,
                                 padding:
                                     const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                                child: PreloadingLine(model: _model, line1: true)) : Container(),
-                            Container(
-                                alignment: Alignment.topLeft,
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                                child: PreloadingLines(model: _model, line1: false)),
+                                child: PreloadingLines(
+                                    model: _model, line1: false)),
                           ],
                         ),
                       ))),
@@ -129,7 +133,6 @@ class PreloadingScreen extends EditWidget {
   String getTable() {
     return '';
   }
-
 }
 
 class PreloadingLine extends StatefulWidget {
@@ -150,7 +153,13 @@ class _PreloadingLine extends State<PreloadingLine> {
         Container(
             decoration: const BoxDecoration(color: Colors.blueAccent),
             child: Row(children: [
-              const SizedBox(width: 10),  Text(L.tr('Select line'), style: const TextStyle(color: Colors.white),), const SizedBox(width: 10), Expanded(child: LineDropdownButton(model: widget.model)),
+              const SizedBox(width: 10),
+              Text(
+                L.tr('Select line'),
+                style: const TextStyle(color: Colors.white),
+              ),
+              const SizedBox(width: 10),
+              Expanded(child: LineDropdownButton(model: widget.model)),
               SvgButton(
                   onTap: () {
                     setState(() {
@@ -166,7 +175,10 @@ class _PreloadingLine extends State<PreloadingLine> {
                         err += L.tr('Select line');
                       }
                       for (var e in widget.model.prLine.items) {
-                        if ((int.tryParse(e.newvalues[e.newvalues.length - 1].text) ?? 0) == 0) {
+                        if ((int.tryParse(
+                                    e.newvalues[e.newvalues.length - 1].text) ??
+                                0) ==
+                            0) {
                           err += L.tr('Invalid total quantity of loading');
                         }
                       }
@@ -183,7 +195,13 @@ class _PreloadingLine extends State<PreloadingLine> {
             ])),
         Expanded(
             child: PreloadingItemsContainer(
-                item: widget.model.prLine, model: widget.model, showLine1: widget.line1, parentState: (){setState((){});},))
+          item: widget.model.prLine,
+          model: widget.model,
+          showLine1: widget.line1,
+          parentState: () {
+            setState(() {});
+          },
+        ))
       ],
     );
   }
@@ -222,9 +240,14 @@ class _PreloadingLines extends State<PreloadingLines> {
               const Divider(height: 20, color: Colors.transparent),
             ],
           ),
-          PreloadingItemsContainer(item: e, showLine1: widget.line1, model: widget.model, parentState: (){setState(() {
-
-          });},),
+          PreloadingItemsContainer(
+            item: e,
+            showLine1: widget.line1,
+            model: widget.model,
+            parentState: () {
+              setState(() {});
+            },
+          ),
           const Divider(height: 20, color: Colors.transparent),
         ]
       ],

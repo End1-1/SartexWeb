@@ -5,7 +5,25 @@ import 'package:sartex/screen/tv/tv_model.dart';
 import 'package:sartex/utils/translator.dart';
 
 class TVScreen extends StatelessWidget {
-  final dw = <double>[100, 200, 200, 100,100, 100, 100,100, 100, 100, 100, 100, 100, 100];
+  var page = true;
+  final List<ModelRow> modelRows = [];
+
+  final dw = <double>[
+    100,
+    200,
+    200,
+    100,
+    100,
+    100,
+    100,
+    100,
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+  ];
   List<double> cw = [];
   final _model = TVModel();
   final double rowHeight = 80;
@@ -16,8 +34,8 @@ class TVScreen extends StatelessWidget {
   final _standartPadding = const EdgeInsets.all(10);
   final _textHeader1 = const TextStyle(
     color: Colors.white,
-    height: 1.5,
-    fontSize: 28,
+    height: 1.52,
+    fontSize: 22,
     fontFamily: 'Agency FB',
   );
   final _textHeader2 = const TextStyle(
@@ -44,7 +62,7 @@ class TVScreen extends StatelessWidget {
       fontWeight: FontWeight.bold);
   final _textTotal = const TextStyle(
       color: Colors.black87,
-      fontSize: 32,
+      fontSize: 28,
       fontWeight: FontWeight.w900,
       height: 1.5,
       fontFamily: 'Agency FB');
@@ -138,14 +156,10 @@ class TVScreen extends StatelessWidget {
                     children: [
                       _header(),
                       _tableHeader(),
-                      Expanded(child:
-                      Transform.scale(
-                              alignment: Alignment.topLeft,
-                              scaleY: (snapshot.data?.length ?? 0) > 8 ? (MediaQuery.of(context).size.height -
-                                      220) /
-                                  ((snapshot.data?.length ?? 0) * rowHeight) : 1,
-                              child: Column(children: [ for (var e in snapshot.data ?? [])...[_tableRow(e)]]))
-                                ),
+                      Expanded(
+                          child: Column(children: [
+                        for (var e in snapshot.data ?? []) ...[_tableRow(e)]
+                      ])),
                       //SingleChildScrollView(child: Column(children: [ for (var e in snapshot.data ?? [])...[_tableRow(e)]]))),
                       _totalRow()
                     ],
@@ -157,13 +171,23 @@ class TVScreen extends StatelessWidget {
     return Row(
       children: [
         Container(
-          height: 60,
-            width: cw[0] + cw[1] + cw[2] + cw[3] + cw[4] + cw[5] + cw[6] + cw[7] + cw[8] + cw[9] + cw[10],
+            height: 60,
+            width: cw[0] +
+                cw[1] +
+                cw[2] +
+                cw[3] +
+                cw[4] +
+                cw[5] +
+                cw[6] +
+                cw[7] +
+                cw[8] +
+                cw[9] +
+                cw[10],
             padding: _standartPadding,
             decoration: const BoxDecoration(color: Color(0xffffffff)),
             child: Text(DateFormat('dd/MM/yyyy').format(DateTime.now()),
                 textAlign: TextAlign.center, style: _textHeader2)),
-        Expanded(child:  Container()),
+        Expanded(child: Container()),
         Container(
             height: 60,
             width: cw[11] + cw[12] + cw[13],
@@ -181,7 +205,7 @@ class TVScreen extends StatelessWidget {
       children: [
         //line
         Container(
-          height: headerHeight,
+            height: headerHeight,
             width: cw[i++],
             padding: _standartPadding,
             decoration: _t1,

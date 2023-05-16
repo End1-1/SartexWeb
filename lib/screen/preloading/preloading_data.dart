@@ -34,10 +34,11 @@ class PreloadingData {
     });
   }
 
-  void buildModelList(String brand) {
+  void buildModelList(String brand, String pahest) {
     HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.Model) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand'"
+      "select distinct(pd.Model) from Apranq a left join Mnacord m on m.apr_id=a.apr_id "
+          "left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and m.pahest='${pahest}'"
     }).then((value) {
       modelLevel.clear();
       for (var e in value) {
@@ -46,10 +47,10 @@ class PreloadingData {
     });
   }
 
-  Future<void> buildCommesaLevel(String brand, String model) async {
+  Future<void> buildCommesaLevel(String brand, String model, String pahest) async {
     var value = await HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.PatverN) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model'"
+      "select distinct(pd.PatverN) from Apranq a left join Mnacord m on m.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model' and m.pahest='${pahest}'  "
     });
       commesaLevel.clear();
       for (var e in value) {
@@ -57,10 +58,11 @@ class PreloadingData {
       }
   }
 
-  Future<void> buildCountryLevel(String brand, String model, String commesa) async {
+  Future<void> buildCountryLevel(String brand, String model, String commesa, String pahest) async {
     var value = await HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.country) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa'"
+      "select distinct(pd.country) from Apranq a left join Mnacord m on m.apr_id=a.apr_id "
+          " left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa' and m.pahest='${pahest}' "
     });
       countryLevel.clear();
       for (var e in value) {
@@ -68,11 +70,11 @@ class PreloadingData {
       }
   }
 
-  Future<void> buildColorLevel(String brand, String model, String commesa, String country) async {
+  Future<void> buildColorLevel(String brand, String model, String commesa, String country, String pahest) async {
     var value = await HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.Colore) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
-          "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country'"
+      "select distinct(pd.Colore) from Apranq a left join Mnacord m on m.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
+          "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country' and m.pahest='${pahest}'"
     });
       colorLevel.clear();
       for (var e in value) {
@@ -81,11 +83,11 @@ class PreloadingData {
   }
 
   Future<void> buildVariantLevel(
-      String brand, String model, String commesa, String country, String color) async {
+      String brand, String model, String commesa, String country, String color, String pahest) async {
     var value = await HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.variant_prod) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
-          "and brand='$brand' and Model='$model' and PatverN='$commesa' and Colore='$color' and country='$country'"
+      "select distinct(pd.variant_prod) from Apranq a left join Mnacord m on m.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
+          "and brand='$brand' and Model='$model' and PatverN='$commesa' and Colore='$color' and country='$country' and m.pahest='${pahest}'"
     });
       variantLevel.clear();
       for (var e in value) {
@@ -93,10 +95,10 @@ class PreloadingData {
       }
   }
 
-  Future<void> autoFillPatverCountryColorVariant(String brand, String model) async {
+  Future<void> autoFillPatverCountryColorVariant(String brand, String model, String pahest) async {
     var value = await HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.country) as country from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' "
+      "select distinct(pd.country) as country from Apranq a left join Mnacord m on m.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and m.pahest='${pahest}' "
           + "and brand='$brand' and Model='$model'  "
     });
     commesaLevel.clear();
@@ -109,10 +111,10 @@ class PreloadingData {
     }
   }
 
-  Future<void> autoFillCountryColorVariant(String brand, String model, String commesa) async {
+  Future<void> autoFillCountryColorVariant(String brand, String model, String commesa, String pahest) async {
     var value = await HttpSqlQuery.post({
       "sl":
-      "select distinct(pd.country)  from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' "
+      "select distinct(pd.country)  from Apranq a left join Mnacord m on m.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and m.pahest='${pahest}'"
           + "and brand='$brand' and Model='$model' and PatverN='$commesa'  "
     });
     countryLevel.clear();
@@ -125,10 +127,10 @@ class PreloadingData {
     }
   }
 
-  Future<void> autoFillColorVariant(String brand, String model, String commesa, String country) async {
+  Future<void> autoFillColorVariant(String brand, String model, String commesa, String country, String pahest) async {
     var value = await HttpSqlQuery.post({
       "sl":
-      "select pd.Colore, pd.variant_prod from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' "
+      "select pd.Colore, pd.variant_prod from Apranq a left join Mnacord m on m.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and m.pahest='${pahest}' "
       + "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country' "
     });
     if (value.length == 1) {
@@ -142,11 +144,11 @@ class PreloadingData {
   }
 
   Future<void> getSizes(
-      String brand, String model, String commesa, String country, String color, PreloadingItem s) async {
+      String brand, String model, String commesa, String country, String color, PreloadingItem s, String pahest) async {
     List<dynamic> l = await HttpSqlQuery.post({
       "sl":
-      "select pd.size_standart, pd.id from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
-          "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country' and Colore='$color' "
+      "select pd.size_standart, pd.id from Apranq a left join Mnacord m on m.apr_id=a.apr_id  left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
+          "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country' and Colore='$color' and m.pahest='${pahest}' "
     });
     if (l.isNotEmpty) {
       Map<String, dynamic> m = l[0];
@@ -158,7 +160,7 @@ class PreloadingData {
       s.sizes[i - 1].text = l[0]['size${i.toString().padLeft(2, '0')}'];
     }
     l = await HttpSqlQuery.post({
-      "sl": "select a.apr_id, m.mnacord as pahest_mnac, a.pat_mnac, a.size_number from Apranq a left join Mnacord m on m.apr_id=a.apr_id where pid='$pid'"
+      "sl": "select a.apr_id, m.mnacord as pahest_mnac, a.pat_mnac, a.size_number from Apranq a left join Mnacord m on m.apr_id=a.apr_id where pid='$pid' and m.pahest='${pahest}'"
     });
     s.preSize ??= PreloadingSize();
     for (var e in l) {

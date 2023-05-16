@@ -24,6 +24,7 @@ const route_sizes = 'sizes';
 const route_language_editor = 'language_editor';
 const route_users_role = 'users_role';
 const route_login_pin = 'login_pin';
+const route_remains = 'ramains';
 
 const key_error = 'key_error';
 const key_empty = 'empty';
@@ -41,6 +42,20 @@ const key_user_position = 'key_user_position';
 const key_user_role = 'key_user_role';
 const key_full_name = "key_full_name";
 const key_role = 'key_role';
+
+final Map<String, Map<String, String>> roleMap = {
+  "1": {'read_flag': '0', 'write_flag': '0'},
+  "2": {'read_flag': '0', 'write_flag': '0'},
+  "3": {'read_flag': '0', 'write_flag': '0'},
+  "4": {'read_flag': '0', 'write_flag': '0'},
+  "5": {'read_flag': '0', 'write_flag': '0'},
+  "6": {'read_flag': '0', 'write_flag': '0'},
+  "7": {'read_flag': '0', 'write_flag': '0'},
+  "8": {'read_flag': '0', 'write_flag': '0'},
+  "9": {'read_flag': '0', 'write_flag': '0'},
+  "10": {'read_flag': '0', 'write_flag': '0'},
+  "11": {'read_flag': '0', 'write_flag': '0'},
+};
 
 const color_menu_background1 = Color(0xff1e2757);
 const color_menu_background2 = Color(0xff042b4a);

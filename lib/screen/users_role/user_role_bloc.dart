@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/http_sql.dart';
 
 abstract class UserRoleState {}
@@ -21,19 +22,8 @@ class UserRoleBloc extends Bloc<UserRoleEvent, UserRoleState> {
   }
 
   Future<void> _loadData(UserRoleGetEvent e) async {
-    Map<String, Map<String, String>> checkMap = {
-      "1": {'read_flag': '0', 'write_flag': '0'},
-      "2": {'read_flag': '0', 'write_flag': '0'},
-      "3": {'read_flag': '0', 'write_flag': '0'},
-      "4": {'read_flag': '0', 'write_flag': '0'},
-      "5": {'read_flag': '0', 'write_flag': '0'},
-      "6": {'read_flag': '0', 'write_flag': '0'},
-      "7": {'read_flag': '0', 'write_flag': '0'},
-      "8": {'read_flag': '0', 'write_flag': '0'},
-      "9": {'read_flag': '0', 'write_flag': '0'},
-      "10": {'read_flag': '0', 'write_flag': '0'},
-      "11": {'read_flag': '0', 'write_flag': '0'},
-    };
+    Map<String, Map<String, String>> checkMap = {};
+    checkMap.addAll(roleMap);
     var result = await HttpSqlQuery.post({'sl': "select name from RoleNames where id=${e.id}"});
     if (result.isEmpty) {
       emit(UserRoleData('', checkMap));

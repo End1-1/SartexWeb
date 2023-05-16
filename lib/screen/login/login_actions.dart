@@ -85,6 +85,7 @@ class LoginActionAuth extends LoginAction {
       return;
     }
 
+    prefs.resetRoles();
     result = await HttpSqlQuery.post({'sl': "select action, read_flag, write_flag from RoleData where role_id=${result[0]['id']}"});
     for (var e in result) {
       prefs.setRoleAction(e['action'], e['read_flag'], e['write_flag']);

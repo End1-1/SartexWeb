@@ -14,6 +14,10 @@ class PreloadingSize {
     return aprId[index] ?? '';
   }
 
+  String prodIdOf(int index) {
+    return prodId[index] ?? '';
+  }
+
   Future<void> loadSizes(String standart) async {
     List<dynamic> l = await HttpSqlQuery.post({'sl': "select * from Sizes where code='$standart'"});
     for (int i = 1; i < 13; i++) {

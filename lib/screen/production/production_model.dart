@@ -478,7 +478,8 @@ class ProductionModel {
         pidRow[e['pid']] = pi;
       } 
       var pi = pidRow[e['pid']]!;
-      int index = int.tryParse(e['size_number'].substring(e['size_number'].length -  2)) ?? 0;
+      int index = int.tryParse(e['size_number'].substring(e['size_number'].length -  2))  ?? 0;
+      index --;
       pi.preSize.prodId[index] = e['prodId'];
       pi.preSize.aprId[index] = e['apr_id'];
       pi.remains[index].text = e['pat_mnac'];

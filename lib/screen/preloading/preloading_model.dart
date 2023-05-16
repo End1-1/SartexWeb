@@ -71,7 +71,7 @@ class PreloadingModel {
     late List<dynamic> httpData;
     if (docNumber == null) {
       httpData =
-          await HttpSqlQuery.post({'sl': "select max(id) as maxid from Docs"});
+          await HttpSqlQuery.post({'sl': "select coalesce(max(id), 0) + 1 as maxid from Docs"});
       docNumber = 'Doc23-${httpData[0]['maxid']}';
     }
     for (var pr in prReadyLines) {
@@ -89,7 +89,7 @@ class PreloadingModel {
           Map<String, String> bind = {};
           bind['branch'] = prefs.getString(key_user_branch)!;
           bind['type'] = 'OUT';
-          bind['muqt_elq'] = 'elq';
+          bind['mutq_elq'] = 'elq';
           bind['date'] = DateFormat('yyyy-MM-dd')
               .format(DateFormat('dd/MM/yyyy').parse(editDate.text));
           bind['docnum'] = docNumber!;

@@ -11,7 +11,7 @@ class RemainsModel extends AppModel<RemainsDatasource> {
 
   @override
   String sql() {
-    return "select pd.branch, m.pahest, pd.brand, pd.Model, pd.ModelCod, pd.country, pd.variant_prod, pd.Colore, "
+    return "select a.apr_id, pd.branch, m.pahest, pd.brand, pd.Model, pd.ModelCod, pd.country, pd.variant_prod, pd.Colore, "
     "m.mnacord "
     "from Apranq a "
     "left join patver_data pd on pd.id=a.pid "

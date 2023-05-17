@@ -34,7 +34,8 @@ class BarcumList with _$BarcumList {
 }
 
 class BarcumDatasource extends SartexDataGridSource {
-  BarcumDatasource() {
+  int? loaded;
+  BarcumDatasource(this.loaded) {
     addColumn(L.tr('Document'));
     addColumn(L.tr('Date'));
     addColumn(L.tr('Country'));
@@ -63,6 +64,6 @@ class BarcumDatasource extends SartexDataGridSource {
 
   @override
   Widget getEditWidget(BuildContext context, String id) {
-    return PreloadingScreen(docNum: id);
+    return PreloadingScreen(docNum: id, loaded: loaded);
   }
 }

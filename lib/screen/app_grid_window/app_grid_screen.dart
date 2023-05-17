@@ -14,13 +14,15 @@ abstract class AppGridScreen extends App {
   final bool plusButton;
   final bool filterButton;
   final gridKey = GlobalKey<SfDataGridState>();
+  final VoidCallback?  tapBack;
 
   AppGridScreen(
       {super.key,
       required super.model,
       required super.title,
       this.plusButton = true,
-      this.filterButton = false});
+      this.filterButton = false,
+      this.tapBack});
 
   @override
   Widget body(BuildContext context) {
@@ -45,15 +47,7 @@ abstract class AppGridScreen extends App {
                 allowFiltering: true,
                 allowSorting: true,
                 isScrollbarAlwaysShown: true,
-                onCellTap: (details) {
-                  var id = model.datasource
-                      .effectiveRows[details.rowColumnIndex.rowIndex - 1]
-                      .getCells()[0]
-                      .value;
-                  model.datasource.editData(context, id).then((value) {
-                    refreshData(context);
-                  });
-                },
+                onCellTap: (details) { cellTap(context, details);},
                 columnWidthMode: state.data.isEmpty ? ColumnWidthMode.fitByColumnName : ColumnWidthMode.auto,
                 source: model!.datasource,
                 columns: model!.datasource.columns)));
@@ -91,6 +85,9 @@ abstract class AppGridScreen extends App {
             },
             assetPath: 'svg/filter.svg')
       ],
+      if (tapBack != null)
+        SvgButton(onTap: (){onTapBack(context);}, assetPath: 'svg/left.svg'),
+
       SvgButton(
           onTap: () async {
 
@@ -117,11 +114,25 @@ abstract class AppGridScreen extends App {
     ];
   }
 
+cellTap(BuildContext context, DataGridCellTapDetails details) {
+  var id = model.datasource
+      .effectiveRows[details.rowColumnIndex.rowIndex - 1]
+      .getCells()[0]
+      .value;
+  model.datasource.editData(context, id).then((value) {
+    refreshData(context);
+  });
+}
+
   void showFilter(BuildContext context) {
 
   }
 
   void refreshData(BuildContext context) {
     BlocProvider.of<AppBloc>(context).add(GELoadData(model.sql()));
+  }
+
+  void onTapBack(BuildContext context) {
+
   }
 }

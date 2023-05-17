@@ -38,6 +38,7 @@ class PreloadingModel {
     'Alex'
   ];
   final TextEditingController editDate = TextEditingController();
+  final TextEditingController editDocNum = TextEditingController();
   final TextEditingController editTruck = TextEditingController();
   final TextEditingController editStore = TextEditingController();
   final TextEditingController editReceipant = TextEditingController();

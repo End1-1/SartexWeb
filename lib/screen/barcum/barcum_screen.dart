@@ -6,12 +6,13 @@ import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/utils/translator.dart';
 
 class BarcumScreen extends AppGridScreen {
-  BarcumScreen()
+
+  BarcumScreen(int? loaded)
       : super(
-            title: L.tr('Loading'),
-            model: BarcumModel(),
+            title: loaded == null ? L.tr('Loading') : L.tr('Loaded'),
+            model: BarcumModel(loaded: loaded),
             filterButton: true,
-            plusButton: prefs.roleWrite("2"));
+            plusButton: prefs.roleWrite("2") && loaded == null);
 
   void showFilter(BuildContext context) {
     BarcumFilter.filter(context, model).then((value) {

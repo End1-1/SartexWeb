@@ -27,6 +27,7 @@ abstract class App extends StatelessWidget {
       }
     }
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
           child: Stack(alignment: Alignment.topLeft, children: [
         Column(children: [

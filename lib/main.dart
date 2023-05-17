@@ -16,6 +16,7 @@ import 'package:sartex/screen/plan_and_production/plan_and_production_screen.dar
 import 'package:sartex/screen/products/products_screen.dart';
 import 'package:sartex/screen/remains/remains_screen.dart';
 import 'package:sartex/screen/sizes/sizes_screen.dart';
+import 'package:sartex/screen/t_hashiv/thashiv_screen.dart';
 import 'package:sartex/screen/tv/tv_screen.dart';
 import 'package:sartex/screen/users/users_screen.dart';
 import 'package:sartex/screen/users_role/users_role_screen.dart';
@@ -80,6 +81,17 @@ class MyApp extends StatelessWidget {
         // theme: ThemeData(
         //   fontFamily: 'Sylfaen'
         // ),
+      onGenerateRoute: (settings) {
+        if (settings.name ==  route_thashiv) {
+          return MaterialPageRoute(settings: settings, builder: (context){return  BlocProvider(
+              create: (_) => AppBloc(GSIdle()), child: THashivScreen((settings.arguments ?? '') as String));});
+        } else if (settings.name == route_barcum) {
+          return MaterialPageRoute(settings: settings, builder: (context){return
+            BlocProvider(
+                create: (_) => AppBloc(GSIdle()), child: BarcumScreen(settings.arguments as int?)); });
+          }
+        return null;
+      },
         debugShowCheckedModeBanner: false,
         routes: {
           route_root: (context) => const SartexLogin(),
@@ -87,8 +99,7 @@ class MyApp extends StatelessWidget {
           route_tv: (context) => TVScreen(),
           route_patver_data: (context) => BlocProvider(
               create: (_) => AppBloc(GSIdle()), child: PatverDataScreen()),
-          route_barcum: (context) => BlocProvider(
-              create: (_) => AppBloc(GSIdle()), child: BarcumScreen()),
+
           route_production: (context) => PlanAndProductionScreen(),
           route_users: (context) => BlocProvider(
               create: (_) => AppBloc(GSIdle()), child: UsersScreen()),
@@ -105,6 +116,8 @@ class MyApp extends StatelessWidget {
               create: (_) => AppBloc(GSIdle()), child: UsersRoleScreen()),
           route_remains: (_) => BlocProvider(
               create: (_) => AppBloc(GSIdle()), child: RemainsScreen()),
+          // route_thashiv: (_) => BlocProvider(
+          //     create: (_) => AppBloc(GSIdle()), child: THashivScreen(ModalRoute.of(context)?.settings.arguments as String?)),
           route_login_pin: (context) => LoginPinScreen()
         });
   }

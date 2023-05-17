@@ -9,6 +9,7 @@ part 'datasource.g.dart';
 @freezed
 class RemainRow with _$RemainRow {
   const factory RemainRow({
+    required String? apr_id,
     required String? branch,
     required String? brand,
     required String? Model,
@@ -22,6 +23,7 @@ class RemainRow with _$RemainRow {
 
 class RemainsDatasource extends SartexDataGridSource {
   RemainsDatasource() {
+    addColumn('edit');
     addColumn(L.tr('Branch'));
     addColumn(L.tr('Brand'));
     addColumn(L.tr('Model'));
@@ -40,6 +42,7 @@ class RemainsDatasource extends SartexDataGridSource {
     rows.addAll(r.map<DataGridRow>((e) {
       int i = 0;
       return DataGridRow(cells: [
+        DataGridCell(columnName: columnNames[i++], value: e.apr_id),
         DataGridCell(columnName: columnNames[i++], value: e.branch),
         DataGridCell(columnName: columnNames[i++], value: e.brand),
         DataGridCell(columnName: columnNames[i++], value: e.Model),

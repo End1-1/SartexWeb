@@ -28,6 +28,7 @@ class _SartexLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
         body: BlocListener<LoginBloc, LoginState>(
             listener: (context, state) {
               if (state is LoginStateLoginComplete) {
@@ -46,9 +47,10 @@ class _SartexLogin extends StatelessWidget {
                   alignment: Alignment.center,
                   child: SizedBox(
                       width: 300,
-                      height: 200,
+                      height: 330,
                       child: Column(
                         children: [
+                          Image.asset('svg/logo.jpg'),
                           state is SartexAppStateError
                               ? SizedBox(height: 50, child: Text(state.errorString))
                               : const SizedBox(height: 50),

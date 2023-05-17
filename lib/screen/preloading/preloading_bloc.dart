@@ -34,7 +34,10 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
   }
 
   Future<void> _openDoc(String? docnum) async {
+    Map<String, String> header = {};
+    List<PreloadingFullItem> items = [];
     if (docnum == null || docnum.isEmpty) {
+      emit(PreloadingStateOpenDoc(items: items, header: header));
       return;
     }
     List<dynamic> data = await HttpSqlQuery.post({
@@ -48,8 +51,7 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
           "where d.docNum='$docnum' "
           "order by cast(right(d.line, length(d.line)-1) as signed) "
     });
-    Map<String, String> header = {};
-    List<PreloadingFullItem> items = [];
+
     Map<String, PreloadingItem> pid = {};
     for (var d in data) {
       if (header.isEmpty) {

@@ -28,7 +28,9 @@ class _LeftMenu extends State<LeftMenu> {
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: Column(children: [
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
               Row(
                 children: [
                   SvgButton(
@@ -152,7 +154,8 @@ class _LeftMenu extends State<LeftMenu> {
                         caption: L.tr('Reports')))
               ]),
               AnimatedContainer(
-                  height: expandedReports ? 40 * 1 : 0,
+                margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  height: expandedReports ? 40 * 2 : 0,
                   duration: const Duration(milliseconds: 200),
                   child: SingleChildScrollView(
                     child: Column(
@@ -165,6 +168,11 @@ class _LeftMenu extends State<LeftMenu> {
                               Navigator.pushNamed(context, route_remains);
                             },
                             caption: L.tr('Remains')),
+                        TextMouseButton(
+                            onTap: () {
+                              Navigator.pushNamed(context, route_barcum, arguments: 1);
+                            },
+                            caption: L.tr('Loaded')),
                       ],
                     ),
                   )),
@@ -193,6 +201,7 @@ class _LeftMenu extends State<LeftMenu> {
                   ],
                 ),
               AnimatedContainer(
+                  margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                   height:
                       expandedDirectory ? 40 * prefs.readDirectoriesCount() : 0,
                   duration: const Duration(milliseconds: 200),
@@ -274,6 +283,7 @@ class _LeftMenu extends State<LeftMenu> {
                   ],
                 ),
               AnimatedContainer(
+                  margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                   height: expandedEarth ? 40 * 3 : 0,
                   duration: const Duration(milliseconds: 200),
                   child: SingleChildScrollView(

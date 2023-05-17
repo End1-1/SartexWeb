@@ -64,13 +64,38 @@ class LanguageDatasource extends SartexDataGridSource {
           }
         },
         onSubmitted: (String value) {
-          // In Mobile Platform.
-          // Call [CellSubmit] callback to fire the canSubmitCell and
-          // onCellSubmit to commit the new value in single place.
           submitCell();
         },
       ),
     );
+  }
+
+  @override
+  Future<void> onCellSubmit(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex,
+      GridColumn column) async {
+    final dynamic oldValue = dataGridRow
+        .getCells()
+        .firstWhere((DataGridCell dataGridCell) =>
+    dataGridCell.columnName == column.columnName)
+        ?.value ??
+        '';
+
+    final int dataRowIndex = rows.indexOf(dataGridRow);
+
+    if (newCellValue == null || oldValue == newCellValue) {
+      return;
+    }
+
+    if (column.columnName == 'Am') {
+      L.items[dataGridRow.getCells()[0].value] = TranslatorItem(key: dataGridRow.getCells()[0].value,  am: newCellValue, it: dataGridRow.getCells()[2].value);
+      rows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell(columnName: 'Am', value: newCellValue);
+    } else if (column.columnName == 'It') {
+      L.items[dataGridRow.getCells()[0].value] = TranslatorItem(key: dataGridRow.getCells()[0].value,  it: newCellValue, am: dataGridRow.getCells()[1].value);
+      rows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell(columnName: 'It', value: newCellValue);
+    }
+
   }
 
 }

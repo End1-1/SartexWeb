@@ -28,6 +28,7 @@ dependencies:
   google_fonts: ^4.0.4
   printing: ^5.10.3
   syncfusion_flutter_datagrid_export: ^21.2.4
+  excel: ^2.1.0
 
 dev_dependencies:
   flutter_test:

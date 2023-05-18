@@ -90,12 +90,12 @@ class UsersRoleEditWidget extends EditWidget {
                             alignment: Alignment.center,
                             child: Text(L.tr('Action')))),
                     SizedBox(
-                        width: 50,
+                        width: 100,
                         child: Align(
                             alignment: Alignment.center,
                             child: Text(L.tr('Read')))),
                     SizedBox(
-                        width: 50,
+                        width: 100,
                         child: Align(
                             alignment: Alignment.center,
                             child: Text(L.tr('Write')))),

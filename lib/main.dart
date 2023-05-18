@@ -89,14 +89,15 @@ class MyApp extends StatelessWidget {
           return MaterialPageRoute(settings: settings, builder: (context){return
             BlocProvider(
                 create: (_) => AppBloc(GSIdle()), child: BarcumScreen(settings.arguments as int?)); });
-          }
+          } else if (settings.name == route_tv) {
+          return MaterialPageRoute(settings: settings, builder: (context){return TVScreen((settings.arguments ?? false) as bool);});
+        }
         return null;
       },
         debugShowCheckedModeBanner: false,
         routes: {
           route_root: (context) => const SartexLogin(),
           route_dashboard: (context) => Dashboard(),
-          route_tv: (context) => TVScreen(),
           route_patver_data: (context) => BlocProvider(
               create: (_) => AppBloc(GSIdle()), child: PatverDataScreen()),
 

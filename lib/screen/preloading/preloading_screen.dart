@@ -258,7 +258,6 @@ class PreloadingScreen extends EditWidget {
         sheetObject
             .cell(CellIndex.indexByColumnRow(columnIndex: i, rowIndex: r))
             .cellStyle = cellLine;
-        sheetObject.setColAutoFit(i);
       }
 
       r++;
@@ -558,6 +557,10 @@ class PreloadingScreen extends EditWidget {
       r++;
     }
 
+    for (int i = 0; i < 17; i++) {
+      sheetObject.setColAutoFit(i);
+    }
+
     var fileBytes = excel.save(fileName: 'preloading.xlsx');
   }
 }
@@ -590,8 +593,8 @@ class _PreloadingLine extends State<PreloadingLine> {
               SvgButton(
                   onTap: () {
                     if (widget.model.editStore.text.isEmpty) {
-                      appDialog(context, L.tr('Select store'));
-                      return;
+                      // appDialog(context, L.tr('Select store'));
+                      // return;
                     }
                     setState(() {
                       widget.model.prLine.items.add(PreloadingItem());

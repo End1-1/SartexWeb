@@ -5,6 +5,16 @@ import 'package:sartex/screen/tv/tv_model.dart';
 import 'package:sartex/utils/translator.dart';
 
 class TVScreen extends StatelessWidget {
+  final bool pcVersion;
+  TVScreen(this.pcVersion) {
+    _textHeader1 = TextStyle(
+      color: Colors.white,
+      height: 1.52,
+      fontSize: pcVersion ? 28 : 20,
+      fontFamily: 'Agency FB',
+    );
+  }
+
   var page = true;
   final List<ModelRow> modelRows = [];
 
@@ -32,12 +42,7 @@ class TVScreen extends StatelessWidget {
   static const _color1 = Color(0xff6bc26a);
   static const _color2 = Color(0xff565656);
   final _standartPadding = const EdgeInsets.all(10);
-  final _textHeader1 = const TextStyle(
-    color: Colors.white,
-    height: 1.52,
-    fontSize: 22,
-    fontFamily: 'Agency FB',
-  );
+  late final TextStyle _textHeader1 ;
   final _textHeader2 = const TextStyle(
       color: Colors.black87,
       fontSize: 24,

@@ -8,7 +8,7 @@ class UsersModel extends AppModel<UserDataSource> {
 
   @override
   String sql() {
-    String f = prefs.roleRead("9") || prefs.roleWrite("9") ? "" : " where branch=${prefs.getString(key_user_branch)} ";
+    String f = prefs.roleRead("9") || prefs.roleWrite("9") ? "" : " where branch='${prefs.branch()}' ";
     return "select * from Users $f ";
   }
 

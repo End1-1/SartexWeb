@@ -25,6 +25,14 @@ extension Prefs on SharedPreferences {
     return value == '1';
   }
 
+  bool roleSuperAdmin() {
+    return roleRead('9') || roleWrite('9');
+  }
+
+  String branch() {
+    return getString(key_user_branch)!;
+  }
+
   String session() {
     String? s = getString(key_session_id);
     if (s == null) {

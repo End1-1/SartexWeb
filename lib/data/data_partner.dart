@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sartex/data/sartex_datagridsource.dart';
+import 'package:sartex/screen/partners/partners_edit.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -48,5 +50,10 @@ class PartnerDatasource extends SartexDataGridSource {
           DataGridCell(columnName: columnNames[i++], value: e.name),
           DataGridCell(columnName: columnNames[i++], value: e.type),
         ]);}));
+  }
+
+  @override
+  Widget getEditWidget(BuildContext context, String id) {
+    return PartnersEdit(id);
   }
 }

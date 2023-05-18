@@ -49,6 +49,7 @@ class ProductsDatasource extends SartexDataGridSource {
     addColumn(L.tr('Model'));
     addColumn(L.tr('ModelCode'));
     addColumn(L.tr('Standart'));
+    addColumn(L.tr('Packaging'));
     addColumn(L.tr('Products type code'));
     addColumn(L.tr('Netto'));
     addColumn(L.tr('Brutto'));
@@ -66,6 +67,7 @@ class ProductsDatasource extends SartexDataGridSource {
         DataGridCell(columnName: columnNames[i++], value: e.model),
         DataGridCell(columnName: columnNames[i++], value: e.modelCode),
         DataGridCell(columnName: columnNames[i++], value: e.size_standart),
+        DataGridCell(columnName: columnNames[i++], value: e.Packaging),
         DataGridCell(columnName: columnNames[i++], value: e.ProductsTypeCode),
         DataGridCell(columnName: columnNames[i++], value: e.Netto),
         DataGridCell(columnName: columnNames[i++], value: e.Brutto)
@@ -188,7 +190,10 @@ class ProductEditWidget extends EditWidget {
             textFieldColumn(
                 context: context,
                 title: 'Packaging',
-                textEditingController: _editPackaging),
+                textEditingController: _editPackaging,
+            onTap: (){
+                  valueOfList(context, ['Handlers', 'Box'], _editPackaging);
+            }),
             textFieldColumn(
                 context: context,
                 title: 'ProductsTypeCode',

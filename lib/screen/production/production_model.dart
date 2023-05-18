@@ -167,7 +167,7 @@ class ProductionItem {
       canEditQty = false;
       HttpSqlQuery.post({
         "sl":
-        "select distinct(pd.brand) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress'"
+            "select distinct(pd.brand) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress'"
       }).then((value) {
         brandLevel.clear();
         for (var e in value) {
@@ -182,8 +182,8 @@ class ProductionItem {
       return;
     }
     HttpSqlQuery.post({
-      "sl":
-          "select distinct(pd.Model) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand'"
+      "sl": "select distinct(pd.Model) from Apranq a left join patver_data pd on pd.id=a.pid "
+          "where pd.status='inProgress' and brand='$brand' and pd.branch='${prefs.getString(key_user_branch)}' "
     }).then((value) {
       modelLevel.clear();
       for (var e in value) {
@@ -197,8 +197,11 @@ class ProductionItem {
       return;
     }
     var value = await HttpSqlQuery.post({
-      "sl":
-          "select distinct(pd.PatverN) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model'"
+      "sl": "select distinct(pd.PatverN) "
+          "from Apranq a "
+          "left join patver_data pd on pd.id=a.pid "
+          "where pd.status='inProgress' and brand='$brand' and Model='$model' "
+          "and pd.branch='${prefs.getString(key_user_branch)}' "
     });
     commesaLevel.clear();
     for (var e in value) {
@@ -207,14 +210,15 @@ class ProductionItem {
   }
 
   Future<void> buildCountryLevel(
-
       String brand, String model, String commesa) async {
     if (!canEditModel) {
       return;
     }
     var value = await HttpSqlQuery.post({
-      "sl":
-          "select distinct(pd.country) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and brand='$brand' and Model='$model' and PatverN='$commesa'"
+      "sl": "select distinct(pd.country) from Apranq a "
+          "left join patver_data pd on pd.id=a.pid "
+          "where pd.status='inProgress' and brand='$brand' and Model='$model' "
+          "and PatverN='$commesa' and pd.branch='${prefs.getString(key_user_branch)}'"
     });
     countryLevel.clear();
     for (var e in value) {
@@ -228,8 +232,11 @@ class ProductionItem {
       return;
     }
     var value = await HttpSqlQuery.post({
-      "sl": "select distinct(pd.Colore) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
-          "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country'"
+      "sl": "select distinct(pd.Colore) from Apranq a "
+              "left join patver_data pd on pd.id=a.pid "
+              "where pd.status='inProgress' " +
+          "and brand='$brand' and Model='$model' and PatverN='$commesa' "
+              "and country='$country' and pd.branch='${prefs.getString(key_user_branch)}'"
     });
     colorLevel.clear();
     for (var e in value) {
@@ -243,8 +250,10 @@ class ProductionItem {
       return;
     }
     var value = await HttpSqlQuery.post({
-      "sl": "select distinct(pd.variant_prod) from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
-          "and brand='$brand' and Model='$model' and PatverN='$commesa' and Colore='$color' and country='$country'"
+      "sl": "select distinct(pd.variant_prod) from Apranq a "
+          "left join patver_data pd on pd.id=a.pid where pd.status='inProgress' "
+          "and brand='$brand' and Model='$model' and PatverN='$commesa' "
+          "and Colore='$color' and country='$country' and pd.branch='${prefs.getString(key_user_branch)}'"
     });
     variantLevel.clear();
     for (var e in value) {
@@ -258,8 +267,10 @@ class ProductionItem {
       return;
     }
     List<dynamic> l = await HttpSqlQuery.post({
-      "sl": "select pd.size_standart, pd.id from Apranq a left join patver_data pd on pd.id=a.pid where pd.status='inProgress' " +
-          "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country' and Colore='$color' and variant_prod='$variant'"
+      "sl": "select pd.size_standart, pd.id from Apranq a "
+          "left join patver_data pd on pd.id=a.pid where pd.status='inProgress' "
+          "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country' "
+          "and Colore='$color' and variant_prod='$variant' and pd.branch='${prefs.getString(key_user_branch)}' "
     });
     String sizeStandart = '';
     String pid = '';
@@ -274,8 +285,11 @@ class ProductionItem {
       sizes[i - 1].text = l[0]['size${i.toString().padLeft(2, '0')}'];
     }
     l = await HttpSqlQuery.post({
-      "sl":
-          "select a.apr_id, m.mnacord as pahest_mnac, a.patver-coalesce(pr.LineQanak, 0) as pat_mnac, a.size_number from Apranq a left join Mnacord m on m.apr_id=a.apr_id left join (select apr_id, sum(LineQanak) as LineQanak from Production group by 1) as pr on pr.apr_id=a.apr_id where pid='$pid'"
+      "sl": "select a.apr_id, m.mnacord as pahest_mnac, a.patver-coalesce(pr.LineQanak, 0) as pat_mnac, a.size_number "
+          "from Apranq a "
+          "left join Mnacord m on m.apr_id=a.apr_id "
+          "left join (select apr_id, sum(LineQanak) as LineQanak from Production group by 1) as pr on pr.apr_id=a.apr_id "
+          "where pid='$pid'"
     });
     for (var e in l) {
       int index = int.tryParse(
@@ -347,7 +361,7 @@ class ProductionItem {
     clearAfterColor();
   }
 
-  void  clearAfterColor() {
+  void clearAfterColor() {
     variantLevel.clear();
     editVariant.clear();
     clearAfterVariant();
@@ -369,34 +383,36 @@ class ProductionItem {
         if (index == 12) {
           return false;
         }
-        int diff = (int.tryParse(oldvalues[index].text) ?? 0) - (int.tryParse(newvalues[index].text) ?? 0);
+        int diff = (int.tryParse(oldvalues[index].text) ?? 0) -
+            (int.tryParse(newvalues[index].text) ?? 0);
         if (diff > (int.tryParse(restQanak[index].text) ?? 0)) {
           return true;
         }
-
       }
     }
     return false;
   }
 
   Future<void> save() async {
-      for (int i = 0; i < 12; i++) {
-        if (preSize.prodId[i].isEmpty) {
-          // if (newvalues[i].text.isNotEmpty) {
-          //   await HttpSqlQuery.post({
-          //     'sl': "insert into Production (branch, date, line, apr_id, LineQanak, RestQanak) values (" +
-          //         "'${prefs.getString(key_user_branch)}', '${DateFormat('yyyy-MM-dd').format(DateTime.now())}', '$name', '${preSize.aprId[i]}', '${newvalues[i]
-          //             .text}', '${newvalues[i].text}')"
-          //   });
-          // }
-        } else {
-          int diff = (int.tryParse(oldvalues[i].text) ?? 0) - (int.tryParse(newvalues[i].text) ?? 0);
-          await HttpSqlQuery.post({'sl': "update Production set LineQanak=LineQanak-$diff, RestQanak=RestQanak-$diff where id='${preSize.prodId[i]}'"});
-        }
+    for (int i = 0; i < 12; i++) {
+      if (preSize.prodId[i].isEmpty) {
+        // if (newvalues[i].text.isNotEmpty) {
+        //   await HttpSqlQuery.post({
+        //     'sl': "insert into Production (branch, date, line, apr_id, LineQanak, RestQanak) values (" +
+        //         "'${prefs.getString(key_user_branch)}', '${DateFormat('yyyy-MM-dd').format(DateTime.now())}', '$name', '${preSize.aprId[i]}', '${newvalues[i]
+        //             .text}', '${newvalues[i].text}')"
+        //   });
+        // }
+      } else {
+        int diff = (int.tryParse(oldvalues[i].text) ?? 0) -
+            (int.tryParse(newvalues[i].text) ?? 0);
+        await HttpSqlQuery.post({
+          'sl':
+              "update Production set LineQanak=LineQanak-$diff, RestQanak=RestQanak-$diff where id='${preSize.prodId[i]}'"
+        });
       }
-
+    }
   }
-
 }
 
 class ProductionLine {
@@ -418,33 +434,31 @@ class ProductionModel {
     String err = '';
     bool totalEmpty = false;
 
-      for (var f in lines.items) {
-        if (!totalEmpty && (int.tryParse(f.sumOfNewValues()) ?? 0) == 0) {
-          totalEmpty = true;
-          err += '${L.tr('Check quantity')}\r\n';
-        }
+    for (var f in lines.items) {
+      if (!totalEmpty && (int.tryParse(f.sumOfNewValues()) ?? 0) == 0) {
+        totalEmpty = true;
+        err += '${L.tr('Check quantity')}\r\n';
       }
+    }
 
     if (err.isNotEmpty) {
       return err;
     }
     late List<dynamic> l;
-      for (var f in lines.items) {
-        for (int i = 0; i < 12; i++) {
-          if (f.preSize.prodId[i].isEmpty) {
-            if (f.newvalues[i].text.isNotEmpty) {
-              await HttpSqlQuery.post({
-                'sl': "insert into Production (branch, date, line, apr_id, LineQanak, RestQanak) values (" +
-                    "'${prefs.getString(key_user_branch)}', '${DateFormat('yyyy-MM-dd').format(DateTime.now())}', '${lines
-                        .name}', '${f.preSize.aprId[i]}', '${f.newvalues[i]
-                        .text}', '${f.newvalues[i].text}')"
-              });
-            }
-          } else {
-            //await HttpSqlQuery.post({'sl': "update Production set LineQanak='${f.newvalues[i].text}' where id='${f.preSize.prodId[i]}'"});
+    for (var f in lines.items) {
+      for (int i = 0; i < 12; i++) {
+        if (f.preSize.prodId[i].isEmpty) {
+          if (f.newvalues[i].text.isNotEmpty) {
+            await HttpSqlQuery.post({
+              'sl': "insert into Production (branch, date, line, apr_id, LineQanak, RestQanak) values (" +
+                  "'${prefs.getString(key_user_branch)}', '${DateFormat('yyyy-MM-dd').format(DateTime.now())}', '${lines.name}', '${f.preSize.aprId[i]}', '${f.newvalues[i].text}', '${f.newvalues[i].text}')"
+            });
           }
+        } else {
+          //await HttpSqlQuery.post({'sl': "update Production set LineQanak='${f.newvalues[i].text}' where id='${f.preSize.prodId[i]}'"});
         }
       }
+    }
 
     return err;
   }
@@ -452,7 +466,10 @@ class ProductionModel {
   Future<void> open() async {
     lines.items.clear();
     // List<dynamic> l = await HttpSqlQuery.post({'sl': "select pr.id as prodId, pd.brand,pd.model,pd.modelCod,pd.PatverN, pd.country, pd.Colore,pd.variant_prod, a.apr_id, a.patver as pat_mnac, a.size_number, sum(pr.LineQanak-(pr.LineQanak-pr.RestQanak)) as LineQanak, sum(pr.RestQanak) as RestQanak, a.pid from Production pr left join Apranq a on pr.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pr.line='${lines.name}'  and pd.branch='${prefs.getString(key_user_branch)}' group by a.apr_id having sum(pr.LineQanak-(pr.LineQanak-pr.RestQanak))>0 "});
-    List<dynamic> l = await HttpSqlQuery.post({'sl': "select pr.id as prodId, pd.brand,pd.model,pd.modelCod,pd.PatverN, pd.country, pd.Colore,pd.variant_prod, a.apr_id, a.patver as pat_mnac, a.size_number, sum(pr.LineQanak) as LineQanak, sum(pr.RestQanak) as RestQanak, a.pid from Production pr left join Apranq a on pr.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pr.line='${lines.name}'  and pd.branch='${prefs.getString(key_user_branch)}' group by a.apr_id having sum(pr.LineQanak-(pr.LineQanak-pr.RestQanak))>0 "});
+    List<dynamic> l = await HttpSqlQuery.post({
+      'sl':
+          "select pr.id as prodId, pd.brand,pd.model,pd.modelCod,pd.PatverN, pd.country, pd.Colore,pd.variant_prod, a.apr_id, a.patver as pat_mnac, a.size_number, sum(pr.LineQanak) as LineQanak, sum(pr.RestQanak) as RestQanak, a.pid from Production pr left join Apranq a on pr.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pr.line='${lines.name}'  and pd.branch='${prefs.getString(key_user_branch)}' group by a.apr_id having sum(pr.LineQanak-(pr.LineQanak-pr.RestQanak))>0 "
+    });
     Map<String, ProductionItem> pidRow = {};
     for (var e in l) {
       if (!pidRow.containsKey(e['pid'])) {
@@ -467,7 +484,8 @@ class ProductionModel {
         lines.items.add(pi);
 
         var ll = await HttpSqlQuery.post({
-          'sl': "select * from Sizes where code in (select size_standart from patver_data where id='${e['pid']}')"
+          'sl':
+              "select * from Sizes where code in (select size_standart from patver_data where id='${e['pid']}')"
         });
         if (ll.isNotEmpty) {
           for (int i = 0; i < 12; i++) {
@@ -476,10 +494,12 @@ class ProductionModel {
           }
         }
         pidRow[e['pid']] = pi;
-      } 
+      }
       var pi = pidRow[e['pid']]!;
-      int index = int.tryParse(e['size_number'].substring(e['size_number'].length -  2))  ?? 0;
-      index --;
+      int index = int.tryParse(
+              e['size_number'].substring(e['size_number'].length - 2)) ??
+          0;
+      index--;
       pi.preSize.prodId[index] = e['prodId'];
       pi.preSize.aprId[index] = e['apr_id'];
       pi.remains[index].text = e['pat_mnac'];

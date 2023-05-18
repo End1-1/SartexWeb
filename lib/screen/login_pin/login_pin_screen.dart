@@ -207,6 +207,6 @@ class _LoginPinScreen extends State<LoginPinScreen> {
       prefs.setRoleAction(e['action'], e['read_flag'], e['write_flag']);
     }
 
-    Navigator.pushNamedAndRemoveUntil(context, route_tv, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(context, route_tv, (route) => false, arguments: true);
   }
 }

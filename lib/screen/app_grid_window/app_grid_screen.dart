@@ -2,6 +2,7 @@ import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sartex/data/sartex_datagridsource.dart';
 import 'package:sartex/screen/app/app_bloc.dart';
 import 'package:sartex/screen/app/app_screen.dart';
 import 'package:sartex/widgets/svg_button.dart';
@@ -15,6 +16,7 @@ abstract class AppGridScreen extends App {
   final bool filterButton;
   final gridKey = GlobalKey<SfDataGridState>();
   final VoidCallback?  tapBack;
+
 
   AppGridScreen(
       {super.key,
@@ -41,8 +43,9 @@ abstract class AppGridScreen extends App {
                   color: Colors.red,
                   fontSize: 14,
                 )),
-            child: MouseRegion(cursor: SystemMouseCursors.move, child: SfDataGrid(
+            child: SfDataGrid(
               key: gridKey,
+                tableSummaryRows: (model!.datasource as SartexDataGridSource).sumRows,
                 allowColumnsResizing: true,
                 allowFiltering: true,
                 allowSorting: true,
@@ -50,7 +53,7 @@ abstract class AppGridScreen extends App {
                 onCellTap: (details) { cellTap(context, details);},
                 columnWidthMode: state.data.isEmpty ? ColumnWidthMode.fitByColumnName : ColumnWidthMode.auto,
                 source: model!.datasource,
-                columns: model!.datasource.columns)));
+                columns: model!.datasource.columns));
       }
       return const Align(
           alignment: Alignment.center, child: CircularProgressIndicator());

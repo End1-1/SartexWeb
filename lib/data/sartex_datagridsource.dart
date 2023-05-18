@@ -8,6 +8,7 @@ abstract class SartexDataGridSource extends DataGridSource {
   final List<DataGridRow> rows = [];
   final List<GridColumn> columns = [];
   final List<String> columnNames = [];
+  final List<GridTableSummaryRow> sumRows = [];
 
   final Widget delePic = SvgPicture.asset(
     'svg/delete.svg',
@@ -45,6 +46,18 @@ abstract class SartexDataGridSource extends DataGridSource {
         child: Text(e.value.toString()),
       );
     }).toList());
+  }
+
+  @override
+  Widget? buildTableSummaryCellWidget(
+      GridTableSummaryRow summaryRow,
+      GridSummaryColumn? summaryColumn,
+      RowColumnIndex rowColumnIndex,
+      String summaryValue) {
+    return Container(
+      padding: const EdgeInsets.all(15.0),
+      child: Text(summaryValue),
+    );
   }
 
   Widget getEditWidget(BuildContext context, String id) {

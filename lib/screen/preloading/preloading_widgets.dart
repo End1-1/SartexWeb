@@ -99,6 +99,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
 
   @override
   Widget build(BuildContext context) {
+    const sizeColWidth = 60.0;
     return SingleChildScrollView(
       controller: scrollController,
       child: Column(
@@ -488,7 +489,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                             e,
                                             widget.model!.editStore.text)
                                         .then((value) {
-                                      for (int i = 1; i < 11; i++) {
+                                      for (int i = 1; i < 13; i++) {
                                         e.sizes[i - 1].text +=
                                             ' / ${e.preSize!.aprId[i - 1]}';
                                       }
@@ -512,7 +513,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                                 e,
                                                 widget.model!.editStore.text)
                                             .then((value) {
-                                          for (int i = 1; i < 11; i++) {
+                                          for (int i = 1; i < 13; i++) {
                                             e.sizes[i - 1].text;
                                           }
                                         });
@@ -527,9 +528,9 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                   //Size Row
                   Row(
                     children: [
-                      for (int i = 1; i < 11; i++) ...[
+                      for (int i = 1; i < 13; i++) ...[
                         SizedBox(
-                            width: 70,
+                            width: sizeColWidth,
                             child: Container(
                                 padding: padding,
                                 decoration: headerDecor1,
@@ -561,9 +562,9 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                   widget.showLine1
                       ? Row(
                           children: [
-                            for (int i = 1; i < 11; i++) ...[
+                            for (int i = 1; i < 13; i++) ...[
                               SizedBox(
-                                  width: 70,
+                                  width: sizeColWidth,
                                   child: Container(
                                       decoration: headerDecor2,
                                       child: Row(children: [
@@ -613,9 +614,9 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                   //Input row
                   Row(
                     children: [
-                      for (int i = 1; i < 11; i++) ...[
+                      for (int i = 1; i < 13; i++) ...[
                         SizedBox(
-                            width: 70,
+                            width: sizeColWidth,
                             child: Container(
                                 decoration: headerDecor3,
                                 child: Row(children: [
@@ -657,9 +658,9 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                   //Pahest row
                   Row(
                     children: [
-                      for (int i = 1; i < 11; i++) ...[
+                      for (int i = 1; i < 13; i++) ...[
                         SizedBox(
-                            width: 70,
+                            width: sizeColWidth,
                             child: Container(
                                 decoration: headerDecor4,
                                 child: Row(children: [
@@ -681,7 +682,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                         readOnly: true,
                                         decoration: formDecor1,
                                         controller:
-                                            e.pahest[e.pahest.length - 1],
+                                            e.pahest[e.pahest.length - 1]..text = e.sumOfList(e.pahest),
                                         style: headerLeft))
                               ]))),
                     ],
@@ -691,9 +692,9 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                       ? Container()
                       : Row(
                           children: [
-                            for (int i = 1; i < 11; i++) ...[
+                            for (int i = 1; i < 13; i++) ...[
                               SizedBox(
-                                  width: 70,
+                                  width: sizeColWidth,
                                   child: Container(
                                       decoration:
                                           (int.tryParse(e.pahest[i - 1].text) ??
@@ -747,7 +748,17 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                               readOnly: true,
                                               decoration: formDecor1,
                                               controller:
-                                                  e.diff[e.diff.length - 1],
+                                                  e.diff[e.diff.length - 1]..text = ((int.tryParse(e
+                                                      .pahest[
+                                                  e.pahest.length - 1]
+                                                      .text) ??
+                                                      0) -
+                                                      (int.tryParse(e
+                                                          .newvalues[
+                                                      e.newvalues.length -
+                                                          1]
+                                                          .text) ??
+                                                          0)).toString(),
                                               style: headerLeft))
                                     ]))),
                           ],
@@ -796,6 +807,9 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                               prodIds += prodId.toString();
                                             }
                                           }
+                                        }
+                                        if (prodIds.isEmpty) {
+                                          prodIds = '-1';
                                         }
                                         HttpSqlQuery.post({
                                           'sl': "select pd.brand, pd.Model, pd.ModelCod, a.size, d.qanak "

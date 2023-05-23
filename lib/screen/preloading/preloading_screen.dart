@@ -14,21 +14,22 @@ import 'package:sartex/widgets/svg_button.dart';
 
 class PreloadingScreen extends EditWidget {
   final PreloadingModel _model = PreloadingModel();
-  String? docNum;
   int? loaded;
 
-  PreloadingScreen({super.key, this.docNum, this.loaded});
+  PreloadingScreen({super.key, required String docNum, this.loaded}) {
+    _model.docNumber = docNum;
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<PreloadingBloc>(
         create: (_) => PreloadingBloc(PreloadingStateIdle())
-          ..add(PreloadingEventOpenDoc(docnum: docNum)),
+          ..add(PreloadingEventOpenDoc(docnum: _model.docNumber)),
         child: BlocBuilder<PreloadingBloc, PreloadingState>(
             builder: (context, state) {
           if (state is PreloadingStateOpenDoc) {
             if (state.items.isNotEmpty) {
-              _model.editDocNum.text = docNum ?? '';
+              _model.editDocNum.text = _model.docNumber ?? '';
               _model.editDate.text = DateFormat('dd/MM/yyyy').format(
                   DateFormat('yyyy-MM-dd').parse(state.header['date']!));
               _model.editReceipant.text = state.header['receipant']!;
@@ -114,12 +115,13 @@ class PreloadingScreen extends EditWidget {
               DefaultTabController(
                   length: loaded != null
                       ? 1
-                      : (docNum ?? '').length == 0 || prefs.roleWrite("2")
+                      : (_model.docNumber ?? '').length == 0 ||
+                              prefs.roleWrite("2")
                           ? 2
                           : 1,
                   initialIndex: loaded != null
                       ? 0
-                      : (docNum ?? '').length == 0
+                      : (_model.docNumber ?? '').length == 0
                           ? 0
                           : 1,
                   child: SizedBox(
@@ -620,8 +622,51 @@ class _PreloadingLine extends State<PreloadingLine> {
                         appDialog(context, err);
                         return;
                       }
-                      widget.model.prReadyLines.add(widget.model.prLine);
-                      widget.model.prLine = PreloadingFullItem();
+                      //Check if same apr_id, line exists, then update
+                      for (final checkLine in widget.model.prReadyLines) {
+                        if (checkLine.prLine == widget.model.prLine.prLine) {
+                          for (final currentItem in widget.model.prLine.items) {
+                            bool found = false;
+                            for (final checkItem in checkLine.items) {
+                              if (checkItem.brand.text ==
+                                      currentItem.brand.text &&
+                                  checkItem.model.text ==
+                                      currentItem.model.text &&
+                                  checkItem.commesa.text ==
+                                      currentItem.commesa.text &&
+                                  checkItem.country.text ==
+                                      currentItem.country.text &&
+                                  checkItem.variant.text ==
+                                      currentItem.variant.text &&
+                                  checkItem.color.text ==
+                                      currentItem.color.text) {
+                                for (int i = 0; i < 12; i++) {
+                                  checkItem.newvalues[i].text =
+                                      ((int.tryParse(currentItem
+                                                      .newvalues[i].text) ??
+                                                  0) +
+                                              (int.tryParse(checkItem
+                                                      .newvalues[i].text) ??
+                                                  0))
+                                          .toString();
+                                }
+                                widget.model.prLine.items.remove(currentItem);
+                                found = true;
+                              }
+                            }
+                            if (!found) {
+                              checkLine.items.add(currentItem);
+                              widget.model.prLine.items.remove(currentItem);
+                            }
+                          }
+                        }
+                      }
+
+                      //not exists, new line
+                      if (widget.model.prLine.items.isNotEmpty) {
+                        widget.model.prReadyLines.add(widget.model.prLine);
+                        widget.model.prLine = PreloadingFullItem();
+                      }
                       setState(() {});
                     }, () {});
                   },

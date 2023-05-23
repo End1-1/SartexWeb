@@ -130,12 +130,12 @@ class UserEditWidget extends EditWidget {
     branchList = ['Sartex', 'Itex'];
     activeList = ['yes', 'no'];
     var value = await HttpSqlQuery.listOfQuery(
-        'select distinct(position) from Users order by 1');
+        "select distinct(position) from Users where branch='${prefs.branch()}' order by 1");
     positionList = value;
-    value = await HttpSqlQuery.listOf('department', 'department');
+    value = await HttpSqlQuery.listOfQuery("select department from department where branch='${prefs.branch()}'");
     departmentList = value;
     value = await HttpSqlQuery.listOfQuery(
-        'select distinct(type) from Users where type is not null');
+        "select distinct(type) from Users where type is not null and branch='${prefs.branch()}'");
     typeList = value;
     value = await HttpSqlQuery.listDistinctOf('RoleNames', 'name');
     roleList = value;

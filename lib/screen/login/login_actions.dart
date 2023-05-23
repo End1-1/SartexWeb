@@ -76,6 +76,7 @@ class LoginActionAuth extends LoginAction {
     await prefs.setString(key_user_firstname, userData[0]['firstName']);
     await prefs.setString(key_user_lastname, userData[0]['lastName']);
     await prefs.setString(key_user_role, userData[0]['role_id'] ?? '');
+    HttpSqlQuery.userForQueries = userData[0]['user_id'];
     await prefs.setString(
         key_full_name, '${userData[0]['lastName']} ${userData[0]['firstName']}');
 

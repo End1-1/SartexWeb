@@ -28,6 +28,7 @@ mixin _$Product {
   String? get size_standart => throw _privateConstructorUsedError;
   String? get Packaging => throw _privateConstructorUsedError;
   String? get ProductsTypeCode => throw _privateConstructorUsedError;
+  String? get productTypeName => throw _privateConstructorUsedError;
   String? get Netto => throw _privateConstructorUsedError;
   String? get Brutto => throw _privateConstructorUsedError;
 
@@ -50,6 +51,7 @@ abstract class $ProductCopyWith<$Res> {
       String? size_standart,
       String? Packaging,
       String? ProductsTypeCode,
+      String? productTypeName,
       String? Netto,
       String? Brutto});
 }
@@ -75,6 +77,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? size_standart = freezed,
     Object? Packaging = freezed,
     Object? ProductsTypeCode = freezed,
+    Object? productTypeName = freezed,
     Object? Netto = freezed,
     Object? Brutto = freezed,
   }) {
@@ -111,6 +114,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.ProductsTypeCode
           : ProductsTypeCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      productTypeName: freezed == productTypeName
+          ? _value.productTypeName
+          : productTypeName // ignore: cast_nullable_to_non_nullable
+              as String?,
       Netto: freezed == Netto
           ? _value.Netto
           : Netto // ignore: cast_nullable_to_non_nullable
@@ -139,6 +146,7 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
       String? size_standart,
       String? Packaging,
       String? ProductsTypeCode,
+      String? productTypeName,
       String? Netto,
       String? Brutto});
 }
@@ -161,6 +169,7 @@ class __$$_ProductCopyWithImpl<$Res>
     Object? size_standart = freezed,
     Object? Packaging = freezed,
     Object? ProductsTypeCode = freezed,
+    Object? productTypeName = freezed,
     Object? Netto = freezed,
     Object? Brutto = freezed,
   }) {
@@ -197,6 +206,10 @@ class __$$_ProductCopyWithImpl<$Res>
           ? _value.ProductsTypeCode
           : ProductsTypeCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      productTypeName: freezed == productTypeName
+          ? _value.productTypeName
+          : productTypeName // ignore: cast_nullable_to_non_nullable
+              as String?,
       Netto: freezed == Netto
           ? _value.Netto
           : Netto // ignore: cast_nullable_to_non_nullable
@@ -221,6 +234,7 @@ class _$_Product implements _Product {
       required this.size_standart,
       required this.Packaging,
       required this.ProductsTypeCode,
+      required this.productTypeName,
       required this.Netto,
       required this.Brutto});
 
@@ -244,13 +258,15 @@ class _$_Product implements _Product {
   @override
   final String? ProductsTypeCode;
   @override
+  final String? productTypeName;
+  @override
   final String? Netto;
   @override
   final String? Brutto;
 
   @override
   String toString() {
-    return 'Product(id: $id, branch: $branch, brand: $brand, model: $model, modelCode: $modelCode, size_standart: $size_standart, Packaging: $Packaging, ProductsTypeCode: $ProductsTypeCode, Netto: $Netto, Brutto: $Brutto)';
+    return 'Product(id: $id, branch: $branch, brand: $brand, model: $model, modelCode: $modelCode, size_standart: $size_standart, Packaging: $Packaging, ProductsTypeCode: $ProductsTypeCode, productTypeName: $productTypeName, Netto: $Netto, Brutto: $Brutto)';
   }
 
   @override
@@ -270,14 +286,27 @@ class _$_Product implements _Product {
                 other.Packaging == Packaging) &&
             (identical(other.ProductsTypeCode, ProductsTypeCode) ||
                 other.ProductsTypeCode == ProductsTypeCode) &&
+            (identical(other.productTypeName, productTypeName) ||
+                other.productTypeName == productTypeName) &&
             (identical(other.Netto, Netto) || other.Netto == Netto) &&
             (identical(other.Brutto, Brutto) || other.Brutto == Brutto));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, branch, brand, model,
-      modelCode, size_standart, Packaging, ProductsTypeCode, Netto, Brutto);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      branch,
+      brand,
+      model,
+      modelCode,
+      size_standart,
+      Packaging,
+      ProductsTypeCode,
+      productTypeName,
+      Netto,
+      Brutto);
 
   @JsonKey(ignore: true)
   @override
@@ -303,6 +332,7 @@ abstract class _Product implements Product {
       required final String? size_standart,
       required final String? Packaging,
       required final String? ProductsTypeCode,
+      required final String? productTypeName,
       required final String? Netto,
       required final String? Brutto}) = _$_Product;
 
@@ -324,6 +354,8 @@ abstract class _Product implements Product {
   String? get Packaging;
   @override
   String? get ProductsTypeCode;
+  @override
+  String? get productTypeName;
   @override
   String? get Netto;
   @override

@@ -7,7 +7,7 @@ class PartnersModel extends AppModel<PartnerDatasource> {
 
   @override
   String sql() {
-    String f = prefs.roleSuperAdmin() ? "" : " where branch=${prefs.getString(key_user_branch)}'";
+    String f = prefs.roleSuperAdmin() ? "" : " where branch='${prefs.getString(key_user_branch)}'";
     return "select id, coalesce(branch, '') as branch, country, name, type from Parthners $f";
   }
 

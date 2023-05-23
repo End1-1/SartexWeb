@@ -229,13 +229,15 @@ class _LeftMenu extends State<LeftMenu> {
                                 Navigator.pushNamed(context, route_product);
                               },
                               caption: L.tr('Products')),
+                        // if (prefs.roleRead("7"))
+                        //   TextMouseButton(
+                        //       onTap: () {
+                        //         Navigator.pushNamed(
+                        //             context, route_product_statuses);
+                        //       },
+                        //       caption: L.tr('Products states')),
                         if (prefs.roleRead("7"))
-                          TextMouseButton(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, route_product_statuses);
-                              },
-                              caption: L.tr('Products states')),
+                          TextMouseButton(onTap: (){Navigator.pushNamed(context, route_product_type_code);}, caption: L.tr('Product type code')),
                         if (prefs.roleRead("7"))
                           TextMouseButton(
                               onTap: () {

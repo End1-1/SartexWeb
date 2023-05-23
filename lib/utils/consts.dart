@@ -7,6 +7,7 @@ import 'package:sartex/utils/translator.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 const server_http_address = 'https://app.sartex.am/mix/mservice.php';
+//const server_http_address = 'https://app.sartex.am/mix/porz.php';
 final server_uri = Uri.parse(server_http_address);
 
 const route_root = '/';
@@ -18,7 +19,7 @@ const route_production = 'production';
 const route_users = 'users';
 const route_department = 'department';
 const route_product = 'products';
-const route_product_statuses = 'product_statuses';
+//const route_product_statuses = 'product_statuses';
 const route_partners = 'partners';
 const route_sizes = 'sizes';
 const route_language_editor = 'language_editor';
@@ -26,6 +27,7 @@ const route_users_role = 'users_role';
 const route_login_pin = 'login_pin';
 const route_remains = 'remains';
 const route_thashiv = 't_account';
+const route_product_type_code = 'route_product_type_code';
 
 const key_error = 'key_error';
 const key_empty = 'empty';

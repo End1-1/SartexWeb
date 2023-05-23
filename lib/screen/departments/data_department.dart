@@ -5,6 +5,8 @@ import 'package:sartex/data/sartex_datagridsource.dart';
 import 'package:sartex/data/sql.dart';
 import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/http_sql.dart';
+import 'package:sartex/utils/prefs.dart';
+import 'package:sartex/utils/text_editing_controller.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../utils/translator.dart';
@@ -20,7 +22,7 @@ class DataDepartment with _$DataDepartment {
       {required String id,
       required String branch,
       required String department,
-      required String patasxanatu,
+      required String? patasxanatu,
       required String short_name,
       required String type}) = _DataDepartment;
 
@@ -77,8 +79,8 @@ class DepartmentEditWidget extends EditWidget {
       patasxanatu: '',
       short_name: '',
       type: '');
-  static late List<String> branchList;
-  static late List<String> typeList;
+  static List<String> branchList = ['Sartex', 'Itex'];
+  static List<String> typeList = [];
 
   final TextEditingController _tecBranch = TextEditingController();
   final TextEditingController _tecDepartment = TextEditingController();
@@ -86,26 +88,30 @@ class DepartmentEditWidget extends EditWidget {
   final TextEditingController _tecShortName = TextEditingController();
   final TextEditingController _tecType = TextEditingController();
 
-  static Future<void> init() async {
-    branchList = ['Sartex', 'Itex'];
-    var value = await HttpSqlQuery.listDistinctOf('department', 'type');
-    typeList = value;
-  }
+
 
   DepartmentEditWidget({super.key, required String id}) {
-    if (id.isNotEmpty) {
-      HttpSqlQuery.post({
-        'sl':
-            "select id,branch,department,patasxanatu,short_name, type from department where id=${id}"
-      }).then((value) {
-        dep = DataDepartment.fromJson(value[0]);
-        _tecBranch.text = dep.branch;
-        _tecDepartment.text = dep.department;
-        _tecPatasxanatu.text = dep.patasxanatu;
-        _tecShortName.text = dep.short_name;
-        _tecType.text = dep.type;
-      });
-    }
+    HttpSqlQuery.listDistinctOf('department', 'type').then((value) {
+      typeList = value;
+      if (id.isNotEmpty) {
+        HttpSqlQuery.post({
+          'sl':
+          "select id,branch,department,patasxanatu,short_name, type from department where id=${id}"
+        }).then((value) {
+          dep = DataDepartment.fromJson(value[0]);
+          _tecBranch.text = dep.branch;
+          _tecDepartment.text = dep.department;
+          _tecPatasxanatu.text = dep.patasxanatu ?? '';
+          _tecShortName.text = dep.short_name;
+          _tecType.text = dep.type;
+        });
+      } else {
+        if (!prefs.roleSuperAdmin()) {
+          _tecBranch.text = prefs.branch();
+        }
+      }
+    });
+
   }
 
   @override
@@ -125,68 +131,14 @@ class DepartmentEditWidget extends EditWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-              child:
-                  Text(L.tr('Branch'), style: const TextStyle(fontSize: 18))),
-          Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: SizedBox(
-                  width: 300,
-                  child: TextFormField(
-                    onTap: () {
-                      valueOfList(context, branchList, _tecBranch);
-                    },
-                    readOnly: true,
-                    controller: _tecBranch,
-                  ))),
-          Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-              child: Text(L.tr('Department'),
-                  style: const TextStyle(fontSize: 18))),
-          Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: SizedBox(
-                  width: 300,
-                  child: TextFormField(
-                    controller: _tecDepartment,
-                  ))),
-          Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-              child: Text(L.tr('Responsible'),
-                  style: const TextStyle(fontSize: 18))),
-          Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: SizedBox(
-                  width: 300,
-                  child: TextFormField(
-                    controller: _tecPatasxanatu,
-                  ))),
-          Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-              child: Text(L.tr('Short name'),
-                  style: const TextStyle(fontSize: 18))),
-          Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: SizedBox(
-                  width: 300,
-                  child: TextFormField(
-                    controller: _tecShortName,
-                  ))),
-          Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-              child: Text(L.tr('Type'), style: const TextStyle(fontSize: 18))),
-          Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: SizedBox(
-                  width: 300,
-                  child: TextFormField(
-                    onTap: () {
-                      valueOfList(context, typeList, _tecType);
-                    },
-                    readOnly: true,
-                    controller: _tecType,
-                  ))),
+          textFieldColumn(context: context, title: L.tr('Branch'), textEditingController: _tecBranch, onTap: () {
+            valueOfList(context, branchList, _tecBranch);
+          }, list: branchList, enabled: prefs.roleSuperAdmin()),
+          textFieldColumn(context: context, title: L.tr('Department'), textEditingController: _tecDepartment),
+          textFieldColumn(context: context, title: L.tr('Responsible'), textEditingController: _tecPatasxanatu),
+          textFieldColumn(context: context, title: L.tr('Short name'), textEditingController: _tecShortName),
+          textFieldColumn(context: context, title: L.tr('Type'), textEditingController: _tecType,
+            list: typeList),
           saveWidget(context, dep)
         ]);
   }

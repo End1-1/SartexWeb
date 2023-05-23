@@ -22,7 +22,6 @@ DataSize _$DataSizeFromJson(Map<String, dynamic> json) {
 mixin _$DataSize {
   String get id => throw _privateConstructorUsedError;
   String? get code => throw _privateConstructorUsedError;
-  String? get country => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get size01 => throw _privateConstructorUsedError;
   String? get size02 => throw _privateConstructorUsedError;
@@ -51,7 +50,6 @@ abstract class $DataSizeCopyWith<$Res> {
   $Res call(
       {String id,
       String? code,
-      String? country,
       String? name,
       String? size01,
       String? size02,
@@ -82,7 +80,6 @@ class _$DataSizeCopyWithImpl<$Res, $Val extends DataSize>
   $Res call({
     Object? id = null,
     Object? code = freezed,
-    Object? country = freezed,
     Object? name = freezed,
     Object? size01 = freezed,
     Object? size02 = freezed,
@@ -105,10 +102,6 @@ class _$DataSizeCopyWithImpl<$Res, $Val extends DataSize>
       code: freezed == code
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
-              as String?,
-      country: freezed == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
               as String?,
       name: freezed == name
           ? _value.name
@@ -176,7 +169,6 @@ abstract class _$$_DataSizeCopyWith<$Res> implements $DataSizeCopyWith<$Res> {
   $Res call(
       {String id,
       String? code,
-      String? country,
       String? name,
       String? size01,
       String? size02,
@@ -205,7 +197,6 @@ class __$$_DataSizeCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? code = freezed,
-    Object? country = freezed,
     Object? name = freezed,
     Object? size01 = freezed,
     Object? size02 = freezed,
@@ -228,10 +219,6 @@ class __$$_DataSizeCopyWithImpl<$Res>
       code: freezed == code
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
-              as String?,
-      country: freezed == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
               as String?,
       name: freezed == name
           ? _value.name
@@ -295,7 +282,6 @@ class _$_DataSize extends _DataSize {
   const _$_DataSize(
       {required this.id,
       required this.code,
-      required this.country,
       required this.name,
       required this.size01,
       required this.size02,
@@ -318,8 +304,6 @@ class _$_DataSize extends _DataSize {
   final String id;
   @override
   final String? code;
-  @override
-  final String? country;
   @override
   final String? name;
   @override
@@ -349,7 +333,7 @@ class _$_DataSize extends _DataSize {
 
   @override
   String toString() {
-    return 'DataSize(id: $id, code: $code, country: $country, name: $name, size01: $size01, size02: $size02, size03: $size03, size04: $size04, size05: $size05, size06: $size06, size07: $size07, size08: $size08, size09: $size09, size10: $size10, size11: $size11, size12: $size12)';
+    return 'DataSize(id: $id, code: $code, name: $name, size01: $size01, size02: $size02, size03: $size03, size04: $size04, size05: $size05, size06: $size06, size07: $size07, size08: $size08, size09: $size09, size10: $size10, size11: $size11, size12: $size12)';
   }
 
   @override
@@ -359,7 +343,6 @@ class _$_DataSize extends _DataSize {
             other is _$_DataSize &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.code, code) || other.code == code) &&
-            (identical(other.country, country) || other.country == country) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.size01, size01) || other.size01 == size01) &&
             (identical(other.size02, size02) || other.size02 == size02) &&
@@ -381,7 +364,6 @@ class _$_DataSize extends _DataSize {
       runtimeType,
       id,
       code,
-      country,
       name,
       size01,
       size02,
@@ -414,7 +396,6 @@ abstract class _DataSize extends DataSize {
   const factory _DataSize(
       {required final String id,
       required final String? code,
-      required final String? country,
       required final String? name,
       required final String? size01,
       required final String? size02,
@@ -436,8 +417,6 @@ abstract class _DataSize extends DataSize {
   String get id;
   @override
   String? get code;
-  @override
-  String? get country;
   @override
   String? get name;
   @override

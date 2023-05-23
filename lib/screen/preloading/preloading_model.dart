@@ -70,7 +70,7 @@ class PreloadingModel {
       return err;
     }
     late List<dynamic> httpData;
-    if (docNumber == null) {
+    if (docNumber == null || docNumber!.isEmpty) {
       httpData =
           await HttpSqlQuery.post({'sl': "select coalesce(max(id), 0) + 1 as maxid from Docs"});
       docNumber = 'Doc23-${httpData[0]['maxid']}';
@@ -87,6 +87,11 @@ class PreloadingModel {
           if (aprid == null || aprid.isEmpty) {
             continue;
           }
+          if (item.preSize!.prodIdOf(i).isNotEmpty) {
+            await HttpSqlQuery.post({'sl' : "update Docs set qanak=$qty where id=${item.preSize!.prodIdOf(i)}"});
+            continue;
+          }
+
           Map<String, String> bind = {};
           bind['branch'] = prefs.getString(key_user_branch)!;
           bind['type'] = 'OUT';

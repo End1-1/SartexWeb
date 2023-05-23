@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sartex/data/sartex_datagridsource.dart';
+import 'package:sartex/data/sql.dart';
 import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/edit_widget.dart';
+import 'package:sartex/widgets/key_value_dropdown.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../utils/consts.dart';
@@ -25,6 +29,7 @@ class Product with _$Product {
       required String? size_standart,
       required String? Packaging,
       required String? ProductsTypeCode,
+      required String? productTypeName,
       required String? Netto,
       required String? Brutto}) = _Product;
 
@@ -51,6 +56,7 @@ class ProductsDatasource extends SartexDataGridSource {
     addColumn(L.tr('Standart'));
     addColumn(L.tr('Packaging'));
     addColumn(L.tr('Products type code'));
+    addColumn(L.tr('Products type name'));
     addColumn(L.tr('Netto'));
     addColumn(L.tr('Brutto'));
   }
@@ -69,6 +75,7 @@ class ProductsDatasource extends SartexDataGridSource {
         DataGridCell(columnName: columnNames[i++], value: e.size_standart),
         DataGridCell(columnName: columnNames[i++], value: e.Packaging),
         DataGridCell(columnName: columnNames[i++], value: e.ProductsTypeCode),
+        DataGridCell(columnName: columnNames[i++], value: e.productTypeName),
         DataGridCell(columnName: columnNames[i++], value: e.Netto),
         DataGridCell(columnName: columnNames[i++], value: e.Brutto)
       ]);
@@ -82,6 +89,7 @@ class ProductsDatasource extends SartexDataGridSource {
 }
 
 class ProductEditWidget extends EditWidget {
+  final productTypeController = StreamController();
   Product product = const Product(
       id: '',
       branch: '',
@@ -91,9 +99,11 @@ class ProductEditWidget extends EditWidget {
       size_standart: '',
       Packaging: '',
       ProductsTypeCode: '',
+      productTypeName: '',
       Netto: '',
       Brutto: '');
   static List<String> sizes = [];
+  Map<String, String> productTypeCode = {};
 
   final TextEditingController _editBrand = TextEditingController();
   final TextEditingController _editModelCode = TextEditingController();
@@ -113,24 +123,32 @@ class ProductEditWidget extends EditWidget {
   }
 
   ProductEditWidget({super.key, required String id}) {
-    if (id.isNotEmpty) {
-      HttpSqlQuery.post({'sl': "select * from Products where id=${id}"})
-          .then((value) {
-        product = Product.fromJson(value[0]);
-        _editBrand.text = product.brand ?? '';
-        _editModel.text = product.model ?? '';
-        _editModelCode.text = product.modelCode ?? '';
-        _editSizeStandart.text = product.size_standart ?? '';
-        _editPackaging.text = product.Packaging ?? '';
-        _editProductsTypeCode.text = product.ProductsTypeCode ?? '';
-        _editNetto.text = product.Netto ?? '';
-        _editBrutto.text = product.Brutto ?? '';
-      });
-    }
+    HttpSqlQuery.post({'sl': "select id, name from ProductTypeCode"})
+        .then((value) {
+      for (final e in value) {
+        productTypeCode[e['id']] = e['name'];
+      }
+      productTypeController.add(null);
+      if (id.isNotEmpty) {
+        HttpSqlQuery.post({'sl': "select * from Products where id=${id}"})
+            .then((value) {
+          product = Product.fromJson(value[0]);
+          _editBrand.text = product.brand ?? '';
+          _editModel.text = product.model ?? '';
+          _editModelCode.text = product.modelCode ?? '';
+          _editSizeStandart.text = product.size_standart ?? '';
+          _editPackaging.text = product.Packaging ?? '';
+          _editProductsTypeCode.text = product.ProductsTypeCode ?? '';
+          _editNetto.text = product.Netto ?? '';
+          _editBrutto.text = product.Brutto ?? '';
+          productTypeController.add(null);
+        });
+      }
+    });
   }
 
   @override
-  void save(BuildContext context, String table, object) {
+  void save(BuildContext context, String table, object) async {
     String err = '';
     if (_editBrand.text.isEmpty) {
       err += '${L.tr('Select brand')}\r\n';
@@ -156,7 +174,18 @@ class ProductEditWidget extends EditWidget {
       Netto: double.tryParse(_editNetto.text)?.toString() ?? '0',
       Brutto: double.tryParse(_editBrutto.text)?.toString() ?? '0',
     );
-    super.save(context, table, product);
+
+    String sql;
+    Map<String, dynamic> json = product.toJson();
+    json.remove("productTypeName");
+    if (product.id.isEmpty) {
+      json.remove('id');
+      sql = Sql.insert(table, json);
+    } else {
+      sql = Sql.update(table, json);
+    }
+    await HttpSqlQuery.post({'sl': sql});
+    Navigator.pop(context, true);
   }
 
   @override
@@ -191,13 +220,20 @@ class ProductEditWidget extends EditWidget {
                 context: context,
                 title: 'Packaging',
                 textEditingController: _editPackaging,
-            onTap: (){
+                onTap: () {
                   valueOfList(context, ['Handlers', 'Box'], _editPackaging);
-            }),
-            textFieldColumn(
-                context: context,
-                title: 'ProductsTypeCode',
-                textEditingController: _editProductsTypeCode),
+                }),
+            StreamBuilder(
+                stream: productTypeController.stream,
+                builder: (context, snapshot) {
+                  return KeyValueDropDown(
+                      title: L.tr('Product type'),
+                      values: productTypeCode,
+                      initialValue: _editProductsTypeCode.text,
+                      onSelected: (v) {
+                        _editProductsTypeCode.text = v;
+                      });
+                }),
           ]),
           Row(
             children: [

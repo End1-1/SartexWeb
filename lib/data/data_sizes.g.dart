@@ -9,7 +9,6 @@ part of 'data_sizes.dart';
 _$_DataSize _$$_DataSizeFromJson(Map<String, dynamic> json) => _$_DataSize(
       id: json['id'] as String,
       code: json['code'] as String?,
-      country: json['country'] as String?,
       name: json['name'] as String?,
       size01: json['size01'] as String?,
       size02: json['size02'] as String?,
@@ -29,7 +28,6 @@ Map<String, dynamic> _$$_DataSizeToJson(_$_DataSize instance) =>
     <String, dynamic>{
       'id': instance.id,
       'code': instance.code,
-      'country': instance.country,
       'name': instance.name,
       'size01': instance.size01,
       'size02': instance.size02,

@@ -49,7 +49,8 @@ class PartnersEdit extends EditWidget {
                 textFieldColumn(
                     context: context,
                     title: 'Branch',
-                    enabled: false,
+                    enabled: prefs.roleSuperAdmin(),
+                    list: ['Sartex', 'Itex'],
                     textEditingController: _editBranch)
               ]),
               Row(children: [

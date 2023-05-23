@@ -15,6 +15,7 @@ _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
       size_standart: json['size_standart'] as String?,
       Packaging: json['Packaging'] as String?,
       ProductsTypeCode: json['ProductsTypeCode'] as String?,
+      productTypeName: json['productTypeName'] as String?,
       Netto: json['Netto'] as String?,
       Brutto: json['Brutto'] as String?,
     );
@@ -29,6 +30,7 @@ Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
       'size_standart': instance.size_standart,
       'Packaging': instance.Packaging,
       'ProductsTypeCode': instance.ProductsTypeCode,
+      'productTypeName': instance.productTypeName,
       'Netto': instance.Netto,
       'Brutto': instance.Brutto,
     };

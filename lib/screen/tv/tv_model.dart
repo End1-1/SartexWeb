@@ -35,6 +35,8 @@ class TVModel {
   final streamController = StreamController<List<ModelRow>>();
   final List<ModelRow> rows = [];
   var page = true;
+  var pageNum = 0;
+  int pageNumCount = 0;
   var totalRow = const ModelRow(
       line: '',
       brand: '',
@@ -56,30 +58,24 @@ class TVModel {
     Timer.periodic(const Duration(seconds: 60), (timer) {
       _refreshData();
     });
-    Timer.periodic(const Duration(seconds: 10), (timer) {
-      _showData();
-    });
+    // Timer.periodic(const Duration(seconds: 10), (timer) {
+    //   _showData();
+    // });
+  }
+
+  setPageNumber(int num) {
+    pageNum = num;
+    _showData();
   }
 
   _showData() {
+    if (pageNum == 0) {
+      streamController.add(rows);
+      return;
+    }
     final List<ModelRow> r = [];
-    page = !page;
-    if (page) {
-      if (rows.length > 8) {
-        for (int i = 8; i < rows.length; i++) {
-          r.add(rows[i]);
-        }
-      } else {
-        r.addAll(rows);
-      }
-    } else {
-      if (rows.length > 8) {
-        for (int i = 0; i < 8; i++) {
-          r.add(rows[i]);
-        }
-      } else {
-        r.addAll(rows);
-      }
+    for (int i = pageNum - 1; i < pageNum + 7 && i < rows.length; i++) {
+      r.add(rows[i]);
     }
     streamController.add(r);
   }
@@ -144,9 +140,12 @@ class TVModel {
           Prod: tprod.toString(),
           Magaz: tmagaz.toString(),
           Pref: (tplan == 0 ? 0 : (tprod / (tplan) * 100)).truncate().toString());
+
+      pageNumCount =  (rows.length / 8).round();
+      _showData();
       // for (int i = 0; i < 7; i++)
       //   rows.add(ModelRow(line: 'L${i+1}', brand: 'BRNAD', Model: 'MODEL', t1030: '1', t1230: '2', t1530: '3', t1730: '4', Ext: '5', Total: '6', Past: '8', Plan: '7', Prod: '8', Magaz: '7', Pref: '7'));
     });
-    _showData();
+
   }
 }

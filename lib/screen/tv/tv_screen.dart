@@ -10,7 +10,7 @@ class TVScreen extends StatelessWidget {
     _textHeader1 = TextStyle(
       color: Colors.white,
       height: 1.52,
-      fontSize: pcVersion ? 28 : 20,
+      fontSize: pcVersion ? 20 : 28,
       fontFamily: 'Agency FB',
     );
   }
@@ -162,9 +162,9 @@ class TVScreen extends StatelessWidget {
                       _header(),
                       _tableHeader(),
                       Expanded(
-                          child: Column(children: [
+                          child: SingleChildScrollView(child: Column(children: [
                         for (var e in snapshot.data ?? []) ...[_tableRow(e)]
-                      ])),
+                      ]))),
                       //SingleChildScrollView(child: Column(children: [ for (var e in snapshot.data ?? [])...[_tableRow(e)]]))),
                       _totalRow()
                     ],
@@ -175,6 +175,11 @@ class TVScreen extends StatelessWidget {
   Widget _header() {
     return Row(
       children: [
+        for (int i = 0; i < _model.pageNumCount; i++) ... [
+          OutlinedButton(onPressed: (){
+            _model.setPageNumber(i);
+          }, child: Text(i == 0 ? L.tr('All') : (i + 1).toString()))
+        ],
         Container(
             height: 60,
             width: cw[0] +

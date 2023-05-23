@@ -13,6 +13,7 @@ import 'package:sartex/screen/login_pin/login_pin_screen.dart';
 import 'package:sartex/screen/partners/partners_screen.dart';
 import 'package:sartex/screen/patver_data/patver_data_screen.dart';
 import 'package:sartex/screen/plan_and_production/plan_and_production_screen.dart';
+import 'package:sartex/screen/product_type_code/product_type_code_screen.dart';
 import 'package:sartex/screen/products/products_screen.dart';
 import 'package:sartex/screen/remains/remains_screen.dart';
 import 'package:sartex/screen/sizes/sizes_screen.dart';
@@ -48,10 +49,11 @@ void main() async {
   if (result.isEmpty) {
     prefs.setInt(key_user_id, 0);
   } else {
-    prefs.setInt(key_user_id, int.tryParse(result[0]['user_id']) ?? 0);
+    prefs.setInt(key_user_id, int.tryParse(result[0]['user_id'] ?? '') ?? 0);
     result = await HttpSqlQuery.post(
-        {'sl': "select role_id from Users where id=${result[0]['user_id']}"});
+        {'sl': "select role_id, user_id from Users where id=${result[0]['user_id'] ?? '' }"});
     if (result.isNotEmpty) {
+      HttpSqlQuery.userForQueries = result[0]['user_id'];
       result = await HttpSqlQuery.post(
           {'sl': "select id from RoleNames where name='${result[0]['role_id']}'"});
       if (result.isEmpty) {
@@ -117,6 +119,9 @@ class MyApp extends StatelessWidget {
               create: (_) => AppBloc(GSIdle()), child: UsersRoleScreen()),
           route_remains: (_) => BlocProvider(
               create: (_) => AppBloc(GSIdle()), child: RemainsScreen()),
+          route_product_type_code:
+              (_) => BlocProvider(
+              create: (_) => AppBloc(GSIdle()), child: ProductTypeCodeScreen()),
           // route_thashiv: (_) => BlocProvider(
           //     create: (_) => AppBloc(GSIdle()), child: THashivScreen(ModalRoute.of(context)?.settings.arguments as String?)),
           route_login_pin: (context) => LoginPinScreen()

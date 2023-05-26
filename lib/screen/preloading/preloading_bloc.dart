@@ -19,6 +19,11 @@ class PreloadingStateOpenDoc extends PreloadingState
       required Map<String, String> header}) = _PreloadingStateOpenDoc;
 }
 
+@freezed
+class PreloadingStateSummary extends PreloadingState with _$PreloadingStateSummary {
+  const factory PreloadingStateSummary({required dynamic data}) = _PreloadingState;
+}
+
 abstract class PreloadingEvent {}
 
 @freezed
@@ -28,9 +33,55 @@ class PreloadingEventOpenDoc extends PreloadingEvent
       _PreloadingEventOpenDoc;
 }
 
+@freezed
+class PreloadingEventSummary extends PreloadingEvent with _$PreloadingEventSummary {
+  const factory PreloadingEventSummary({required String docnum}) = _PreloadingEventSummary;
+}
+
 class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
   PreloadingBloc(super.initialState) {
     on<PreloadingEventOpenDoc>((event, emit) => _openDoc(event.docnum));
+    on<PreloadingEventSummary>((event, emit) => _summaryDoc(event.docnum));
+  }
+
+  Future<void> _summaryDoc(String docnum) async {
+    Map<String, List<dynamic>> result = {};
+    result['bybrand'] = [];
+    result['byline'] = [];
+    result['bycommesa'] = [];
+    dynamic d = await HttpSqlQuery.post({"sl":"select pd.brand, sum(d.qanak) as pqanak , sum(m.mnacord) as mqanak, "
+      "sum(d.qanak)-sum(m.mnacord) as diff "
+      "from Docs d "
+      "left join Apranq a on a.apr_id=d.apr_id "
+      "left join patver_data pd on pd.id=a.pid "
+      "left join Mnacord m on m.apr_id=a.apr_id "
+      "where docnum ='$docnum' "
+      "group by pd.brand"});
+    for (final e in d) {
+      result['bybrand']!.add(e);
+    }
+    d = await HttpSqlQuery.post({"sl":"select d.line, sum(d.qanak) as pqanak , sum(m.mnacord) as mqanak, sum(d.qanak)-sum(m.mnacord) as diff "
+        "from Docs d "
+        "left join Apranq a on a.apr_id=d.apr_id "
+        "left join patver_data pd on pd.id=a.pid "
+        "left join Mnacord m on m.apr_id=a.apr_id "
+        "where docnum ='$docnum' "
+        "group by d.line"});
+    for (final e in d) {
+      result['byline']!.add(e);
+    }
+    d = await HttpSqlQuery.post({"sl":"select pd.PatverN as commesa, pd.Model, pd.country, sum(d.qanak) as pqanak , sum(coalesce(m.mnacord, 0)) as mqanak, "
+        "sum(coalesce(d.qanak, 0))-sum(coalesce(m.mnacord, 0)) as diff "
+        "from Docs d "
+        "left join Apranq a on a.apr_id=d.apr_id "
+        "left join patver_data pd on pd.id=a.pid "
+        "left join Mnacord m on m.apr_id=a.apr_id "
+        "where docnum ='$docnum' "
+        "group by 1,2,3 "});
+    for (final e in d) {
+      result['bycommesa']!.add(e);
+    }
+    emit(PreloadingStateSummary(data: result));
   }
 
   Future<void> _openDoc(String? docnum) async {
@@ -70,13 +121,13 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
       }
 
       PreloadingItem i;
-      if (pid.containsKey(d['pid'])) {
-        i = pid[d['pid']]!;
+      if (pid.containsKey('${d['pid']}${d['line']}')) {
+        i = pid['${d['pid']}${d['line']}']!;
       } else {
         i = PreloadingItem();
         i.preSize = PreloadingSize();
         await i.preSize!.loadSizes(d['size_standart']);
-        pid[d['pid']] = i;
+        pid['${d['pid']}${d['line']}'] = i;
         p.items.add(i);
       }
       i.brand.text = d['brand'];

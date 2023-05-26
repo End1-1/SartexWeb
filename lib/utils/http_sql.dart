@@ -15,7 +15,7 @@ class HttpSqlQuery {
     try {
       body['user'] = userForQueries;
       body['sl'] = 'j,Vasil,Vasil_2023,$type,${body['sl']}';
-      print('HTTP query: ${body}');
+      print('HTTP server/query: $server_uri ${body}');
       http.Response response = await http.post(server_uri, body: body);
       print(utf8.decode(response.bodyBytes));
       return utf8.decode(response.bodyBytes);

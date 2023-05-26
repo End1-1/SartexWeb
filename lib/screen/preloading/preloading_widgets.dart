@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sartex/screen/preloading/preloading_item.dart';
 import 'package:sartex/screen/preloading/preloading_model.dart';
 import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/http_sql.dart';
@@ -53,13 +54,15 @@ class PreloadingItemsContainer extends StatefulWidget {
   PreloadingModel? model;
   final bool showLine1;
   VoidCallback parentState;
+  PreloadingItem? editRow;
+  bool readOnly = false;
 
   PreloadingItemsContainer(
       {super.key,
       required this.item,
       required this.showLine1,
       required this.model,
-      required this.parentState});
+      required this.parentState, required this.readOnly});
 
   @override
   State<StatefulWidget> createState() => _PreloadingItemsContainer();
@@ -489,10 +492,6 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                             e,
                                             widget.model!.editStore.text)
                                         .then((value) {
-                                      for (int i = 1; i < 13; i++) {
-                                        e.sizes[i - 1].text +=
-                                            ' / ${e.preSize!.aprId[i - 1]}';
-                                      }
                                     });
                                   }
                                 }),
@@ -622,18 +621,21 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 child: Row(children: [
                                   Expanded(
                                       child: TextFormField(
-                                          readOnly: !widget.showLine1,
+                                          readOnly: !widget.showLine1 && e != widget.editRow,
                                           onChanged: (text) {
-                                            int newvalue =
-                                                int.tryParse(text) ?? 0;
-                                            int remain = int.tryParse(
-                                                    e.remains[i - 1].text) ??
-                                                0;
-                                            if (newvalue > remain) {
-                                              e.newvalues[i - 1].clear();
+                                            if (widget.editRow == null) {
+                                              int newvalue =
+                                                  int.tryParse(text) ?? 0;
+                                              int remain = int.tryParse(
+                                                  e.remains[i - 1].text) ??
+                                                  0;
+                                              if (newvalue > remain) {
+                                                e.newvalues[i - 1].clear();
+                                              }
+                                              e.newvalues[e.newvalues.length -
+                                                  1]
+                                                  .text = e.sumOfNewValues();
                                             }
-                                            e.newvalues[e.newvalues.length - 1]
-                                                .text = e.sumOfNewValues();
                                           },
                                           decoration: formDecor1,
                                           controller: e.newvalues[i - 1],
@@ -766,19 +768,19 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                 ],
               ),
               //RemoveButton
-              if (prefs.roleWrite('2'))
+              if (prefs.roleWrite('2') && !widget.readOnly)
                 SizedBox(
-                    width: 60,
-                    height: 70,
+                    width: 85,
+                    height: 110,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                               padding: padding,
                               decoration: headerDecor1,
-                              child: Row(children: [
-                                Expanded(
-                                    child: SvgButton(
+                              child: Column(children: [
+                                SvgButton(
+                                  width: 40,
                                   darkMode: false,
                                   onTap: () {
                                     appDialogYesNo(
@@ -866,7 +868,19 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                     }, null);
                                   },
                                   assetPath: 'svg/delete.svg',
-                                ))
+                                ),
+                                SvgButton(
+                                  width: 40,
+                                    darkMode: false,
+                                    onTap: (){
+                                  setState(() {
+                                    if (widget.editRow == null) {
+                                      widget.editRow = e;
+                                    } else {
+                                      widget.editRow = null;
+                                    }
+                                  });
+                                }, assetPath: widget.editRow == null ? 'svg/edit.svg' : 'svg/save.svg')
                               ]))
                         ])),
             ])

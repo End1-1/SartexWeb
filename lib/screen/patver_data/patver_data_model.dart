@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sartex/screen/app/app_model.dart';
 import 'package:sartex/screen/patver_data/order_row.dart';
+import 'package:sartex/utils/prefs.dart';
 
 class PatverDataModel extends AppModel<OrderRowDatasource> {
   DateTime d1 = DateTime.now();
@@ -17,6 +18,7 @@ class PatverDataModel extends AppModel<OrderRowDatasource> {
 
   @override
   String sql() {
+    String f = prefs.roleSuperAdmin() ? "" : " and pd.branch='${prefs.branch()}' ";
     return "select id, branch, action, User, date, IDPatver, status, PatverN, PatverDate, country, "
         "if (cast(pd.parent_id as unsigned)=0, pd.id, pd.parent_id) as parent_id, Katarox, Patviratu, brand, Model, short_code, ModelCod, "
         "sum(if(action='add', cast(Total as unsigned), 0)) as appended,sum(if(action='cancel', cast(Total as unsigned), 0)) as discarded, "
@@ -26,7 +28,7 @@ class PatverDataModel extends AppModel<OrderRowDatasource> {
         "left join (select parent_id, sum(cast(Total as unsigned)) as executed from patver_data where action='done' group by 1) as ex on ex.parent_id=pd.id and pd.parent_id is null "
         "left join (select pn.parent_id, sum(d.qanak) as nextload from Docs d left join Apranq a on a.apr_id=d.apr_id "
         "left join patver_data pn on pn.id=a.pid) as nl on nl.parent_id=pd.id and pd.parent_id is null "
-        "where pd.id>0 ${getDates()} and pd.status in (${getStatuses()})"
+        "where pd.id>0 ${getDates()} and pd.status in (${getStatuses()}) $f "
         "group by IDPatver order by 10";
   }
 

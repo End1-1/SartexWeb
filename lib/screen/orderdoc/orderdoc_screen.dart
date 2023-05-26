@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_bloc.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_event.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_header.dart';
@@ -13,9 +16,6 @@ import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/widgets/edit_widget.dart';
 import 'package:uuid/uuid.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 
 import '../../data/sql.dart';
 import '../../utils/translator.dart';
@@ -40,7 +40,7 @@ class OrderDocScreen extends EditWidget {
     80,
     80,
     100,
-    120,
+    130,
   ];
   final List<double> printColumnWidths = [
     30,
@@ -154,13 +154,21 @@ class OrderDocScreen extends EditWidget {
                           model.details.clear();
                           model.details.addAll(state.details);
                         }
-                        return SingleChildScrollView(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: _orderDetails(context, state)));
+                        return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                  child: SingleChildScrollView(
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children:
+                                              _orderDetails(context, state)))),
+                              _detailsTotals(context)
+                            ]);
                       }),
                 ),
-                const Divider(height: 30, color: Colors.transparent),
+                const Divider(height: 5, color: Colors.transparent),
                 prefs.roleWrite("1")
                     ? saveWidget(context, Object())
                     : Padding(
@@ -246,10 +254,9 @@ class OrderDocScreen extends EditWidget {
               height: rowheight,
               width: columnWidths[i],
               decoration: decoration,
-              child: prefs.roleWrite("1")
-                  ? Align(
-                      alignment: Alignment.center,
-                      child: SvgButton(
+              child: Wrap(children: [
+                if (prefs.roleWrite("1"))
+                  SvgButton(
                         onTap: () {
                           model.details.add(OrderRow(
                               main: '0',
@@ -296,8 +303,15 @@ class OrderDocScreen extends EditWidget {
                               .add(OrderDocNewRow());
                         },
                         assetPath: 'svg/plusfolder.svg',
-                      ))
-                  : Container()));
+                      ),
+                SvgButton(
+                  onTap: () {
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocSubRow(row: "-2"));
+                  },
+                  assetPath: 'svg/eye.svg',
+                )
+              ])));
           break;
       }
     }
@@ -320,7 +334,10 @@ class OrderDocScreen extends EditWidget {
     if (or.action == 'add') {
       return const Color(0xffcccccc);
     }
-    return const Color(0xffefb6b6);
+    if (or.action == 'cancel') {
+      return const Color(0xffefb6b6);
+    }
+    return const Color(0xffddfad3);
   }
 
   List<Widget> _orderDetails(BuildContext context, OrderDocState state) {
@@ -337,7 +354,7 @@ class OrderDocScreen extends EditWidget {
       final OrderRow or = model.details[i];
       if (or.id.isNotEmpty) {
         if (showRow.isNotEmpty) {
-          if (showRow != or.parent_id && or.main != '0') {
+          if (showRow != or.parent_id && or.main != '0' && showRow != '-2') {
             continue;
           }
         } else {
@@ -361,8 +378,8 @@ class OrderDocScreen extends EditWidget {
         final BoxDecoration boxDecoration =
             BoxDecoration(color: bgcolor, border: border);
         if (i == model.rowEditMode) {
-          model.detailsControllers[0].text = or.variant_prod!;
-          model.detailsControllers[0].selection = TextSelection.fromPosition(
+          model.detailsControllers[1].text = or.variant_prod!;
+          model.detailsControllers[1].selection = TextSelection.fromPosition(
               TextPosition(offset: or.variant_prod!.length));
           model.detailsControllers[2].text = or.Colore!;
           model.detailsControllers[2].selection = TextSelection.fromPosition(
@@ -406,25 +423,6 @@ class OrderDocScreen extends EditWidget {
         }
 
         switch (j) {
-          case 1:
-            onerow.add(Container(
-                alignment: Alignment.center,
-                padding: padding,
-                height: rowheight,
-                width: columnWidths[j],
-                decoration: boxDecoration,
-                child: model.rowEditMode == i
-                    ? TextFormField(
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(variant_prod: text);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        controller: model.detailsControllers[j],
-                      )
-                    : Text(or.main == '0' ? or.variant_prod! : or.date!,
-                        textAlign: TextAlign.center, style: ts)));
-            break;
           case 0:
             onerow.add(Container(
                 alignment: Alignment.center,
@@ -435,6 +433,26 @@ class OrderDocScreen extends EditWidget {
                 child: Text(or.action == "add" ? "+" : "-",
                     textAlign: TextAlign.center, style: ts)));
             break;
+          case 1:
+            onerow.add(Container(
+                alignment: Alignment.center,
+                padding: padding,
+                height: rowheight,
+                width: columnWidths[j],
+                decoration: boxDecoration,
+                child: model.rowEditMode == i
+                    ? TextFormField(
+                        textAlign: TextAlign.center,
+                        onChanged: (text) {
+                          model.details[i] = or.copyWith(variant_prod: text);
+                          BlocProvider.of<OrderDocBloc>(context)
+                              .add(OrderDocNewRow());
+                        },
+                        controller: model.detailsControllers[j],
+                      )
+                    : Text(or.main == '0' ? or.variant_prod! : or.date!,
+                        textAlign: TextAlign.center, style: ts)));
+            break;
           case 2:
             onerow.add(Container(
                 alignment: Alignment.center,
@@ -444,6 +462,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Colore: text);
                           BlocProvider.of<OrderDocBloc>(context)
@@ -462,6 +481,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Size01: text);
                           model.countTotalOfDetailsRow(i);
@@ -485,6 +505,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Size02: text);
                           model.countTotalOfDetailsRow(i);
@@ -509,6 +530,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Size03: text);
                           model.countTotalOfDetailsRow(i);
@@ -533,6 +555,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Size04: text);
                           model.countTotalOfDetailsRow(i);
@@ -557,6 +580,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Size05: text);
                           model.countTotalOfDetailsRow(i);
@@ -581,6 +605,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Size06: text);
                           model.countTotalOfDetailsRow(i);
@@ -605,6 +630,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Size07: text);
                           model.countTotalOfDetailsRow(i);
@@ -629,6 +655,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Size08: text);
                           model.countTotalOfDetailsRow(i);
@@ -653,6 +680,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Size09: text);
                           model.countTotalOfDetailsRow(i);
@@ -677,6 +705,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Size10: text);
                           model.countTotalOfDetailsRow(i);
@@ -701,6 +730,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Size11: text);
                           model.countTotalOfDetailsRow(i);
@@ -725,6 +755,7 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
+                        textAlign: TextAlign.center,
                         onChanged: (text) {
                           model.details[i] = or.copyWith(Size12: text);
                           model.countTotalOfDetailsRow(i);
@@ -779,7 +810,7 @@ class OrderDocScreen extends EditWidget {
                   width: columnWidths[j],
                   decoration: boxDecoration,
                   child: or.main == '1'
-                      ? Container()
+                      ? Container(child: Text(or.action ?? ''))
                       : Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -804,6 +835,7 @@ class OrderDocScreen extends EditWidget {
                                               onTap: () {
                                                 OrderRow r = or.copyWith(
                                                     id: '',
+                                                    main: '',
                                                     date: DateFormat(
                                                             'dd/MM/yyyy')
                                                         .format(DateTime.now()),
@@ -819,6 +851,7 @@ class OrderDocScreen extends EditWidget {
                                                     Size10: '',
                                                     Size11: '',
                                                     Size12: '',
+                                                    Total: '',
                                                     Colore: or.Colore,
                                                     parent_id: or.id,
                                                     variant_prod:
@@ -861,6 +894,7 @@ class OrderDocScreen extends EditWidget {
                                                       Size10: '',
                                                       Size11: '',
                                                       Size12: '',
+                                                      Total: '',
                                                       Colore: or.Colore,
                                                       variant_prod:
                                                           or.variant_prod));
@@ -908,11 +942,120 @@ class OrderDocScreen extends EditWidget {
     return l;
   }
 
+  Widget _detailsTotals(BuildContext context) {
+    List<double> totals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    for (final or in model.details) {
+      if (or.main != '0' && !or.main!.isEmpty) {
+        continue;
+      }
+      double m = or.main == '0'
+          ? 1
+          : or.action == 'add'
+              ? 1
+              : -1;
+      totals[0] += m * (double.tryParse(or.Size01 ?? '') ?? 0);
+      totals[1] += m * (double.tryParse(or.Size02 ?? '') ?? 0);
+      totals[2] += m * (double.tryParse(or.Size03 ?? '') ?? 0);
+      totals[3] += m * (double.tryParse(or.Size04 ?? '') ?? 0);
+      totals[4] += m * (double.tryParse(or.Size05 ?? '') ?? 0);
+      totals[5] += m * (double.tryParse(or.Size06 ?? '') ?? 0);
+      totals[6] += m * (double.tryParse(or.Size07 ?? '') ?? 0);
+      totals[7] += m * (double.tryParse(or.Size08 ?? '') ?? 0);
+      totals[8] += m * (double.tryParse(or.Size09 ?? '') ?? 0);
+      totals[9] += m * (double.tryParse(or.Size10 ?? '') ?? 0);
+      totals[10] += m * (double.tryParse(or.Size11 ?? '') ?? 0);
+      totals[11] += m * (double.tryParse(or.Size12 ?? '') ?? 0);
+    }
+    for (int i = 0; i< 12; i++) {
+      totals[12] += totals[i];
+    }
+    const double rowheight = 45;
+    const TextStyle ts = TextStyle(color: Colors.white, fontSize: 18);
+    const Border border =
+        Border.fromBorderSide(BorderSide(color: Color(0x00cccccc)));
+    const decoration = BoxDecoration(gradient: bg_gradient, border: border);
+    List<Widget> r = [];
+    for (int i = 0; i < columnWidths.length; i++) {
+      switch (i) {
+        case 0:
+          r.add(Container(
+            height: rowheight,
+            width: columnWidths[i],
+            decoration: decoration,
+            child:
+                Align(alignment: Alignment.center, child: Text("", style: ts)),
+          ));
+          break;
+        case 1:
+          r.add(Container(
+              height: rowheight,
+              width: columnWidths[i],
+              decoration: decoration,
+              child: Align(
+                  alignment: Alignment.center,
+                  child: Text(L.tr('Total'), style: ts))));
+          break;
+
+        case 2:
+          r.add(Container(
+              height: rowheight,
+              width: columnWidths[i],
+              decoration: decoration,
+              child: Align(
+                  alignment: Alignment.center,
+                  child: Text(L.tr(''), style: ts))));
+          break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+          r.add(Container(
+              height: rowheight,
+              width: columnWidths[i],
+              decoration: decoration,
+              child: Align(
+                  alignment: Alignment.center,
+                  child: Text(totals[i - 3].toString(), style: ts))));
+          break;
+        case 15:
+          r.add(Container(
+              height: rowheight,
+              width: columnWidths[i],
+              decoration: decoration,
+              child: Align(
+                  alignment: Alignment.center, child: Text(totals[12].toString(), style: ts))));
+          break;
+        case 16:
+          r.add(Container(
+            height: rowheight,
+            width: columnWidths[i],
+            decoration: decoration,
+          ));
+          break;
+      }
+    }
+    //r.add(const Divider(height: 2, color: Colors.transparent));
+    return Padding(
+        padding: const EdgeInsets.only(left: 22, bottom: 2),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: r));
+  }
+
   @override
   Future<void> save(BuildContext context, String table, Object? o) async {
     List<String> error = [];
     String uuid;
     bool isNew = false;
+    if (model.rowEditMode != -1) {
+      error.add(L.tr('Finish editing row and try again'));
+    }
     if (model.orderId == null || model.orderId!.isEmpty) {
       uuid = const Uuid().v1();
       isNew = true;
@@ -996,7 +1139,9 @@ class OrderDocScreen extends EditWidget {
       s.remove('nextload');
       if (or.id.isEmpty) {
         s.remove('id');
-        s.remove('parent_id');
+        if (or.main == '0') {
+          s.remove('parent_id');
+        }
         sql = Sql.insert('patver_data', s);
       } else {
         //sql = Sql.update('patver_data', s);
@@ -1055,11 +1200,10 @@ class OrderDocScreen extends EditWidget {
         context: context,
         builder: (context) {
           return Dialog(
-              child:
-                PdfPreview(
-                canDebug: kDebugMode,
-                pageFormats: {'A4': PdfPageFormat.a4},
-                allowSharing: false,
+              child: PdfPreview(
+            canDebug: kDebugMode,
+            pageFormats: {'A4': PdfPageFormat.a4},
+            allowSharing: false,
             build: (format) => _generatePdf(
                 format, '${L.tr('Order')} #${model.orderIdController.text}'),
           ));
@@ -1072,7 +1216,9 @@ class OrderDocScreen extends EditWidget {
     final ttf = pw.Font.ttf(font);
     final ts1 = pw.TextStyle(font: ttf, fontSize: 18);
     final ts2 = pw.TextStyle(font: ttf, fontSize: 12);
-    final tdecor = pw.BoxDecoration(border: pw.Border.fromBorderSide(pw.BorderSide(color: PdfColor.fromHex("#165a72"), width: 0.01)));
+    final tdecor = pw.BoxDecoration(
+        border: pw.Border.fromBorderSide(
+            pw.BorderSide(color: PdfColor.fromHex("#165a72"), width: 0.01)));
     int i1 = 0, i2 = 0;
     double rowHeight = 20;
     const padding = pw.EdgeInsets.fromLTRB(2, 2, 0, 0);
@@ -1107,45 +1253,160 @@ class OrderDocScreen extends EditWidget {
                     child: pw.Text(model.dateForController.text, style: ts2)),
               ]),
               pw.SizedBox(height: 20),
-              pw.Row(children:[
-                pw.Container(width: 120, child: pw.Text(L.tr('Executor'), style: ts2)),
-                pw.Container(width: 120, child: pw.Text(model.executorController.text, style: ts2)),
+              pw.Row(children: [
+                pw.Container(
+                    width: 120, child: pw.Text(L.tr('Executor'), style: ts2)),
+                pw.Container(
+                    width: 120,
+                    child: pw.Text(model.executorController.text, style: ts2)),
                 pw.Expanded(child: pw.Container()),
-                pw.Container(width: 120, child: pw.Text(L.tr('Country'), style: ts2)),
-                pw.Container(width: 120, child: pw.Text(model.countryController.text, style: ts2)),
+                pw.Container(
+                    width: 120, child: pw.Text(L.tr('Country'), style: ts2)),
+                pw.Container(
+                    width: 120,
+                    child: pw.Text(model.countryController.text, style: ts2)),
               ]),
               pw.SizedBox(height: 20),
               pw.Row(children: [
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[i1++], height: rowHeight, child: pw.Text(L.tr('+/-'), style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[i1++] / 2, height: rowHeight, child: pw.Text(L.tr('Type'), style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[i1++] / 2, height: rowHeight, child: pw.Text(L.tr('Color'), style: ts2)),
-                for (int s = 0; s < 12; s++) ... [
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[i1++] / 3, height: rowHeight, child: pw.Text(model.sizesOfModel[s], style: ts2))
+                pw.Container(
+                    padding: padding,
+                    decoration: tdecor,
+                    width: printColumnWidths[i1++],
+                    height: rowHeight,
+                    child: pw.Text(L.tr('+/-'), style: ts2)),
+                pw.Container(
+                    padding: padding,
+                    decoration: tdecor,
+                    width: printColumnWidths[i1++] / 2,
+                    height: rowHeight,
+                    child: pw.Text(L.tr('Type'), style: ts2)),
+                pw.Container(
+                    padding: padding,
+                    decoration: tdecor,
+                    width: printColumnWidths[i1++] / 2,
+                    height: rowHeight,
+                    child: pw.Text(L.tr('Color'), style: ts2)),
+                for (int s = 0; s < 12; s++) ...[
+                  pw.Container(
+                      padding: padding,
+                      decoration: tdecor,
+                      width: printColumnWidths[i1++] / 3,
+                      height: rowHeight,
+                      child: pw.Text(model.sizesOfModel[s], style: ts2))
                 ],
-                pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[i1++] / 3, height: rowHeight, child: pw.Text(L.tr('Tot.'), style: ts2))
+                pw.Container(
+                    padding: padding,
+                    decoration: tdecor,
+                    width: printColumnWidths[i1++] / 3,
+                    height: rowHeight,
+                    child: pw.Text(L.tr('Tot.'), style: ts2))
               ]),
-              for (var e in model.details) ... [
+              for (var e in model.details) ...[
                 if (e.main! == "1")
-                pw.Row(children: [
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[i2 = 0], height: rowHeight, child: pw.Text(e.action! == 'add' ? '+' : e.action! =='cancel' ? '-' : '?', style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 2, height: rowHeight, child: pw.Text(e.variant_prod!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 2, height: rowHeight, child: pw.Text(e.Colore!, style: ts2)),
-
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size01!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size02!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size03!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size04!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size05!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size06!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size07!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size08!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size09!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size10!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size11!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Size12!, style: ts2)),
-                  pw.Container(padding: padding, decoration: tdecor, width: printColumnWidths[++i2] / 3, height: rowHeight, child: pw.Text(e.Total!, style: ts2)),
-
-                ]),
+                  pw.Row(children: [
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[i2 = 0],
+                        height: rowHeight,
+                        child: pw.Text(
+                            e.action! == 'add'
+                                ? '+'
+                                : e.action! == 'cancel'
+                                    ? '-'
+                                    : '?',
+                            style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 2,
+                        height: rowHeight,
+                        child: pw.Text(e.variant_prod!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 2,
+                        height: rowHeight,
+                        child: pw.Text(e.Colore!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Size01!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Size02!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Size03!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Size04!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Size05!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Size06!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Size07!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Size08!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Size09!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Size10!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Size11!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Size12!, style: ts2)),
+                    pw.Container(
+                        padding: padding,
+                        decoration: tdecor,
+                        width: printColumnWidths[++i2] / 3,
+                        height: rowHeight,
+                        child: pw.Text(e.Total!, style: ts2)),
+                  ]),
               ]
             ],
           );

@@ -167,7 +167,8 @@ class PreloadingData {
       String brand, String model, String commesa, String country, String color, PreloadingItem s, String pahest) async {
     List<dynamic> l = await HttpSqlQuery.post({
       "sl":
-      "select pd.size_standart, pd.id from Apranq a "
+      "select pd.size_standart, pd.id "
+          "from Apranq a "
           "left join Mnacord m on m.apr_id=a.apr_id  "
           "left join patver_data pd on pd.id=a.pid "
           "where pd.status='inProgress' " +

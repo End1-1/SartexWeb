@@ -155,7 +155,7 @@ class _LeftMenu extends State<LeftMenu> {
               ]),
               AnimatedContainer(
                 margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  height: expandedReports ? 40 * 2 : 0,
+                  height: expandedReports ? 40 * 3 : 0,
                   duration: const Duration(milliseconds: 200),
                   child: SingleChildScrollView(
                     child: Column(
@@ -168,6 +168,11 @@ class _LeftMenu extends State<LeftMenu> {
                               Navigator.pushNamed(context, route_remains);
                             },
                             caption: L.tr('Remains')),
+                        TextMouseButton(
+                            onTap: () {
+                              Navigator.pushNamed(context, route_barcum, arguments: 2);
+                            },
+                            caption: L.tr('Preloading')),
                         TextMouseButton(
                             onTap: () {
                               Navigator.pushNamed(context, route_barcum, arguments: 1);

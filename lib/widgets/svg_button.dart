@@ -21,7 +21,8 @@ class SvgButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      width:  width + 10,
         padding: const EdgeInsets.all(5),
         child: MouseRegion(
             cursor: SystemMouseCursors.click,
@@ -38,7 +39,7 @@ class SvgButton extends StatelessWidget {
                               : const ColorFilter.mode(
                                   Colors.black87, BlendMode.dstIn))),
                   caption.isEmpty
-                      ? Container()
+                      ? Container(width: 0)
                       : Text(caption,
                           style: darkMode
                               ? const TextStyle(color: Colors.white)

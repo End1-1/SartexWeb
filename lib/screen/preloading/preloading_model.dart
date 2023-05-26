@@ -79,12 +79,9 @@ class PreloadingModel {
       for (var item in pr.items) {
         for (int i = 0; i < 10; i++) {
           int qty = int.tryParse(item.newvalues[i].text) ?? 0;
-          if (qty == 0) {
-            continue;
-          }
 
           String? aprid = item.preSize?.aprIdOf(i);
-          if (aprid == null || aprid.isEmpty) {
+          if (aprid == null || aprid.isEmpty || aprid == '0') {
             continue;
           }
           if (item.preSize!.prodIdOf(i).isNotEmpty) {

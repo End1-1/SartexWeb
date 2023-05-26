@@ -72,13 +72,13 @@ class OrderDocBloc extends Bloc<OrderDocEvent, OrderDocState> {
   Future<void> openOrder(OrderDocEventOpen o) async {
     var value = await HttpSqlQuery.postString({
       'sl':
-      "${sqlList['open_patver_data'].toString().replaceAll('%where1%', "where IDPatver='${o.id}'").replaceAll('%where2%', " where IDPatver='${o.id}' ")}"
+          "${sqlList['open_patver_data'].toString().replaceAll('%where1%', "where IDPatver='${o.id}' ").replaceAll('%where2%', " where IDPatver='${o.id}' ")}"
     });
     List<OrderRow> l = [];
-      OrderRowList orl = OrderRowList.fromJson({'list': jsonDecode(value)});
-      for (var e in orl.list) {
-        l.add(e);
-      }
+    OrderRowList orl = OrderRowList.fromJson({'list': jsonDecode(value)});
+    for (var e in orl.list) {
+      l.add(e);
+    }
     emit(OrderDocStateLoaded(l));
   }
 }

@@ -47,7 +47,7 @@ class PreloadingScreen extends EditWidget {
               model.prReadyLines.clear();
               model.prReadyLines.addAll(state.items);
             }
-          } else if (state is PreloadingStateIdle) {
+          } else if (state is PreloadingStateIdle || state is PreloadingStateInProgress) {
             return Center(child: CircularProgressIndicator());
           }
           return Column(
@@ -116,6 +116,17 @@ class PreloadingScreen extends EditWidget {
                     functions.exportToExcel(context);
                   },
                   assetPath: 'svg/excel.svg',
+                  darkMode: false,
+                ),
+                SvgButton(
+                  onTap: () {
+                    model.showMnac = !model.showMnac;
+                    if (model.docNumber != null) {
+                      BlocProvider.of<PreloadingBloc>(context).add(
+                          PreloadingEventOpenDoc(docnum: model.docNumber!));
+                    }
+                  },
+                  assetPath: 'svg/eye.svg',
                   darkMode: false,
                 ),
                 if (loaded == 2)

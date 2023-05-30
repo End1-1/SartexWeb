@@ -9,6 +9,8 @@ abstract class SartexDataGridSource extends DataGridSource {
   final List<GridColumn> columns = [];
   final List<String> columnNames = [];
   final List<GridTableSummaryRow> sumRows = [];
+  final Map<String, TextStyle> rowStyle = {};
+  final Map<String, Color> cellBgColors = {};
 
   final Widget delePic = SvgPicture.asset(
     'svg/delete.svg',
@@ -22,7 +24,7 @@ abstract class SartexDataGridSource extends DataGridSource {
     rows.clear();
   }
 
-  void addColumn(String columnName, {double width = 0, sort = true, filter = true}) {
+  void addColumn(String columnName, {double width = 0, sort = true, filter = true, TextStyle ts = const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)}) {
     columnNames.add(columnName);
     columns.add(GridColumn(
         allowSorting: columnName != 'edit',
@@ -33,7 +35,7 @@ abstract class SartexDataGridSource extends DataGridSource {
         label: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             alignment: Alignment.center,
-            child: Text(L.tr(columnName), style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)))));
+            child: Text(L.tr(columnName), style: ts))));
   }
 
   @override
@@ -43,7 +45,8 @@ abstract class SartexDataGridSource extends DataGridSource {
       return Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8.0),
-        child: Text(e.value.toString()),
+        color: cellBgColors.containsKey(e.columnName) ? cellBgColors[e.columnName] : Colors.white,
+        child: Text(e.value.toString(), style: rowStyle.containsKey(e.columnName) ? rowStyle[e.columnName] : const TextStyle()),
       );
     }).toList());
   }
@@ -54,9 +57,11 @@ abstract class SartexDataGridSource extends DataGridSource {
       GridSummaryColumn? summaryColumn,
       RowColumnIndex rowColumnIndex,
       String summaryValue) {
+    TextStyle ts = (rowStyle.containsKey(summaryColumn?.columnName) ? rowStyle[summaryColumn?.columnName] : const TextStyle())!.copyWith(fontWeight: FontWeight.bold);
     return Container(
-      padding: const EdgeInsets.all(15.0),
-      child: Text(summaryValue),
+      padding: const EdgeInsets.all(8.0),
+      color: cellBgColors.containsKey(summaryColumn?.columnName) ? cellBgColors[summaryColumn?.columnName] : Colors.white,
+      child: Text(summaryValue, style: ts ),
     );
   }
 

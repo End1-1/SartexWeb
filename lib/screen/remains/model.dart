@@ -17,7 +17,7 @@ class RemainsModel extends AppModel<RemainsDatasource> {
         : "and pd.branch='${prefs.getString(key_user_branch)}'";
     return "select a.apr_id, pd.branch, m.pahest, pd.brand, pd.Model, "
         "pd.ModelCod, pd.country, pd.variant_prod, pd.Colore, "
-        "a.size, m.mnacord "
+        "a.size, m.mnacord, pd.PatverN as commesa "
         "from Apranq a "
         "left join patver_data pd on pd.id=a.pid "
         "left join Mnacord m on m.apr_id=a.apr_id "

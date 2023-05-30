@@ -6,7 +6,7 @@ import 'package:sartex/utils/translator.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class RemainsScreen extends AppGridScreen {
-  RemainsScreen() : super(title: L.tr('Remains'), model: RemainsModel(), plusButton: false);
+  RemainsScreen() : super(title: L.tr('Stock remains'), model: RemainsModel(), plusButton: false);
 
   @override
   cellTap(BuildContext context, DataGridCellTapDetails details) {

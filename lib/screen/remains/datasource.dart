@@ -2,6 +2,7 @@ import 'package:sartex/data/sartex_datagridsource.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:flutter/material.dart';
 
 part 'datasource.freezed.dart';
 
@@ -16,6 +17,7 @@ class RemainRow with _$RemainRow {
       required String? brand,
       required String? Model,
       required String? ModelCod,
+        required String? commesa,
         required String? country,
       required String? variant_prod,
       required String? Colore,
@@ -34,11 +36,14 @@ class RemainsDatasource extends SartexDataGridSource {
     addColumn(L.tr('Brand'));
     addColumn(L.tr('Model'));
     addColumn(L.tr('Code'));
+    addColumn(L.tr('Commesa'));
     addColumn(L.tr('Country'));
     addColumn(L.tr('Variant'));
     addColumn(L.tr('Color'));
     addColumn(L.tr('Size'));
     addColumn(L.tr('Quantity'));
+
+    rowStyle[L.tr('Quantity')] = const TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 16);
 
     sumRows.add(GridTableSummaryRow(
       title: L.tr('Total'),
@@ -66,6 +71,7 @@ class RemainsDatasource extends SartexDataGridSource {
         DataGridCell(columnName: columnNames[i++], value: e.brand),
         DataGridCell(columnName: columnNames[i++], value: e.Model),
         DataGridCell(columnName: columnNames[i++], value: e.ModelCod),
+        DataGridCell(columnName: columnNames[i++], value: e.commesa),
         DataGridCell(columnName: columnNames[i++], value: e.country),
         DataGridCell(columnName: columnNames[i++], value: e.variant_prod),
         DataGridCell(columnName: columnNames[i++], value: e.Colore),

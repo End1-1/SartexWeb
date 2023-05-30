@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sartex/screen/app/app_bloc.dart';
 import 'package:sartex/screen/barcum/barcum_screen.dart';
 import 'package:sartex/screen/dashboard/dashboard_screen.dart';
@@ -17,6 +16,7 @@ import 'package:sartex/screen/product_type_code/product_type_code_screen.dart';
 import 'package:sartex/screen/products/products_screen.dart';
 import 'package:sartex/screen/remains/remains_screen.dart';
 import 'package:sartex/screen/sizes/sizes_screen.dart';
+import 'package:sartex/screen/store_docs/store_docs_sreen.dart';
 import 'package:sartex/screen/t_hashiv/thashiv_screen.dart';
 import 'package:sartex/screen/tv/tv_screen.dart';
 import 'package:sartex/screen/users/users_screen.dart';
@@ -50,12 +50,15 @@ void main() async {
     prefs.setInt(key_user_id, 0);
   } else {
     prefs.setInt(key_user_id, int.tryParse(result[0]['user_id'] ?? '') ?? 0);
-    result = await HttpSqlQuery.post(
-        {'sl': "select role_id, user_id from Users where id=${result[0]['user_id'] ?? '' }"});
+    result = await HttpSqlQuery.post({
+      'sl':
+          "select role_id, user_id from Users where id=${result[0]['user_id'] ?? ''}"
+    });
     if (result.isNotEmpty) {
       HttpSqlQuery.userForQueries = result[0]['user_id'];
-      result = await HttpSqlQuery.post(
-          {'sl': "select id from RoleNames where name='${result[0]['role_id']}'"});
+      result = await HttpSqlQuery.post({
+        'sl': "select id from RoleNames where name='${result[0]['role_id']}'"
+      });
       if (result.isEmpty) {
         prefs.setInt(key_user_id, 0);
       } else {
@@ -83,19 +86,33 @@ class MyApp extends StatelessWidget {
         // theme: ThemeData(
         //   fontFamily: 'Sylfaen'
         // ),
-      onGenerateRoute: (settings) {
-        if (settings.name ==  route_thashiv) {
-          return MaterialPageRoute(settings: settings, builder: (context){return  BlocProvider(
-              create: (_) => AppBloc(GSIdle()), child: THashivScreen((settings.arguments ?? '') as String));});
-        } else if (settings.name == route_barcum) {
-          return MaterialPageRoute(settings: settings, builder: (context){return
-            BlocProvider(
-                create: (_) => AppBloc(GSIdle()), child: BarcumScreen(settings.arguments as int?)); });
+        onGenerateRoute: (settings) {
+          if (settings.name == route_thashiv) {
+            return MaterialPageRoute(
+                settings: settings,
+                builder: (context) {
+                  return BlocProvider(
+                      create: (_) => AppBloc(GSIdle()),
+                      child:
+                          THashivScreen((settings.arguments ?? '') as String));
+                });
+          } else if (settings.name == route_barcum) {
+            return MaterialPageRoute(
+                settings: settings,
+                builder: (context) {
+                  return BlocProvider(
+                      create: (_) => AppBloc(GSIdle()),
+                      child: BarcumScreen(settings.arguments as int?));
+                });
           } else if (settings.name == route_tv) {
-          return MaterialPageRoute(settings: settings, builder: (context){return TVScreen((settings.arguments ?? false) as bool);});
-        }
-        return null;
-      },
+            return MaterialPageRoute(
+                settings: settings,
+                builder: (context) {
+                  return TVScreen((settings.arguments ?? false) as bool);
+                });
+          }
+          return null;
+        },
         debugShowCheckedModeBanner: false,
         routes: {
           route_root: (context) => const SartexLogin(),
@@ -119,8 +136,9 @@ class MyApp extends StatelessWidget {
               create: (_) => AppBloc(GSIdle()), child: UsersRoleScreen()),
           route_remains: (_) => BlocProvider(
               create: (_) => AppBloc(GSIdle()), child: RemainsScreen()),
-          route_product_type_code:
-              (_) => BlocProvider(
+          route_store_documents:(_) => BlocProvider(
+              create: (_) => AppBloc(GSIdle()), child: StoreDocsScreen()),
+          route_product_type_code: (_) => BlocProvider(
               create: (_) => AppBloc(GSIdle()), child: ProductTypeCodeScreen()),
           // route_thashiv: (_) => BlocProvider(
           //     create: (_) => AppBloc(GSIdle()), child: THashivScreen(ModalRoute.of(context)?.settings.arguments as String?)),

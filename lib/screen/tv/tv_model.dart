@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/http_sql.dart';
+import 'package:sartex/utils/prefs.dart';
 
 part 'tv_model.freezed.dart';
 
@@ -65,6 +67,7 @@ class TVModel {
 
   setPageNumber(int num) {
     pageNum = num;
+    prefs.setInt(key_page_number, pageNum);
     _showData();
   }
 
@@ -73,9 +76,13 @@ class TVModel {
       streamController.add(rows);
       return;
     }
+    pageNumCount = prefs.getInt(key_tv_page_count)!;
     final List<ModelRow> r = [];
-    for (int i = pageNum - 1; i < pageNum + 7 && i < rows.length; i++) {
-      r.add(rows[i]);
+    for (int i = 0; i < rows.length; i++) {
+      int num = int.tryParse(rows[i].line!.substring(1, rows[i].line!.length)) ?? 0;
+      if (num > (pageNum - 1) * pageNumCount && num <= (((pageNum - 1) * pageNumCount) + pageNumCount)) {
+        r.add(rows[i]);
+      }
     }
     streamController.add(r);
   }
@@ -141,7 +148,8 @@ class TVModel {
           Magaz: tmagaz.toString(),
           Pref: (tplan == 0 ? 0 : (tprod / (tplan) * 100)).truncate().toString());
 
-      pageNumCount =  (rows.length / 8).round();
+      pageNumCount = (prefs.getInt(key_tv_page_count) ?? 0) == 0 ? 8 : 12;
+      pageNum = prefs.getInt(key_page_number) ?? 1;
       _showData();
       // for (int i = 0; i < 7; i++)
       //   rows.add(ModelRow(line: 'L${i+1}', brand: 'BRNAD', Model: 'MODEL', t1030: '1', t1230: '2', t1530: '3', t1730: '4', Ext: '5', Total: '6', Past: '8', Plan: '7', Prod: '8', Magaz: '7', Pref: '7'));

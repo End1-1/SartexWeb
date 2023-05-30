@@ -26,8 +26,9 @@ const route_language_editor = 'language_editor';
 const route_users_role = 'users_role';
 const route_login_pin = 'login_pin';
 const route_remains = 'remains';
+const route_store_documents = 'store_documents';
 const route_thashiv = 't_account';
-const route_product_type_code = 'route_product_type_code';
+const route_product_type_code = 'product_type_code';
 
 const key_error = 'key_error';
 const key_empty = 'empty';
@@ -45,6 +46,9 @@ const key_user_position = 'key_user_position';
 const key_user_role = 'key_user_role';
 const key_full_name = "key_full_name";
 const key_role = 'key_role';
+
+const key_tv_page_count = 'key_tv_page_count';
+const key_page_number = 'key_page_number';
 
 final Map<String, Map<String, String>> roleMap = {
   "1": {'read_flag': '0', 'write_flag': '0'},

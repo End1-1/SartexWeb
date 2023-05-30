@@ -10,6 +10,7 @@ part 'preloading_bloc.freezed.dart';
 abstract class PreloadingState {}
 
 class PreloadingStateIdle extends PreloadingState {}
+class PreloadingStateInProgress extends PreloadingState {}
 
 @freezed
 class PreloadingStateOpenDoc extends PreloadingState
@@ -85,6 +86,7 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
   }
 
   Future<void> _openDoc(String? docnum) async {
+    emit(PreloadingStateInProgress());
     Map<String, String> header = {};
     List<PreloadingFullItem> items = [];
     if (docnum == null || docnum.isEmpty) {
@@ -99,7 +101,7 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
           "from Docs d left join Apranq a on a.apr_id=d.apr_id "
           "left join Mnacord m on m.apr_id=a.apr_id   "
           "left join patver_data pd on pd.id=a.pid "
-          "where d.docNum='$docnum' "
+          "where d.docNum='$docnum' and a.apr_id>0 "
           "order by cast(right(d.line, length(d.line)-1) as signed) "
     });
 
@@ -157,6 +159,30 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
         i.remains[12].text = i.sumOfList(i.remains);
       }
     }
+
+    data = await HttpSqlQuery.post({"sl": "select h.apr_id, sum(h.qanak) - coalesce(yqanak, 0) as mnac "
+        "from History h " ""
+        "left join (select apr_id, sum(yqanak) as yqanak "
+          "from Docs d "
+          "where d.type in ('INP', 'OINP') "
+          "group by 1) d on d.apr_id=h.apr_id "
+        "where h.action='NOH_YND' "
+        "group by 1"});
+    Map<String, String> mnacMap = {};
+    for (final e in data) {
+      mnacMap[e['apr_id']] = e['mnac'];
+    }
+
+    for (var e in items) {
+      for (var it in e.items) {
+        for (int i = 0; i < 12; i++) {
+          if (mnacMap.containsKey(it.preSize!.aprId[i])) {
+            it.mnac[i] = mnacMap[it.preSize!.aprId[i]]!;
+          }
+        }
+      }
+    }
+
     emit(PreloadingStateOpenDoc(items: items, header: header));
   }
 }

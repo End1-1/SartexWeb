@@ -16,6 +16,7 @@ class PreloadingFullItem {
 }
 
 class PreloadingModel {
+  bool showMnac = false;
   final PreloadingData data = PreloadingData();
   List<String> lines = [
     '',

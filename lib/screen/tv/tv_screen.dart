@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sartex/screen/tv/tv_model.dart';
+import 'package:sartex/utils/consts.dart';
+import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/utils/translator.dart';
 
 class TVScreen extends StatelessWidget {
@@ -175,11 +177,21 @@ class TVScreen extends StatelessWidget {
   Widget _header() {
     return Row(
       children: [
-        for (int i = 0; i < _model.pageNumCount; i++) ... [
+        for (int i = 0; i < 4; i++) ... [
           OutlinedButton(onPressed: (){
             _model.setPageNumber(i);
-          }, child: Text(i == 0 ? L.tr('All') : (i + 1).toString()))
+          }, child: Text(i == 0 ? L.tr('All') : (i).toString()))
         ],
+        const SizedBox(width: 10),
+        Text(L.tr('Line count')),
+        OutlinedButton(onPressed: (){
+          prefs.setInt(key_tv_page_count, 8);
+          _model.setPageNumber(1);
+        }, child: Text('8')),
+        OutlinedButton(onPressed: (){
+          prefs.setInt(key_tv_page_count, 12);
+          _model.setPageNumber(1);
+        }, child: Text('12')),
         Container(
             height: 60,
             width: cw[0] +

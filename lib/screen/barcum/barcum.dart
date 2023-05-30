@@ -38,7 +38,7 @@ class BarcumDatasource extends SartexDataGridSource {
   BarcumDatasource(this.loaded) {
     addColumn(L.tr('Document'));
     addColumn(L.tr('Date'));
-    addColumn(L.tr('Country'));
+    //addColumn(L.tr('Country'));
     addColumn(L.tr('Receipant'));
     addColumn(L.tr('Avto'));
     addColumn(L.tr('Store'));
@@ -53,7 +53,7 @@ class BarcumDatasource extends SartexDataGridSource {
       return DataGridRow(cells: [
         DataGridCell(columnName: columnNames[i++], value: e.docnum),
         DataGridCell(columnName: columnNames[i++], value: e.date),
-        DataGridCell(columnName: columnNames[i++], value: e.country),
+        //DataGridCell(columnName: columnNames[i++], value: e.country),
         DataGridCell(columnName: columnNames[i++], value: e.partner),
         DataGridCell(columnName: columnNames[i++], value: e.avto),
         DataGridCell(columnName: columnNames[i++], value: e.pahest),

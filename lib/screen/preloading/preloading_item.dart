@@ -93,6 +93,22 @@ class PreloadingItem {
     TextEditingController(),
   ];
 
+  final List<String> mnac = [
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+  ];
+
   PreloadingSize? preSize;
 
   String sumOfMnacord() {
@@ -109,6 +125,14 @@ class PreloadingItem {
 
   String sumOfDiff() {
     return sumOfList(diff);
+  }
+
+  String sumOfMnac() {
+    double a = 0;
+    for (final e in mnac) {
+      a += double.tryParse(e) ?? 0;
+    }
+    return a.toString();
   }
 
   String sumOfList(List<TextEditingController> l) {

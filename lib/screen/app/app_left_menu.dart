@@ -155,7 +155,7 @@ class _LeftMenu extends State<LeftMenu> {
               ]),
               AnimatedContainer(
                 margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  height: expandedReports ? 40 * 3 : 0,
+                  height: expandedReports ? 40 * 4 : 0,
                   duration: const Duration(milliseconds: 200),
                   child: SingleChildScrollView(
                     child: Column(
@@ -167,7 +167,12 @@ class _LeftMenu extends State<LeftMenu> {
                             onTap: () {
                               Navigator.pushNamed(context, route_remains);
                             },
-                            caption: L.tr('Remains')),
+                            caption: L.tr('Stock remains')),
+                        TextMouseButton(
+                            onTap: () {
+                              Navigator.pushNamed(context, route_store_documents);
+                            },
+                            caption: L.tr('Documents in the store')),
                         TextMouseButton(
                             onTap: () {
                               Navigator.pushNamed(context, route_barcum, arguments: 2);

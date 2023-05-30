@@ -198,6 +198,7 @@ class _LoginPinScreen extends State<LoginPinScreen> {
     await prefs.setString(key_user_role, userData[0]['role_id'] ?? '');
     await prefs.setString(key_full_name,
         '${userData[0]['lastName']} ${userData[0]['firstName']}');
+    HttpSqlQuery.userForQueries = userData[0]['user_id'];
 
     var result = await HttpSqlQuery.post({
       'sl': "select id from RoleNames where name='${userData[0]['role_id']}'"

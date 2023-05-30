@@ -62,7 +62,8 @@ class PreloadingItemsContainer extends StatefulWidget {
       required this.item,
       required this.showLine1,
       required this.model,
-      required this.parentState, required this.readOnly});
+      required this.parentState,
+      required this.readOnly});
 
   @override
   State<StatefulWidget> createState() => _PreloadingItemsContainer();
@@ -83,6 +84,9 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
       border: Border.fromBorderSide(BorderSide(width: 0.1)));
   final BoxDecoration headerDecor5 = const BoxDecoration(
       color: Color(0xfffdb0b0),
+      border: Border.fromBorderSide(BorderSide(width: 0.1)));
+  final BoxDecoration headerDecor6 = const BoxDecoration(
+      color: Color(0xff9efff0),
       border: Border.fromBorderSide(BorderSide(width: 0.1)));
 
   final InputDecoration labelDecor = const InputDecoration(
@@ -491,8 +495,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                             e.color.text,
                                             e,
                                             widget.model!.editStore.text)
-                                        .then((value) {
-                                    });
+                                        .then((value) {});
                                   }
                                 }),
                               onTap: widget.model == null
@@ -536,6 +539,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 child: Row(children: [
                                   Expanded(
                                       child: TextFormField(
+                                          textAlign: TextAlign.center,
                                           readOnly: true,
                                           decoration: labelDecor,
                                           controller: e.sizes[i - 1],
@@ -550,6 +554,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                               child: Row(children: [
                                 Expanded(
                                     child: TextFormField(
+                                        textAlign: TextAlign.center,
                                         readOnly: true,
                                         decoration: labelDecor,
                                         controller: e.sizes[e.sizes.length - 1],
@@ -569,6 +574,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                       child: Row(children: [
                                         Expanded(
                                             child: TextFormField(
+                                              textAlign: TextAlign.center,
                                           onTap: () {
                                             e.newvalues[i - 1].text =
                                                 e.remains[i - 1].text;
@@ -589,6 +595,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                     child: Row(children: [
                                       Expanded(
                                           child: TextFormField(
+                                              textAlign: TextAlign.center,
                                               onTap: () {
                                                 for (int i = 0;
                                                     i < e.remains.length - 2;
@@ -621,19 +628,22 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 child: Row(children: [
                                   Expanded(
                                       child: TextFormField(
-                                          readOnly: !widget.showLine1 && e != widget.editRow,
+                                          textAlign: TextAlign.center,
+                                          readOnly: !widget.showLine1 &&
+                                              e != widget.editRow,
                                           onChanged: (text) {
                                             if (widget.editRow == null) {
                                               int newvalue =
                                                   int.tryParse(text) ?? 0;
                                               int remain = int.tryParse(
-                                                  e.remains[i - 1].text) ??
+                                                      e.remains[i - 1].text) ??
                                                   0;
                                               if (newvalue > remain) {
                                                 e.newvalues[i - 1].clear();
                                               }
-                                              e.newvalues[e.newvalues.length -
-                                                  1]
+                                              e
+                                                  .newvalues[
+                                                      e.newvalues.length - 1]
                                                   .text = e.sumOfNewValues();
                                             }
                                           },
@@ -649,6 +659,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                               child: Row(children: [
                                 Expanded(
                                     child: TextFormField(
+                                        textAlign: TextAlign.center,
                                         readOnly: true,
                                         decoration: formDecor1,
                                         controller:
@@ -668,6 +679,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 child: Row(children: [
                                   Expanded(
                                       child: TextFormField(
+                                          textAlign: TextAlign.center,
                                           readOnly: true,
                                           decoration: formDecor1,
                                           controller: e.pahest[i - 1],
@@ -681,10 +693,12 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                               child: Row(children: [
                                 Expanded(
                                     child: TextFormField(
+                                        textAlign: TextAlign.center,
                                         readOnly: true,
                                         decoration: formDecor1,
                                         controller:
-                                            e.pahest[e.pahest.length - 1]..text = e.sumOfList(e.pahest),
+                                            e.pahest[e.pahest.length - 1]
+                                              ..text = e.sumOfList(e.pahest),
                                         style: headerLeft))
                               ]))),
                     ],
@@ -711,6 +725,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                       child: Row(children: [
                                         Expanded(
                                             child: TextFormField(
+                                                textAlign: TextAlign.center,
                                                 readOnly: true,
                                                 decoration: formDecor1,
                                                 initialValue: ((int.tryParse(e
@@ -747,24 +762,48 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                     child: Row(children: [
                                       Expanded(
                                           child: TextFormField(
+                                            textAlign: TextAlign.center,
                                               readOnly: true,
                                               decoration: formDecor1,
-                                              controller:
-                                                  e.diff[e.diff.length - 1]..text = ((int.tryParse(e
-                                                      .pahest[
-                                                  e.pahest.length - 1]
-                                                      .text) ??
-                                                      0) -
-                                                      (int.tryParse(e
-                                                          .newvalues[
-                                                      e.newvalues.length -
-                                                          1]
-                                                          .text) ??
-                                                          0)).toString(),
+                                              controller: e.diff[e.diff.length - 1]
+                                                ..text = ((int.tryParse(e
+                                                                .pahest[
+                                                                    e.pahest.length -
+                                                                        1]
+                                                                .text) ??
+                                                            0) -
+                                                        (int.tryParse(e
+                                                                .newvalues[e
+                                                                        .newvalues
+                                                                        .length -
+                                                                    1]
+                                                                .text) ??
+                                                            0))
+                                                    .toString(),
                                               style: headerLeft))
                                     ]))),
                           ],
                         ),
+
+                  ///NOH_YED - DOCS.YANAK
+                  widget.showLine1
+                      ? Container()
+                      : widget.model!.showMnac ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for (int i = 0; i < 13; i++) ...[
+                              Container(
+                                  width: i == 12 ? 120 : sizeColWidth,
+                                  child: Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: headerDecor6,
+                                      child: Text(
+                                        i < 12 ? e.mnac[i] : e.sumOfMnac(),
+                                        textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold)
+                                      )))
+                            ]
+                          ],
+                        ) : Container()
                 ],
               ),
               //RemoveButton
@@ -844,24 +883,30 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                                     child:
                                                         Text(L.tr('Quantity')))
                                               ]),
-                                              for (final e in value) ... [
-                                                Row(children: [SizedBox(
-                                                    width: 100,
-                                                    child: Text(e['size'])),
-                                                SizedBox(
-                                                    width: 100,
-                                                    child:
-                                                    Text(e['qanak']))])
+                                              for (final e in value) ...[
+                                                Row(children: [
+                                                  SizedBox(
+                                                      width: 100,
+                                                      child: Text(e['size'])),
+                                                  SizedBox(
+                                                      width: 100,
+                                                      child: Text(e['qanak']))
+                                                ])
                                               ]
                                             ]);
                                             showDialog(
-                                              context: context,
-                                                builder: (context) {return SimpleDialog(
-                                                  alignment: Alignment.center,
-                                                contentPadding: const EdgeInsets.all(10),
-                                                title: Text(L.tr(
-                                                    'Cannot remove this row with OK status')),
-                                                children: [w]);});
+                                                context: context,
+                                                builder: (context) {
+                                                  return SimpleDialog(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      contentPadding:
+                                                          const EdgeInsets.all(
+                                                              10),
+                                                      title: Text(L.tr(
+                                                          'Cannot remove this row with OK status')),
+                                                      children: [w]);
+                                                });
                                           }
                                         });
                                       }
@@ -870,17 +915,20 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                   assetPath: 'svg/delete.svg',
                                 ),
                                 SvgButton(
-                                  width: 40,
+                                    width: 40,
                                     darkMode: false,
-                                    onTap: (){
-                                  setState(() {
-                                    if (widget.editRow == null) {
-                                      widget.editRow = e;
-                                    } else {
-                                      widget.editRow = null;
-                                    }
-                                  });
-                                }, assetPath: widget.editRow == null ? 'svg/edit.svg' : 'svg/save.svg')
+                                    onTap: () {
+                                      setState(() {
+                                        if (widget.editRow == null) {
+                                          widget.editRow = e;
+                                        } else {
+                                          widget.editRow = null;
+                                        }
+                                      });
+                                    },
+                                    assetPath: widget.editRow == null
+                                        ? 'svg/edit.svg'
+                                        : 'svg/save.svg')
                               ]))
                         ])),
             ])

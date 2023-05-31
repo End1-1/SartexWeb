@@ -78,7 +78,7 @@ class PreloadingModel {
     }
     for (var pr in prReadyLines) {
       for (var item in pr.items) {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 12; i++) {
           int qty = int.tryParse(item.newvalues[i].text) ?? 0;
 
           String? aprid = item.preSize?.aprIdOf(i);

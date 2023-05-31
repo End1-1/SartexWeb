@@ -155,7 +155,7 @@ class _LeftMenu extends State<LeftMenu> {
               ]),
               AnimatedContainer(
                 margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  height: expandedReports ? 40 * 4 : 0,
+                  height: expandedReports ? 40 * 5 : 0,
                   duration: const Duration(milliseconds: 200),
                   child: SingleChildScrollView(
                     child: Column(
@@ -163,6 +163,11 @@ class _LeftMenu extends State<LeftMenu> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: [
+                        TextMouseButton(
+                            onTap: () {
+                              Navigator.pushNamed(context, route_production_history);
+                            },
+                            caption: L.tr('Production')),
                         TextMouseButton(
                             onTap: () {
                               Navigator.pushNamed(context, route_remains);

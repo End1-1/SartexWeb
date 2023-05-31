@@ -47,7 +47,6 @@ class ProductList with _$ProductList {
 
 class ProductsDatasource extends SartexDataGridSource {
   ProductsDatasource() {
-    ProductEditWidget.init();
     addColumn(L.tr('Id'));
     addColumn(L.tr('Branch'));
     addColumn(L.tr('Brand'));
@@ -102,7 +101,7 @@ class ProductEditWidget extends EditWidget {
       productTypeName: '',
       Netto: '',
       Brutto: '');
-  static List<String> sizes = [];
+  List<String> sizes = [];
   Map<String, String> productTypeCode = {};
 
   final TextEditingController _editBrand = TextEditingController();
@@ -114,36 +113,33 @@ class ProductEditWidget extends EditWidget {
   final TextEditingController _editNetto = TextEditingController();
   final TextEditingController _editBrutto = TextEditingController();
 
-  static Future<void> init() async {
-    var value = await HttpSqlQuery.post({'sl': "select code from Sizes"});
-    sizes.clear();
-    for (var e in value) {
-      sizes.add(e['code']);
-    }
-  }
-
   ProductEditWidget({super.key, required String id}) {
-    HttpSqlQuery.post({'sl': "select id, name from ProductTypeCode"})
-        .then((value) {
-      for (final e in value) {
-        productTypeCode[e['id']] = e['name'];
+    HttpSqlQuery.post({'sl': "select code from Sizes"}).then((value) {
+      for (var e in value) {
+        sizes.add(e['code']);
       }
-      productTypeController.add(null);
-      if (id.isNotEmpty) {
-        HttpSqlQuery.post({'sl': "select * from Products where id=${id}"})
-            .then((value) {
-          product = Product.fromJson(value[0]);
-          _editBrand.text = product.brand ?? '';
-          _editModel.text = product.model ?? '';
-          _editModelCode.text = product.modelCode ?? '';
-          _editSizeStandart.text = product.size_standart ?? '';
-          _editPackaging.text = product.Packaging ?? '';
-          _editProductsTypeCode.text = product.ProductsTypeCode ?? '';
-          _editNetto.text = product.Netto ?? '';
-          _editBrutto.text = product.Brutto ?? '';
-          productTypeController.add(null);
-        });
-      }
+      HttpSqlQuery.post({'sl': "select id, name from ProductTypeCode"})
+          .then((value) {
+        for (final e in value) {
+          productTypeCode[e['id']] = e['name'];
+        }
+        productTypeController.add(null);
+        if (id.isNotEmpty) {
+          HttpSqlQuery.post({'sl': "select * from Products where id=${id}"})
+              .then((value) {
+            product = Product.fromJson(value[0]);
+            _editBrand.text = product.brand ?? '';
+            _editModel.text = product.model ?? '';
+            _editModelCode.text = product.modelCode ?? '';
+            _editSizeStandart.text = product.size_standart ?? '';
+            _editPackaging.text = product.Packaging ?? '';
+            _editProductsTypeCode.text = product.ProductsTypeCode ?? '';
+            _editNetto.text = product.Netto ?? '';
+            _editBrutto.text = product.Brutto ?? '';
+            productTypeController.add(null);
+          });
+        }
+      });
     });
   }
 
@@ -169,7 +165,7 @@ class ProductEditWidget extends EditWidget {
       model: _editModel.text,
       modelCode: _editModelCode.text,
       size_standart: _editSizeStandart.text,
-      ProductsTypeCode: _editProductsTypeCode.text,
+      ProductsTypeCode: productTypeCode.keys.firstWhere((element) => productTypeCode[element] ==  _editProductsTypeCode.text),
       Packaging: _editPackaging.text,
       Netto: double.tryParse(_editNetto.text)?.toString() ?? '0',
       Brutto: double.tryParse(_editBrutto.text)?.toString() ?? '0',
@@ -223,16 +219,12 @@ class ProductEditWidget extends EditWidget {
                 onTap: () {
                   valueOfList(context, ['Handlers', 'Box'], _editPackaging);
                 }),
-            StreamBuilder(
-                stream: productTypeController.stream,
-                builder: (context, snapshot) {
-                  return KeyValueDropDown(
-                      title: L.tr('Product type'),
-                      values: productTypeCode,
-                      initialValue: _editProductsTypeCode.text,
-                      onSelected: (v) {
-                        _editProductsTypeCode.text = v;
-                      });
+            textFieldColumn(
+                context: context,
+                title: 'Product type',
+                textEditingController: _editProductsTypeCode,
+                onTap: () {
+                  valueOfList(context, productTypeCode.values.toList(), _editProductsTypeCode);
                 }),
           ]),
           Row(

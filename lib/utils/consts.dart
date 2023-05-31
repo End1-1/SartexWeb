@@ -29,6 +29,7 @@ const route_remains = 'remains';
 const route_store_documents = 'store_documents';
 const route_thashiv = 't_account';
 const route_product_type_code = 'product_type_code';
+const route_production_history = 'production_history';
 
 const key_error = 'key_error';
 const key_empty = 'empty';

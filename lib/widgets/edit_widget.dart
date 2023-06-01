@@ -73,18 +73,19 @@ abstract class EditWidget extends StatelessWidget {
       required String title,
       required TextEditingController textEditingController,
       required VoidCallback? onTap,
+        double width = 200.0,
       ValueChanged<String>? onChange,
       List<String>? list,
-      int width = 200,
       bool enabled = true}) {
+    double w = width * scale_factor;
     final List<Widget> l = [];
     l.add(Padding(
-        padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-        child: Text(L.tr(title), style: const TextStyle(fontSize: 18))));
+        padding: EdgeInsets.only(top: 10 * scale_factor, left: 10 * scale_factor, right: 10 * scale_factor),
+        child: Text(L.tr(title), style: TextStyle(fontSize: 18 * scale_factor))));
     l.add(Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
+        padding: EdgeInsets.only(left: 10 * scale_factor, right: 10 * scale_factor),
         child: SizedBox(
-            width: 300,
+            width: w,
             child: TextFormField(
               decoration: text_form_field_decoration,
               onChanged: onChange,
@@ -108,7 +109,7 @@ abstract class EditWidget extends StatelessWidget {
       required String title,
       required TextEditingController textEditingController,
       List<String>? list,
-      int width = 200,
+      double width = 300,
       bool enabled = true,
       VoidCallback? onTap,
       ValueChanged<String>? onChange}) {

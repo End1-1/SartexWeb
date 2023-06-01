@@ -24,23 +24,23 @@ import 'orderdoc_state.dart';
 
 class OrderDocScreen extends EditWidget {
   final List<double> columnWidths = [
-    30,
-    100,
-    100,
-    80,
-    80,
-    80,
-    80,
-    80,
-    80,
-    80,
-    80,
-    80,
-    80,
-    80,
-    80,
-    100,
-    130,
+    30 * scale_factor,
+    100 * scale_factor,
+    100 * scale_factor,
+    80 * scale_factor,
+    80 * scale_factor,
+    80 * scale_factor,
+    80 * scale_factor,
+    80 * scale_factor,
+    80 * scale_factor,
+    80 * scale_factor,
+    80 * scale_factor,
+    80 * scale_factor,
+    80 * scale_factor,
+    80 * scale_factor,
+    80 * scale_factor,
+    100 * scale_factor,
+    130 * scale_factor,
   ];
   final List<double> printColumnWidths = [
     30,
@@ -73,6 +73,7 @@ class OrderDocScreen extends EditWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return BlocProvider<OrderDocBloc>(
         create: (_) => OrderDocBloc(OrderDocStateNone())
           ..add(model.orderId!.isEmpty
@@ -185,8 +186,8 @@ class OrderDocScreen extends EditWidget {
   }
 
   Widget _detailsHeader(BuildContext context, List<String> values) {
-    const double rowheight = 45;
-    const TextStyle ts = TextStyle(color: Colors.white, fontSize: 18);
+    final double rowheight = 45 * scale_factor;
+    final TextStyle ts = TextStyle(color: Colors.white, fontSize: 18 * scale_factor);
     const Border border =
         Border.fromBorderSide(BorderSide(color: Color(0x00cccccc)));
     const decoration = BoxDecoration(gradient: bg_gradient, border: border);
@@ -317,7 +318,7 @@ class OrderDocScreen extends EditWidget {
     }
     //r.add(const Divider(height: 2, color: Colors.transparent));
     return Padding(
-        padding: const EdgeInsets.only(left: 22, bottom: 2),
+        padding: EdgeInsets.only(left: 22 * scale_factor, bottom: 2 * scale_factor),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: r));
   }
 
@@ -928,10 +929,10 @@ class OrderDocScreen extends EditWidget {
       }
 
       l.add(Padding(
-          padding: const EdgeInsets.only(left: 10, bottom: 2),
+          padding: EdgeInsets.only(left: 22 * scale_factor, bottom: 2 * scale_factor),
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: onerow)));
     }
 
@@ -970,7 +971,7 @@ class OrderDocScreen extends EditWidget {
       totals[12] += totals[i];
     }
     const double rowheight = 45;
-    const TextStyle ts = TextStyle(color: Colors.white, fontSize: 18);
+    final TextStyle ts = TextStyle(color: Colors.white, fontSize: 18 * scale_factor);
     const Border border =
         Border.fromBorderSide(BorderSide(color: Color(0x00cccccc)));
     const decoration = BoxDecoration(gradient: bg_gradient, border: border);
@@ -1044,7 +1045,7 @@ class OrderDocScreen extends EditWidget {
     }
     //r.add(const Divider(height: 2, color: Colors.transparent));
     return Padding(
-        padding: const EdgeInsets.only(left: 22, bottom: 2),
+        padding: EdgeInsets.only(left: 22  * scale_factor, bottom: 2 * scale_factor),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: r));
   }
 

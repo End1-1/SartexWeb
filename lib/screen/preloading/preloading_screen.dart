@@ -48,7 +48,7 @@ class PreloadingScreen extends EditWidget {
               model.prReadyLines.addAll(state.items);
             }
           } else if (state is PreloadingStateIdle || state is PreloadingStateInProgress) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           return Column(
             children: [
@@ -78,15 +78,6 @@ class PreloadingScreen extends EditWidget {
                     context: context,
                     title: 'Track',
                     textEditingController: model.editTruck),
-                textFieldColumn(
-                    context: context,
-                    title: 'Store',
-                    textEditingController: model.editStore,
-                    list: model.storeNames),
-                textFieldColumn(
-                    context: context,
-                    title: 'Receipant',
-                    textEditingController: model.editReceipant),
                 Expanded(child: Container()),
                 SvgButton(
                     darkMode: false,
@@ -136,6 +127,18 @@ class PreloadingScreen extends EditWidget {
                           PreloadingEventSummary(docnum: model.docNumber!));
                     }
                   }, assetPath: 'svg/sum.svg', darkMode:false,)
+              ]),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [textFieldColumn(
+                    context: context,
+                    title: 'Store',
+                    textEditingController: model.editStore,
+                    list: model.storeNames),
+                textFieldColumn(
+                    context: context,
+                    title: 'Receipant',
+                    textEditingController: model.editReceipant),
               ]),
               const Divider(height: 20, color: Colors.transparent),
               //MainWindow

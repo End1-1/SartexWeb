@@ -24,7 +24,7 @@ class _LeftMenu extends State<LeftMenu> {
         margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
         decoration: const BoxDecoration(gradient: bg_gradient),
         duration: const Duration(milliseconds: 200),
-        width: expanded ? 240 : 60,
+        width: expanded ? 240 : 60 * scale_factor,
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
             scrollDirection: Axis.vertical,

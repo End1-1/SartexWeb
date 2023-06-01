@@ -10,6 +10,9 @@ const server_http_address = 'https://app.sartex.am/mix/mservice.php';
 //const server_http_address = 'https://app.sartex.am/mix/porz.php';
 final server_uri = Uri.parse(server_http_address);
 
+const scale_1366 = 0.8;
+var scale_factor = 1.0;
+
 const route_root = '/';
 const route_dashboard = 'dashboard';
 const route_tv = 'tv';

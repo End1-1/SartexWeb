@@ -106,7 +106,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
 
   @override
   Widget build(BuildContext context) {
-    const sizeColWidth = 60.0;
+    final sizeColWidth = 60.0  * scale_factor;
     return SingleChildScrollView(
       controller: scrollController,
       child: Column(
@@ -117,7 +117,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
               //LEFT SIDE
               //brand
               SizedBox(
-                  width: 200,
+                  width: 200 * scale_factor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -163,7 +163,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                   )),
               //Model
               SizedBox(
-                width: 200,
+                width: 200 * scale_factor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -238,7 +238,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
               ),
               //Commesa
               SizedBox(
-                  width: 100,
+                  width: 100 * scale_factor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -313,7 +313,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                   )),
               //country
               SizedBox(
-                  width: 80,
+                  width: 80 * scale_factor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -390,7 +390,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                   )),
               //Color
               SizedBox(
-                  width: 100,
+                  width: 100 * scale_factor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -464,7 +464,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                   )),
               //Variant
               SizedBox(
-                  width: 100,
+                  width: 100 * scale_factor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -547,7 +547,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 ]))),
                       ],
                       SizedBox(
-                          width: 120,
+                          width: 120 * scale_factor,
                           child: Container(
                               padding: padding,
                               decoration: headerDecor1,
@@ -589,7 +589,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                       ]))),
                             ],
                             SizedBox(
-                                width: 120,
+                                width: 120 * scale_factor,
                                 child: Container(
                                     decoration: headerDecor2,
                                     child: Row(children: [
@@ -653,7 +653,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 ]))),
                       ],
                       SizedBox(
-                          width: 120,
+                          width: 120 * scale_factor,
                           child: Container(
                               decoration: headerDecor3,
                               child: Row(children: [
@@ -687,7 +687,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 ]))),
                       ],
                       SizedBox(
-                          width: 120,
+                          width: 120 * scale_factor,
                           child: Container(
                               decoration: headerDecor4,
                               child: Row(children: [
@@ -743,7 +743,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                       ]))),
                             ],
                             SizedBox(
-                                width: 120,
+                                width: 120 * scale_factor,
                                 child: Container(
                                     decoration: (int.tryParse(e
                                                         .pahest[
@@ -793,7 +793,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                           children: [
                             for (int i = 0; i < 13; i++) ...[
                               Container(
-                                  width: i == 12 ? 120 : sizeColWidth,
+                                  width: (i == 12 ? 120 : sizeColWidth) * scale_factor,
                                   child: Container(
                                       padding: const EdgeInsets.all(5),
                                       decoration: headerDecor6,
@@ -809,7 +809,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
               //RemoveButton
               if (prefs.roleWrite('2') && !widget.readOnly)
                 SizedBox(
-                    width: 85,
+                    width: 85 * scale_factor,
                     height: 110,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -819,7 +819,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                               decoration: headerDecor1,
                               child: Column(children: [
                                 SvgButton(
-                                  width: 40,
+                                  width: 40 * scale_factor,
                                   darkMode: false,
                                   onTap: () {
                                     appDialogYesNo(
@@ -876,20 +876,20 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                             Widget w = Column(children: [
                                               Row(children: [
                                                 SizedBox(
-                                                    width: 100,
+                                                    width: 100 * scale_factor,
                                                     child: Text(L.tr('Size'))),
                                                 SizedBox(
-                                                    width: 100,
+                                                    width: 100 * scale_factor,
                                                     child:
                                                         Text(L.tr('Quantity')))
                                               ]),
                                               for (final e in value) ...[
                                                 Row(children: [
                                                   SizedBox(
-                                                      width: 100,
+                                                      width: 100 * scale_factor,
                                                       child: Text(e['size'])),
                                                   SizedBox(
-                                                      width: 100,
+                                                      width: 100 * scale_factor,
                                                       child: Text(e['qanak']))
                                                 ])
                                               ]
@@ -915,7 +915,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                   assetPath: 'svg/delete.svg',
                                 ),
                                 SvgButton(
-                                    width: 40,
+                                    width: 40 * scale_factor,
                                     darkMode: false,
                                     onTap: () {
                                       setState(() {

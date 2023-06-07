@@ -7,6 +7,7 @@ import 'package:sartex/screen/orderdoc/orderdoc_screen.dart';
 import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/utils/prefs.dart';
+import 'package:sartex/widgets/form_field.dart';
 import 'package:sartex/widgets/svg_button.dart';
 
 import 'orderdoc_event.dart';
@@ -129,7 +130,7 @@ extension OrderDocHeader on OrderDocScreen {
                         context: context,
                         builder: (context) {
                           return SimpleDialog(children: [
-                            ProductEditWidget(id: '')
+                            ProductEditWidget(id: '', brand: model.brandController.text, model: model.modelCodeController.text)
                           ]);
                         }).then((value) async {
                           if (value != null) {

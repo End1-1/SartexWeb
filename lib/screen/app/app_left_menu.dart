@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:sartex/screen/production_history/production_history_screen.dart';
+import 'package:sartex/screen/store_docs/store_docs_sreen.dart';
 import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/utils/translator.dart';
@@ -165,7 +167,7 @@ class _LeftMenu extends State<LeftMenu> {
                       children: [
                         TextMouseButton(
                             onTap: () {
-                              Navigator.pushNamed(context, route_production_history);
+                              ProductionHistoryScreen.open(context);
                             },
                             caption: L.tr('Production')),
                         TextMouseButton(
@@ -175,7 +177,7 @@ class _LeftMenu extends State<LeftMenu> {
                             caption: L.tr('Stock remains')),
                         TextMouseButton(
                             onTap: () {
-                              Navigator.pushNamed(context, route_store_documents);
+                              StoreDocsScreen.open(context);
                             },
                             caption: L.tr('Documents in the store')),
                         TextMouseButton(

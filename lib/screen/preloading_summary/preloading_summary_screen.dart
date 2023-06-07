@@ -52,9 +52,9 @@ class Sum1 extends SartexDataGridSource {
       int i = 0;
       return DataGridRow(cells: [
         DataGridCell(columnName: columnNames[i++], value: e['brand']),
-        DataGridCell(columnName: columnNames[i++], value: double.tryParse(e['pqanak']) ?? 0),
-        DataGridCell(columnName: columnNames[i++], value: double.tryParse(e['mqanak']) ?? 0),
-        DataGridCell(columnName: columnNames[i++], value: double.tryParse(e['diff']) ?? 0),
+        DataGridCell(columnName: columnNames[i++], value: double.tryParse(e['pqanak'] ?? '0') ?? 0),
+        DataGridCell(columnName: columnNames[i++], value: double.tryParse(e['mqanak'] ?? '0') ?? 0),
+        DataGridCell(columnName: columnNames[i++], value: double.tryParse(e['diff'] ?? '0') ?? 0),
       ]);
     }));
   }
@@ -186,8 +186,7 @@ class PreloadingSummmaryScreen extends StatelessWidget {
     return SizedBox(
         height: MediaQuery.of(context).size.height * 0.9,
         width: MediaQuery.of(context).size.width * 0.9,
-        child: Expanded(
-            child:
+        child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             SvgButton(
@@ -237,6 +236,11 @@ class PreloadingSummmaryScreen extends StatelessWidget {
                     source: sum1,
                     columns: sum1.columns,
                     tableSummaryRows: sum1.sumRows,
+                          allowColumnsResizing: true,
+                          allowFiltering: true,
+                          allowSorting: true,
+                          isScrollbarAlwaysShown: true,
+                          columnWidthMode:  ColumnWidthMode.auto,
                   )),
                   const SizedBox(height: 10),
                     SfDataGridTheme(
@@ -246,6 +250,11 @@ class PreloadingSummmaryScreen extends StatelessWidget {
                     source: sum2,
                     columns: sum2.columns,
                     tableSummaryRows: sum2.sumRows,
+                          allowColumnsResizing: true,
+                          allowFiltering: true,
+                          allowSorting: true,
+                          isScrollbarAlwaysShown: true,
+                          columnWidthMode:  ColumnWidthMode.auto,
                   )),
                 ])))),
             Expanded(
@@ -261,10 +270,15 @@ class PreloadingSummmaryScreen extends StatelessWidget {
                 source: sum3,
                 columns: sum3.columns,
                 tableSummaryRows: sum3.sumRows,
+                      allowColumnsResizing: true,
+                      allowFiltering: true,
+                      allowSorting: true,
+                      isScrollbarAlwaysShown: true,
+                      columnWidthMode: ColumnWidthMode.auto,
               )),
             ]))
           ]),
-        ])));
+        ]));
   }
 
   _exportToExcel(BuildContext context) {

@@ -8,6 +8,7 @@ import 'package:sartex/data/sql.dart';
 import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/edit_widget.dart';
+import 'package:sartex/widgets/form_field.dart';
 import 'package:sartex/widgets/key_value_dropdown.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -83,7 +84,8 @@ class ProductsDatasource extends SartexDataGridSource {
 
   @override
   Widget getEditWidget(BuildContext context, String id) {
-    return ProductEditWidget(id: id);
+    return ProductEditWidget(id: id, brand: '', model: '');
+
   }
 }
 
@@ -113,7 +115,9 @@ class ProductEditWidget extends EditWidget {
   final TextEditingController _editNetto = TextEditingController();
   final TextEditingController _editBrutto = TextEditingController();
 
-  ProductEditWidget({super.key, required String id}) {
+  ProductEditWidget({super.key, required String id, required String brand,  required String model}) {
+    _editBrand.text = brand;
+    _editModel.text = model;
     HttpSqlQuery.post({'sl': "select code from Sizes"}).then((value) {
       for (var e in value) {
         sizes.add(e['code']);

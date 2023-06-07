@@ -29,7 +29,7 @@ class PatverDataModel extends AppModel<OrderRowDatasource> {
         "left join (select pn.parent_id, sum(d.qanak) as nextload from Docs d left join Apranq a on a.apr_id=d.apr_id "
         "left join patver_data pn on pn.id=a.pid) as nl on nl.parent_id=pd.id and pd.parent_id is null "
         "where pd.id>0 ${getDates()} and pd.status in (${getStatuses()}) $f "
-        "group by IDPatver order by 10";
+        "group by IDPatver order by 5, 8, 14, 15 ";
   }
 
   @override

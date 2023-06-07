@@ -8,6 +8,7 @@ import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/edit_widget.dart';
+import 'package:sartex/widgets/form_field.dart';
 
 class PartnersEdit extends EditWidget {
   final String id;

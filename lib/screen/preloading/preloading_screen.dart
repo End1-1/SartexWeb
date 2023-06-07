@@ -12,6 +12,7 @@ import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/edit_widget.dart';
+import 'package:sartex/widgets/form_field.dart';
 import 'package:sartex/widgets/svg_button.dart';
 import 'dart:html' as html;
 
@@ -19,6 +20,7 @@ class PreloadingScreen extends EditWidget {
   final PreloadingModel model = PreloadingModel();
   late final PreloadingFunction functions;
   int? loaded;
+  var saving = false;
 
   PreloadingScreen({super.key, required String docNum, this.loaded}) {
     model.docNumber = docNum;
@@ -91,7 +93,11 @@ class PreloadingScreen extends EditWidget {
                   SvgButton(
                       darkMode: false,
                       onTap: () {
+                        if (saving) {
+                          return;
+                        }
                         appDialogYesNo(context, L.tr('Save document?'), () {
+                          saving = true;
                           model.save().then((value) {
                             if (value.isNotEmpty) {
                               appDialog(context, value);

@@ -13,6 +13,7 @@ import 'package:sartex/screen/partners/partners_screen.dart';
 import 'package:sartex/screen/patver_data/patver_data_screen.dart';
 import 'package:sartex/screen/plan_and_production/plan_and_production_screen.dart';
 import 'package:sartex/screen/product_type_code/product_type_code_screen.dart';
+import 'package:sartex/screen/production_history/production_history_screen.dart';
 import 'package:sartex/screen/products/products_screen.dart';
 import 'package:sartex/screen/remains/remains_screen.dart';
 import 'package:sartex/screen/sizes/sizes_screen.dart';
@@ -141,6 +142,8 @@ class MyApp extends StatelessWidget {
               create: (_) => AppBloc(GSIdle()), child: RemainsScreen()),
           route_store_documents:(_) => BlocProvider(
               create: (_) => AppBloc(GSIdle()), child: StoreDocsScreen()),
+          route_production_history:(_) => BlocProvider(
+              create: (_) => AppBloc(GSIdle()), child: ProductionHistoryScreen()),
           route_product_type_code: (_) => BlocProvider(
               create: (_) => AppBloc(GSIdle()), child: ProductTypeCodeScreen()),
           // route_thashiv: (_) => BlocProvider(

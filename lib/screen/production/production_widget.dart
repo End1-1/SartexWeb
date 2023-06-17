@@ -22,13 +22,15 @@ class ProductionWidget extends EditWidget {
   final InputDecoration formDecor = const InputDecoration(
       isDense: true,
       border: InputBorder.none,
-      contentPadding: EdgeInsets.fromLTRB(5, 15, 5, 15));
+      contentPadding: EdgeInsets.fromLTRB(5, 10, 5, 10));
 
   final InputDecoration errorDecor = InputDecoration(
       prefixIcon: SvgPicture.asset('svg/error.svg', width: 10, height: 10),
       isDense: true,
       border: InputBorder.none,
       contentPadding: const EdgeInsets.fromLTRB(5, 15, 5, 15));
+
+  final ts = const TextStyle(fontSize: 12, color: Colors.black);
 
   ProductionWidget({super.key, required String line}) {
     _model = ProductionModel(line: line);
@@ -55,7 +57,9 @@ class ProductionWidget extends EditWidget {
                       });
                     }
                   }
-                  return Column(children: [
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                     Container(
                         decoration:
                             const BoxDecoration(color: Colors.blueAccent),
@@ -123,6 +127,7 @@ class ProductionWidget extends EditWidget {
         stream: _model.linesController.stream,
         builder: (context, snapshot) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(children: [
                 for (var l in _model.lines.items) ...[
@@ -135,7 +140,7 @@ class ProductionWidget extends EditWidget {
                           children: [
                             //BRAND
                             Container(
-                              width: 120,
+                              width: 110,
                               decoration: const BoxDecoration(
                                   color: Colors.black12,
                                   border: Border.fromBorderSide(BorderSide(
@@ -150,6 +155,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        style: ts,
                                         readOnly: true,
                                         decoration: labelDecor,
                                         initialValue: L.tr('Brand'),
@@ -162,6 +168,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        style: ts,
                                         readOnly: true,
                                         decoration: formDecor,
                                         controller: l.editBrand,
@@ -204,6 +211,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        style: ts,
                                         readOnly: true,
                                         decoration: labelDecor,
                                         initialValue: L.tr('Model'),
@@ -216,6 +224,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        style: ts,
                                         readOnly: true,
                                         decoration: formDecor,
                                         controller: l.editModel
@@ -278,9 +287,10 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        style: ts,
                                         readOnly: true,
                                         decoration: labelDecor,
-                                        initialValue: L.tr('Order'),
+                                        initialValue: 'Commesa',
                                       )),
                                   Container(
                                       decoration: const BoxDecoration(
@@ -290,6 +300,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        style: ts,
                                         readOnly: true,
                                         decoration: formDecor,
                                         controller: l.editCommesa
@@ -339,7 +350,7 @@ class ProductionWidget extends EditWidget {
                             ),
                             //COUNTRY
                             Container(
-                              width: 100,
+                              width: 90,
                               decoration: const BoxDecoration(
                                   color: Colors.black12,
                                   border: Border.fromBorderSide(BorderSide(
@@ -354,6 +365,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        style: ts,
                                         readOnly: true,
                                         decoration: labelDecor,
                                         initialValue: L.tr('Country'),
@@ -366,6 +378,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        style: ts,
                                         readOnly: true,
                                         decoration: formDecor,
                                         controller: l.editCountry
@@ -416,7 +429,7 @@ class ProductionWidget extends EditWidget {
                             ),
                             //COLOR
                             Container(
-                              width: 100,
+                              width: 70,
                               decoration: const BoxDecoration(
                                   color: Colors.black12,
                                   border: Border.fromBorderSide(BorderSide(
@@ -431,6 +444,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        style: ts,
                                         readOnly: true,
                                         decoration: labelDecor,
                                         initialValue: L.tr('Color'),
@@ -443,6 +457,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        style: ts,
                                         readOnly: true,
                                         decoration: formDecor,
                                         controller: l.editColor
@@ -496,7 +511,7 @@ class ProductionWidget extends EditWidget {
                             ),
                             //VARIANT
                             Container(
-                              width: 100,
+                              width: 70,
                               decoration: const BoxDecoration(
                                   color: Colors.black12,
                                   border: Border.fromBorderSide(BorderSide(
@@ -511,9 +526,10 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        style: ts,
                                         readOnly: true,
                                         decoration: labelDecor,
-                                        initialValue: L.tr('Variant'),
+                                        initialValue: L.tr('Var.'),
                                       )),
                                   Container(
                                       decoration: const BoxDecoration(
@@ -523,6 +539,7 @@ class ProductionWidget extends EditWidget {
                                                   color: Colors.black26,
                                                   width: 0.2))),
                                       child: TextFormField(
+                                        style: ts,
                                         readOnly: true,
                                         decoration: formDecor,
                                         controller: l.editVariant
@@ -568,7 +585,8 @@ class ProductionWidget extends EditWidget {
                             //SIZES
                             for (int i = 0; i < 13; i++) ...[
                               Container(
-                                width: i == 12 ? 100 : 60,
+                                alignment: Alignment.center,
+                                width: i == 12 ? 100 * scale_factor : 50 * scale_factor,
                                 decoration: const BoxDecoration(
                                     color: Colors.black12,
                                     border: Border.fromBorderSide(BorderSide(
@@ -585,12 +603,15 @@ class ProductionWidget extends EditWidget {
                                                     color: Colors.black26,
                                                     width: 0.2))),
                                         child: TextFormField(
+                                          style: ts,
                                           readOnly: true,
+                                          textAlign: TextAlign.center,
                                           decoration: labelDecor,
                                           controller: l.sizes[i],
                                         )),
                                     if (l.canEditModel) ...[
                                       Container(
+                                          alignment: Alignment.center,
                                           width: i == 12 ? 100 : 60,
                                           decoration: const BoxDecoration(
                                               color: Colors.yellow,
@@ -619,6 +640,8 @@ class ProductionWidget extends EditWidget {
                                                   child: IgnorePointer(
                                                       ignoring: true,
                                                       child: TextFormField(
+                                                          style: ts,
+                                                        textAlign: TextAlign.center,
                                                           readOnly: true,
                                                           decoration: formDecor,
                                                           controller:
@@ -635,6 +658,7 @@ class ProductionWidget extends EditWidget {
                                                       color: Colors.black26,
                                                       width: 0.2))),
                                           child: TextFormField(
+                                              style: ts,
                                               readOnly:
                                               i > 11 || !l.canEditModel,
                                               decoration: formDecor,
@@ -729,9 +753,11 @@ class ProductionWidget extends EditWidget {
                                         int apr_id = int.tryParse(l.preSize.aprIdOf(i) ?? '0') ?? 0;
                                         if (apr_id > 0) {
                                           int qty = int.tryParse(l.restQanak[i].text) ?? 0;
-                                          String sql = "insert into History (branch, action, location, apr_id, date, time, qanak, real_status, user_id, codk, comp, dt) "
-                                            + "values (@branch, 'NOH_YND', '${l.name}', $apr_id, current_date(), current_time(), "
-                                            + "$qty, 'արտադրված', @user, @codk, @ip, current_timestamp()) ";
+                                          String sql = "insert into History (branch, action, location, apr_id, date, time, qanak, "
+                                              "real_status, user_id, codk, comp, dt) "
+                                              "values "
+                                              "(@branch, 'NOH_YND', '${l.name}', $apr_id, current_date(), current_time(), $qty, "
+                                              "'արտադրված', @user, @codk, @ip, current_timestamp()) ";
                                           await HttpSqlQuery.post({'sl' : sql});
                                         }
                                       }
@@ -757,6 +783,7 @@ class ProductionWidget extends EditWidget {
 
   Widget editValue(int i, ProductionItem l) {
     return TextFormField(
+      style: const TextStyle(fontSize: 12, color: Colors.black),
         readOnly: (i > 11 || !l.canEditModel) && !l.canEditQty,
         decoration: l.error(i) ? errorDecor : formDecor,
         controller: l.newvalues[i]

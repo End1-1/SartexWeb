@@ -30,8 +30,8 @@ class _LineDropdownButton extends State<LineDropdownButton> {
             textAlign: TextAlign.start,
           ),
         ),
-        style: const TextStyle(
-            color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            color: Colors.black, fontSize: 18 * scale_factor, fontWeight: FontWeight.bold),
         value: widget.model.prLine.prLine,
         items: widget.model.lines.map((s) {
           return DropdownMenuItem<String>(
@@ -94,19 +94,19 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
       border: InputBorder.none,
       contentPadding: EdgeInsets.fromLTRB(3, 5, 3, 5));
 
-  final TextStyle headerLeft = const TextStyle(
-      color: Colors.black, fontWeight: FontWeight.bold, height: 1.5);
+  final TextStyle headerLeft =  TextStyle(
+      color: Colors.black,fontSize: 12, fontWeight: FontWeight.bold, height: 1.5 * scale_factor);
   final EdgeInsetsGeometry padding = const EdgeInsets.fromLTRB(4, 5, 5, 5);
 
   final InputDecoration formDecor1 = const InputDecoration(
       isDense: true,
       border: InputBorder.none,
-      contentPadding: EdgeInsets.fromLTRB(5, 15, 5, 15));
+      contentPadding: EdgeInsets.fromLTRB(5, 10, 5, 10));
   final ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    final sizeColWidth = 60.0  * scale_factor;
+    final sizeColWidth = 50.0  * scale_factor;
     return SingleChildScrollView(
       controller: scrollController,
       child: Column(
@@ -238,7 +238,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
               ),
               //Commesa
               SizedBox(
-                  width: 100 * scale_factor,
+                  width: 90 * scale_factor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -250,7 +250,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 child: TextFormField(
                                     readOnly: true,
                                     decoration: labelDecor,
-                                    initialValue: L.tr('Order'),
+                                    initialValue: 'Commesa',
                                     style: headerLeft))
                           ])),
                       Container(
@@ -313,7 +313,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                   )),
               //country
               SizedBox(
-                  width: 80 * scale_factor,
+                  width: 70 * scale_factor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -390,7 +390,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                   )),
               //Color
               SizedBox(
-                  width: 100 * scale_factor,
+                  width: 60 * scale_factor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -464,7 +464,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                   )),
               //Variant
               SizedBox(
-                  width: 100 * scale_factor,
+                  width: 80 * scale_factor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -476,7 +476,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 child: TextFormField(
                                     readOnly: true,
                                     decoration: labelDecor,
-                                    initialValue: L.tr('Variant'),
+                                    initialValue: L.tr('Var.'),
                                     style: headerLeft))
                           ])),
                       Container(
@@ -547,7 +547,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 ]))),
                       ],
                       SizedBox(
-                          width: 120 * scale_factor,
+                          width: 100 * scale_factor,
                           child: Container(
                               padding: padding,
                               decoration: headerDecor1,
@@ -589,7 +589,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                       ]))),
                             ],
                             SizedBox(
-                                width: 120 * scale_factor,
+                                width: 100 * scale_factor,
                                 child: Container(
                                     decoration: headerDecor2,
                                     child: Row(children: [
@@ -653,7 +653,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 ]))),
                       ],
                       SizedBox(
-                          width: 120 * scale_factor,
+                          width: 100 * scale_factor,
                           child: Container(
                               decoration: headerDecor3,
                               child: Row(children: [
@@ -687,7 +687,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                 ]))),
                       ],
                       SizedBox(
-                          width: 120 * scale_factor,
+                          width: 100 * scale_factor,
                           child: Container(
                               decoration: headerDecor4,
                               child: Row(children: [
@@ -743,7 +743,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                       ]))),
                             ],
                             SizedBox(
-                                width: 120 * scale_factor,
+                                width: 100 * scale_factor,
                                 child: Container(
                                     decoration: (int.tryParse(e
                                                         .pahest[
@@ -793,7 +793,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                           children: [
                             for (int i = 0; i < 13; i++) ...[
                               Container(
-                                  width: (i == 12 ? 120 : sizeColWidth) * scale_factor,
+                                  width: (i == 12 ? 100 : sizeColWidth) * scale_factor,
                                   child: Container(
                                       padding: const EdgeInsets.all(5),
                                       decoration: headerDecor6,
@@ -810,7 +810,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
               if (prefs.roleWrite('2') && !widget.readOnly)
                 SizedBox(
                     width: 85 * scale_factor,
-                    height: 110,
+                    height: 115,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -922,6 +922,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                         if (widget.editRow == null) {
                                           widget.editRow = e;
                                         } else {
+                                          widget.model!.save(e);
                                           widget.editRow = null;
                                         }
                                       });

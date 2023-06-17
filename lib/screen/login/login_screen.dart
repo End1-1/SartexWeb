@@ -50,7 +50,7 @@ class _SartexLogin extends StatelessWidget {
                       height: 330,
                       child: Column(
                         children: [
-                          Image.asset('svg/logo.jpg'),
+                          Image.asset('svg/sartis.jpg', height: 100,),
                           state is SartexAppStateError
                               ? SizedBox(height: 50, child: Text(state.errorString))
                               : const SizedBox(height: 50),

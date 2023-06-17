@@ -21,7 +21,9 @@ List<Widget> textField(
       padding: EdgeInsets.only(left: 10 * scale_factor, right: 10 * scale_factor),
       child: SizedBox(
           width: w,
+          height: 30,
           child: TextFormField(
+
             decoration: text_form_field_decoration,
             onChanged: onChange,
             enabled: enabled,

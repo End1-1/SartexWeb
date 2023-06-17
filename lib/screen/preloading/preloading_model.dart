@@ -50,7 +50,7 @@ class PreloadingModel {
   final List<PreloadingFullItem> prReadyLines = [];
   String? docNumber;
 
-  Future<String> save() async {
+  Future<String> save(PreloadingItem? onlyItem) async {
     String err = '';
     if (editDate.text.isEmpty) {
       err += '${L.tr('Date is not selected')}\r\n';
@@ -78,6 +78,11 @@ class PreloadingModel {
     }
     for (var pr in prReadyLines) {
       for (var item in pr.items) {
+        if (onlyItem != null) {
+          if (onlyItem != item) {
+            continue;
+          }
+        }
         for (int i = 0; i < 12; i++) {
           int qty = int.tryParse(item.newvalues[i].text) ?? 0;
 
@@ -86,6 +91,9 @@ class PreloadingModel {
             continue;
           }
           if (item.preSize!.prodIdOf(i).isNotEmpty) {
+            if (onlyItem == null) {
+              continue;
+            }
             await HttpSqlQuery.post({'sl' : "update Docs set qanak=$qty where id=${item.preSize!.prodIdOf(i)}"});
             continue;
           }

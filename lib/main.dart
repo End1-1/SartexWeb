@@ -87,9 +87,14 @@ class MyApp extends StatelessWidget {
       scale_factor = scale_1366;
     }
     return MaterialApp(
-        // theme: ThemeData(
-        //   fontFamily: 'Sylfaen'
-        // ),
+         theme: ThemeData(
+           fontFamily: 'Sylfaen',
+           textTheme: const TextTheme (
+             bodyLarge: TextStyle(fontSize: 12, color: Colors.black),
+             bodySmall: TextStyle(fontSize: 12, color: Colors.black),
+             bodyMedium: TextStyle(fontSize: 12, color: Colors.black),
+           )
+         ),
         onGenerateRoute: (settings) {
           if (settings.name == route_thashiv) {
             return MaterialPageRoute(

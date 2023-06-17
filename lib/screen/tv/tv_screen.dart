@@ -47,7 +47,7 @@ class TVScreen extends StatelessWidget {
   late final TextStyle _textHeader1 ;
   final _textHeader2 = const TextStyle(
       color: Colors.black87,
-      fontSize: 24,
+      fontSize: 22,
       height: 1.5,
       fontFamily: 'Agency FB');
   final _textHeader3 = const TextStyle(
@@ -212,7 +212,7 @@ class TVScreen extends StatelessWidget {
         Expanded(child: Container()),
         Container(
             height: 60,
-            width: cw[11] + cw[12] + cw[13],
+            width: cw[11] + cw[12] + cw[13] ,
             padding: _standartPadding,
             decoration: const BoxDecoration(color: Color(0xffffffff)),
             child: Text(DateFormat('MMMM').format(DateTime.now()),

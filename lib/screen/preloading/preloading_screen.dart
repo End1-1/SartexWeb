@@ -1,7 +1,9 @@
-import 'package:excel/excel.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:sartex/data/data_sizes.dart';
 import 'package:sartex/screen/preloading/preloading_bloc.dart';
 import 'package:sartex/screen/preloading/preloading_functions.dart';
 import 'package:sartex/screen/preloading/preloading_item.dart';
@@ -14,13 +16,13 @@ import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/edit_widget.dart';
 import 'package:sartex/widgets/form_field.dart';
 import 'package:sartex/widgets/svg_button.dart';
-import 'dart:html' as html;
 
 class PreloadingScreen extends EditWidget {
   final PreloadingModel model = PreloadingModel();
   late final PreloadingFunction functions;
   int? loaded;
   var saving = false;
+  final saveController = StreamController<bool?>();
 
   PreloadingScreen({super.key, required String docNum, this.loaded}) {
     model.docNumber = docNum;
@@ -90,7 +92,14 @@ class PreloadingScreen extends EditWidget {
                     },
                     assetPath: 'svg/cancel.svg'),
                 if (prefs.roleWrite('2') && loaded == null)
-                  SvgButton(
+                  StreamBuilder<bool?>(
+                    stream: saveController.stream,
+                      builder: (context, snapshot) {
+
+                    if (snapshot.data ?? false) {
+                      return const SizedBox(width: 36, height: 36, child: CircularProgressIndicator(),);
+                    }
+                  return SvgButton(
                       darkMode: false,
                       onTap: () {
                         if (saving) {
@@ -98,7 +107,8 @@ class PreloadingScreen extends EditWidget {
                         }
                         appDialogYesNo(context, L.tr('Save document?'), () {
                           saving = true;
-                          model.save().then((value) {
+                          saveController.add(true);
+                          model.save(null).then((value) {
                             if (value.isNotEmpty) {
                               appDialog(context, value);
                               return;
@@ -107,7 +117,7 @@ class PreloadingScreen extends EditWidget {
                           });
                         }, () {});
                       },
-                      assetPath: 'svg/save.svg'),
+                      assetPath: 'svg/save.svg');}),
                 SvgButton(
                   onTap: () {
                     functions.exportToExcel(context);

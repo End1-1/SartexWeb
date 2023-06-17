@@ -29,8 +29,11 @@ abstract class App extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
+
           child: Stack(alignment: Alignment.topLeft, children: [
-        Column(children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
           Container(
               margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               height: 40,
@@ -70,7 +73,7 @@ abstract class App extends StatelessWidget {
               )),
           Expanded(
               child: Container(
-                  margin: const EdgeInsets.fromLTRB(60, 0, 0, 0),
+                  margin: EdgeInsets.fromLTRB(60 * scale_factor, 0, 0, 0),
                   child: body(context))),
         ]),
         LeftMenu(),

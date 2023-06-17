@@ -40,11 +40,14 @@ abstract class AppGridScreen extends App {
               headerColor: const Color(0xff00ab7c),
                 rowHoverColor: Colors.yellow,
                 rowHoverTextStyle: const TextStyle(
-                  color: Colors.red,
-                  fontSize: 14,
+                  color: Colors.indigo,
+                  fontSize: 12,
                 )),
             child: SfDataGrid(
               key: gridKey,
+                onQueryRowHeight: (details) {
+                  return 30.0;
+                },
                 tableSummaryRows: (model!.datasource as SartexDataGridSource).sumRows,
                 allowColumnsResizing: true,
                 allowFiltering: true,

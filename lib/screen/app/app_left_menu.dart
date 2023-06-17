@@ -44,17 +44,19 @@ class _LeftMenu extends State<LeftMenu> {
                       assetPath: 'svg/dashboard.svg'),
                   Expanded(
                       child: TextMouseButton(
-                          onTap: () {}, caption: L.tr('Dashboard')))
+                          onTap: () {
+                            Navigator.pushNamed(context, route_dashboard);
+                          }, caption: L.tr('Dashboard')))
                 ],
               ),
-              Row(
-                children: [
-                  SvgButton(onTap: () {}, assetPath: 'svg/management.svg'),
-                  Expanded(
-                      child: TextMouseButton(
-                          onTap: () {}, caption: L.tr('Management')))
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     SvgButton(onTap: () {}, assetPath: 'svg/management.svg'),
+              //     Expanded(
+              //         child: TextMouseButton(
+              //             onTap: () {}, caption: L.tr('Management')))
+              //   ],
+              // ),
               if (prefs.roleRead("4"))
                 Row(
                   children: [

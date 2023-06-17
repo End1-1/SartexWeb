@@ -89,7 +89,7 @@ const bg_table_gradient = RadialGradient(
 );
 
 const text_form_field_decoration = InputDecoration(
-    contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+    contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
     border: OutlineInputBorder(
         borderSide: BorderSide(color: color_textbox_border)));
 const table_header_boxdecoration = BoxDecoration(

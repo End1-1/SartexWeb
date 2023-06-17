@@ -24,6 +24,7 @@ class PlanAndProductionScreen extends App {
             buildWhen: (previouse, current) => current is PSRefresh,
             builder: (context, state) {
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   PlanScreen(),
                   const SizedBox(width: 10),

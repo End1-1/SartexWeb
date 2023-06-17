@@ -64,7 +64,7 @@ class PlanRowEdit {
             (int.tryParse(editTh.text) ?? 0) +
             (int.tryParse(editFr.text) ?? 0) +
             (int.tryParse(editSu.text) ?? 0) +
-            (int.tryParse(editSu.text) ?? 0))
+            (int.tryParse(editSa.text) ?? 0))
         .toString();
   }
 }
@@ -121,7 +121,8 @@ class PlanModel {
     String id = await getPlanIdForDate(dateOfWeekDay(1), e.line, e.editModel.text, e.editBrand.text);
     int qty = int.tryParse(e.editMo.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(1))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', "
+          "'${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(1))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
     } else {
       await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
     }
@@ -129,7 +130,8 @@ class PlanModel {
     id = await getPlanIdForDate(dateOfWeekDay(2),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editTo.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date,brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(2))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date,brand, model, plan) values ('${prefs.getString(key_user_branch)}', "
+          "'${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(2))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
     } else {
       await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
     }
@@ -178,7 +180,12 @@ class PlanModel {
   Future<void> open() async {
     var l = await HttpSqlQuery.post({
       'sl':
-          "select pd.brand, pd.model, pr.line, sum(pr.RestQanak) as RestQanak from Production pr left join Apranq a on pr.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pd.branch='${prefs.getString(key_user_branch)}'  group by 1, 2, 3 having sum(pr.RestQanak)>0"
+          "select pd.brand, pd.model, pr.line, sum(pr.RestQanak) as RestQanak "
+              "from Production pr "
+              "left join Apranq a on pr.apr_id=a.apr_id "
+              "left join patver_data pd on pd.id=a.pid "
+              "where pd.branch='${prefs.getString(key_user_branch)}'  "
+              "group by 1, 2, 3 having sum(pr.RestQanak)>0"
     });
     for (var e in linesData.values) {
       e.clear();

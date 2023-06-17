@@ -27,6 +27,7 @@ class PHEditRecord with _$PHEditRecord {
     country,
     variant_prod,
     Colore,
+    size,
     qanak,
     real_status,
   }) = _PHEditRecord;
@@ -45,6 +46,7 @@ class _DataSource extends SartexDataGridSource {
     addColumn(L.tr('Country'));
     addColumn(L.tr('Variant'));
     addColumn(L.tr('Color'));
+    addColumn(L.tr('Size'));
     addColumn(L.tr('Status'));
     addColumn(L.tr('Quantity'));
   }
@@ -65,6 +67,7 @@ class _DataSource extends SartexDataGridSource {
           DataGridCell(columnName: columnNames[i++], value: e.country),
           DataGridCell(columnName: columnNames[i++], value: e.variant_prod),
           DataGridCell(columnName: columnNames[i++], value: e.Colore),
+          DataGridCell(columnName: columnNames[i++], value: e.size),
           DataGridCell(columnName: columnNames[i++], value: e.real_status),
           DataGridCell(columnName: columnNames[i++], value: double.tryParse(e.qanak ?? '0') ?? 0),
         ]);
@@ -82,7 +85,7 @@ class ProductionHistoryEditWidget extends EditWidget {
   ProductionHistoryEditWidget(this.apr_id) {
     query =
         "select h.date, h.time, concat_ws(' ', u.lastName, u.firstName) as user, h.location, pd.brand, pd.Model, "
-        "pd.country, pd.variant_prod, pd.Colore, h.qanak, h.real_status "
+        "pd.country, pd.variant_prod, pd.Colore, a.size, h.qanak, h.real_status "
         "from History h "
         "left join Apranq a on a.apr_id=h.apr_id "
         "left join patver_data pd on pd.id=a.pid "
@@ -123,6 +126,9 @@ class ProductionHistoryEditWidget extends EditWidget {
                   ],
                 ),
                 Expanded(child: SfDataGrid(
+                  onQueryRowHeight: (details) {
+                    return 30.0;
+                  },
                   source: da,
                   columns: da.columns,
                   allowColumnsResizing: true,

@@ -18,8 +18,8 @@ class PlanScreen extends StatelessWidget {
         decoration: const BoxDecoration(
             border:
                 Border.fromBorderSide(BorderSide(color: Color(0xffaabbff)))),
-        margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-        height: MediaQuery.of(context).size.height * 0.54,
+        margin: const EdgeInsets.fromLTRB(0, 0, 10, 10),
+        height: MediaQuery.of(context).size.height * 0.51,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -103,14 +103,14 @@ class PlanScreen extends StatelessWidget {
                 decoration: decor,
                 child: Row(children: [
                   Container(
-                      height: 60,
+                      height: 60 * scale_factor,
                       width: 50,
                       child: Align(
                           alignment: Alignment.center,
                           child: Text(L.tr('Ln.'), style: ts))),
                   Container(
                       decoration: decor,
-                      height: 60,
+                      height: 60 * scale_factor,
                       width: 50,
                       child: Align(
                           alignment: Alignment.center,
@@ -122,14 +122,14 @@ class PlanScreen extends StatelessWidget {
                           return Row(children: [
                             Container(
                                 decoration: decor,
-                                height: 30,
+                                height: 30 * scale_factor,
                                 width: 200,
                                 child: Align(
                                     alignment: Alignment.center,
                                     child: Text(L.tr('Plan'), style: ts))),
                             Container(
                                 decoration: decor,
-                                height: 30,
+                                height: 30 * scale_factor,
                                 width: 100,
                                 child: Align(
                                     alignment: Alignment.center,
@@ -137,7 +137,7 @@ class PlanScreen extends StatelessWidget {
                                         Text(model.dayOfRange(1), style: ts))),
                             Container(
                                 decoration: decor,
-                                height: 30,
+                                height: 30 * scale_factor,
                                 width: 100,
                                 child: Align(
                                     alignment: Alignment.center,
@@ -145,7 +145,7 @@ class PlanScreen extends StatelessWidget {
                                         Text(model.dayOfRange(2), style: ts))),
                             Container(
                                 decoration: decor,
-                                height: 30,
+                                height: 30 * scale_factor,
                                 width: 100,
                                 child: Align(
                                     alignment: Alignment.center,
@@ -153,7 +153,7 @@ class PlanScreen extends StatelessWidget {
                                         Text(model.dayOfRange(3), style: ts))),
                             Container(
                                 decoration: decor,
-                                height: 30,
+                                height: 30 * scale_factor,
                                 width: 100,
                                 child: Align(
                                     alignment: Alignment.center,
@@ -161,7 +161,7 @@ class PlanScreen extends StatelessWidget {
                                         Text(model.dayOfRange(4), style: ts))),
                             Container(
                                 decoration: decor,
-                                height: 30,
+                                height: 30 * scale_factor,
                                 width: 100,
                                 child: Align(
                                     alignment: Alignment.center,
@@ -169,7 +169,7 @@ class PlanScreen extends StatelessWidget {
                                         Text(model.dayOfRange(5), style: ts))),
                             Container(
                                 decoration: decor,
-                                height: 30,
+                                height: 30 * scale_factor,
                                 width: 100,
                                 child: Align(
                                     alignment: Alignment.center,
@@ -177,7 +177,7 @@ class PlanScreen extends StatelessWidget {
                                         Text(model.dayOfRange(6), style: ts))),
                             Container(
                                 decoration: decor,
-                                height: 30,
+                                height: 30 * scale_factor,
                                 width: 100,
                                 child: Align(
                                     alignment: Alignment.center,
@@ -188,63 +188,63 @@ class PlanScreen extends StatelessWidget {
                     Row(children: [
                       Container(
                           decoration: decor,
-                          height: 30,
+                          height: 30 * scale_factor,
                           width: 100,
                           child: Align(
                               alignment: Alignment.center,
                               child: Text(L.tr('Brand'), style: ts))),
                       Container(
                           decoration: decor,
-                          height: 30,
+                          height: 30 * scale_factor,
                           width: 100,
                           child: Align(
                               alignment: Alignment.center,
                               child: Text(L.tr('Model'), style: ts))),
                       Container(
                           decoration: decor,
-                          height: 30,
+                          height: 30 * scale_factor,
                           width: 100,
                           child: Align(
                               alignment: Alignment.center,
                               child: Text(L.tr('Mo'), style: ts))),
                       Container(
                           decoration: decor,
-                          height: 30,
+                          height: 30 * scale_factor,
                           width: 100,
                           child: Align(
                               alignment: Alignment.center,
                               child: Text(L.tr('To'), style: ts))),
                       Container(
                           decoration: decor,
-                          height: 30,
+                          height: 30 * scale_factor,
                           width: 100,
                           child: Align(
                               alignment: Alignment.center,
                               child: Text(L.tr('We'), style: ts))),
                       Container(
                           decoration: decor,
-                          height: 30,
+                          height: 30 * scale_factor,
                           width: 100,
                           child: Align(
                               alignment: Alignment.center,
                               child: Text(L.tr('Th'), style: ts))),
                       Container(
                           decoration: decor,
-                          height: 30,
+                          height: 30 * scale_factor,
                           width: 100,
                           child: Align(
                               alignment: Alignment.center,
                               child: Text(L.tr('Fr'), style: ts))),
                       Container(
                           decoration: decor,
-                          height: 30,
+                          height: 30 * scale_factor,
                           width: 100,
                           child: Align(
                               alignment: Alignment.center,
                               child: Text(L.tr('Sa'), style: ts))),
                       Container(
                           decoration: decor,
-                          height: 30,
+                          height: 30 * scale_factor,
                           width: 100,
                           child: Align(
                               alignment: Alignment.center,
@@ -253,14 +253,14 @@ class PlanScreen extends StatelessWidget {
                   ]),
                   Container(
                       decoration: decor,
-                      height: 60,
+                      height: 60 * scale_factor,
                       width: 100,
                       child: Align(
                           alignment: Alignment.center,
                           child: Text(L.tr('Tot.'), style: ts))),
                   Container(
                       decoration: decor,
-                      height: 60,
+                      height: 60 * scale_factor,
                       width: 50,
                       child: Align(
                           alignment: Alignment.center,
@@ -272,7 +272,7 @@ class PlanScreen extends StatelessWidget {
   }
 
   Widget lines(BuildContext context) {
-    double rowHeight = 55;
+    double rowHeight = 45 * scale_factor;
     const decor1 = BoxDecoration(
         color: Color(0xffffffff),
         border: Border.fromBorderSide(BorderSide(color: Color(0xffcbcbcb))));
@@ -281,7 +281,8 @@ class PlanScreen extends StatelessWidget {
         border: Border.fromBorderSide(BorderSide(color: Color(0xffcbcbcb))));
     const ts = TextStyle(fontSize: 14);
     const inputDecor1 = InputDecoration(
-        contentPadding: EdgeInsets.all(4), border: InputBorder.none);
+
+        contentPadding: EdgeInsets.fromLTRB(5, 0, 5, 0), border: InputBorder.none);
     const inputDecor2 = InputDecoration(
         contentPadding: EdgeInsets.all(4), border: InputBorder.none);
     return SingleChildScrollView(
@@ -297,6 +298,7 @@ class PlanScreen extends StatelessWidget {
                           children: [
                             //LINE
                             Container(
+                              alignment: Alignment.center,
                                 decoration: decor1,
                                 padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                                 height: rowHeight *
@@ -317,6 +319,7 @@ class PlanScreen extends StatelessWidget {
                             //REMAIN
                             Expanded(
                                 child: Container(
+                                  alignment: Alignment.center,
                               //decoration: decor1,
                               height: rowHeight *
                                   (model.linesData[model.lines[i]]!.isEmpty
@@ -368,6 +371,7 @@ class PlanScreen extends StatelessWidget {
                                             BlocBuilder<PPBloc, PPState>(
                                                 builder: (context, state) {
                                               return Container(
+                                                alignment: Alignment.center,
                                                   decoration: e.editMode
                                                       ? decor2
                                                       : decor1,
@@ -375,6 +379,7 @@ class PlanScreen extends StatelessWidget {
                                                   height: rowHeight,
                                                   child: TextFormField(
                                                     readOnly: !e.editMode,
+                                                    textAlign: TextAlign.center,
                                                     decoration: inputDecor1,
                                                     style: ts,
                                                     controller: e.days[d],

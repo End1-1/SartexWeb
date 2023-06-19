@@ -268,9 +268,13 @@ class ProductionItem {
     }
     List<dynamic> l = await HttpSqlQuery.post({
       "sl": "select pd.size_standart, pd.id from Apranq a "
-          "left join patver_data pd on pd.id=a.pid where pd.status='inProgress' "
+          "left join patver_data pd on pd.id=a.pid "
+          "left join Production pr on pr.apr_id=a.apr_id "
+          "where pd.status='inProgress' "
           "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country' "
           "and Colore='$color' and variant_prod='$variant' and pd.branch='${prefs.getString(key_user_branch)}' "
+          "group by pd.id "
+          "having sum(a.patver-coalesce(pr.LineQanak, 0))>0 "
     });
     String sizeStandart = '';
     String pid = '';

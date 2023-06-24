@@ -158,6 +158,7 @@ class _LoginPinScreen extends State<LoginPinScreen> {
       'sl': 'select * from Users where password=\'${pinController.text}\''
     };
 
+    errorString = '';
     List<dynamic> userData = await HttpSqlQuery.post(map);
     if (userData.isEmpty) {
       errorString += '${L.tr('Invalid username or password')}\n';

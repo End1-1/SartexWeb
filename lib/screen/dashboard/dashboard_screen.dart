@@ -416,6 +416,9 @@ class Dashboard extends App {
 
   @override
   Widget body(BuildContext context) {
+    if (MediaQuery.of(context).size.width <= 1366) {
+      scale_factor = scale_1366;
+    }
     return BlocProvider(
         create: (_) => HttpBloc()
           ..add(HttpBlocEventGet(

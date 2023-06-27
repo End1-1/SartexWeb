@@ -83,9 +83,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (MediaQuery.of(context).size.width <= 1366) {
-      scale_factor = scale_1366;
-    }
     return MaterialApp(
          theme: ThemeData(
            fontFamily: 'Sylfaen',

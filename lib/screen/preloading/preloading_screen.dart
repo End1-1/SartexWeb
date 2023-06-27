@@ -80,7 +80,7 @@ class PreloadingScreen extends EditWidget {
                     }),
                 textFieldColumn(
                     context: context,
-                    title: 'Track',
+                    title: 'Truck',
                     textEditingController: model.editTruck),
                 Expanded(child: Container()),
                 SvgButton(

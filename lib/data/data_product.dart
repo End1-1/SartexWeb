@@ -137,7 +137,7 @@ class ProductEditWidget extends EditWidget {
             _editModelCode.text = product.modelCode ?? '';
             _editSizeStandart.text = product.size_standart ?? '';
             _editPackaging.text = product.Packaging ?? '';
-            _editProductsTypeCode.text = product.ProductsTypeCode ?? '';
+            _editProductsTypeCode.text = productTypeCode[ product.ProductsTypeCode] ?? '';
             _editNetto.text = product.Netto ?? '';
             _editBrutto.text = product.Brutto ?? '';
             productTypeController.add(null);

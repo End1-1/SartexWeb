@@ -33,7 +33,7 @@ class _LineDropdownButton extends State<LineDropdownButton> {
         style: TextStyle(
             color: Colors.black, fontSize: 18 * scale_factor, fontWeight: FontWeight.bold),
         value: widget.model.prLine.prLine,
-        items: widget.model.lines.map((s) {
+        items: PreloadingModel.lines.map((s) {
           return DropdownMenuItem<String>(
               value: s,
               child: Text(

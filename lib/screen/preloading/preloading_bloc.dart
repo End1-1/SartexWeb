@@ -4,6 +4,7 @@ import 'package:sartex/screen/preloading/preloading_item.dart';
 import 'package:sartex/screen/preloading/preloading_model.dart';
 import 'package:sartex/screen/preloading/preloading_size.dart';
 import 'package:sartex/utils/http_sql.dart';
+import 'package:sartex/utils/prefs.dart';
 
 part 'preloading_bloc.freezed.dart';
 
@@ -87,6 +88,14 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
 
   Future<void> _openDoc(String? docnum) async {
     emit(PreloadingStateInProgress());
+
+    List<dynamic> lines = await HttpSqlQuery.post({"sl": "select short_name from department where type='Հոսքագիծ' and branch='${prefs.branch()}' "});
+    PreloadingModel.lines.clear();
+    PreloadingModel.lines.add('');
+    PreloadingModel.lines.addAll(lines.map((e) => e['short_name']));
+    print(lines);
+
+
     Map<String, String> header = {};
     List<PreloadingFullItem> items = [];
     if (docnum == null || docnum.isEmpty) {

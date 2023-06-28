@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -34,16 +36,16 @@ class TVScreen extends StatelessWidget {
     100,
     100,
     100,
-    100
+    110
   ];
   List<double> cw = [];
   final _model = TVModel();
-  final double rowHeight = 80;
-  final double headerHeight = 80;
+  final double rowHeight = 70;
+  final double headerHeight = 50;
   static const _color0 = Color(0xFF0035FF);
   static const _color1 = Color(0xff6bc26a);
   static const _color2 = Color(0xff565656);
-  final _standartPadding = const EdgeInsets.all(10);
+  final _standartPadding = const EdgeInsets.all(5);
   late final TextStyle _textHeader1 ;
   final _textHeader2 = const TextStyle(
       color: Colors.black87,
@@ -192,27 +194,20 @@ class TVScreen extends StatelessWidget {
           prefs.setInt(key_tv_page_count, 12);
           _model.setPageNumber(1);
         }, child: Text('12')),
-        Container(
-            height: 60,
-            width: cw[0] +
-                cw[1] +
-                cw[2] +
-                cw[3] +
-                cw[4] +
-                cw[5] +
-                cw[6] +
-                cw[7] +
-                cw[8] +
-                cw[9] +
-                cw[10],
+        Container(width: 10),
+        OutlinedButton(onPressed: (){
+          document.documentElement?.requestFullscreen();
+        }, child: Text('Fullscreen')),
+        Expanded(child: Container(
+            height: 50,
             padding: _standartPadding,
             decoration: const BoxDecoration(color: Color(0xffffffff)),
             child: Text(DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                textAlign: TextAlign.center, style: _textHeader2)),
-        Expanded(child: Container()),
+                textAlign: TextAlign.center, style: _textHeader2))),
+        //Expanded(child: Container()),
         Container(
-            height: 60,
-            width: cw[11] + cw[12] + cw[13] ,
+            height: 50,
+            width: cw[11] + cw[12] + cw[13]  ,
             padding: _standartPadding,
             decoration: const BoxDecoration(color: Color(0xffffffff)),
             child: Text(DateFormat('MMMM').format(DateTime.now()),

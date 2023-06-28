@@ -110,6 +110,8 @@ class PreloadingScreen extends EditWidget {
                           saveController.add(true);
                           model.save(null).then((value) {
                             if (value.isNotEmpty) {
+                              saving = false;
+                              saveController.add(false);
                               appDialog(context, value);
                               return;
                             }

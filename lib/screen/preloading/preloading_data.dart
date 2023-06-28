@@ -150,8 +150,12 @@ class PreloadingData {
   Future<void> autoFillColorVariant(String brand, String model, String commesa, String country, String pahest) async {
     var value = await HttpSqlQuery.post({
       "sl":
-      "select pd.Colore, pd.variant_prod from Apranq a left join Mnacord m on m.apr_id=a.apr_id left join patver_data pd on pd.id=a.pid where pd.status='inProgress' and m.pahest='${pahest}' "
-      + "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country' "
+      "select pd.Colore, pd.variant_prod "
+          "from Apranq a "
+          "left join Mnacord m on m.apr_id=a.apr_id "
+          "left join patver_data pd on pd.id=a.pid "
+          "where pd.status='inProgress' and m.pahest='${pahest}' "
+          "and brand='$brand' and Model='$model' and PatverN='$commesa' and country='$country' "
     });
     if (value.length == 1) {
       colorLevel.clear();
@@ -165,15 +169,36 @@ class PreloadingData {
 
   Future<void> getSizes(
       String brand, String model, String commesa, String country, String color, PreloadingItem s, String pahest) async {
+
+    List<dynamic> notZero = await await HttpSqlQuery.post({
+      "sl":
+      "select pd.id, sum(a.pat_mnac) as pat_mnac "
+          "from Apranq a "
+          "left join Mnacord m on m.apr_id=a.apr_id  "
+          "left join patver_data pd on pd.id=a.pid "
+          "where pd.status='inProgress' "
+          "and brand='$brand' and Model='$model' and PatverN='$commesa' "
+          "and country='$country' and Colore='$color' and a.branch='${prefs.branch()}' "
+          "group by 1 "
+          "having sum(a.pat_mnac)>0 "
+    });
+    var noZeroPid = '';
+    if (notZero.isNotEmpty) {
+      noZeroPid = notZero[0]['id'];
+    }
+    if (noZeroPid.isEmpty) {
+      return;
+    }
+
     List<dynamic> l = await HttpSqlQuery.post({
       "sl":
       "select pd.size_standart, pd.id "
           "from Apranq a "
           "left join Mnacord m on m.apr_id=a.apr_id  "
           "left join patver_data pd on pd.id=a.pid "
-          "where pd.status='inProgress' " +
+          "where pd.status='inProgress' and pd.id='$noZeroPid' "
           "and brand='$brand' and Model='$model' and PatverN='$commesa' "
-              "and country='$country' and Colore='$color' and a.branch='${prefs.branch()}' "
+          "and country='$country' and Colore='$color' and a.branch='${prefs.branch()}' "
     });
     if (l.isNotEmpty) {
       Map<String, dynamic> m = l[0];

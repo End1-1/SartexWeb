@@ -6,8 +6,8 @@ import 'package:sartex/screen/popup_values_screen.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-//const server_http_address = 'https://app.sartex.am/mix/mservice.php';
-const server_http_address = 'https://app.sartex.am/mix/porz.php';
+const server_http_address = 'https://app.sartex.am/mix/mservice.php';
+//const server_http_address = 'https://app.sartex.am/mix/porz.php';
 final server_uri = Uri.parse(server_http_address);
 
 const scale_1366 = 0.8;

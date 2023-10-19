@@ -6,7 +6,8 @@ part of 'data_partner.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Partner _$$_PartnerFromJson(Map<String, dynamic> json) => _$_Partner(
+_$PartnerImpl _$$PartnerImplFromJson(Map<String, dynamic> json) =>
+    _$PartnerImpl(
       id: json['id'] as String,
       branch: json['branch'] as String,
       country: json['country'] as String,
@@ -14,7 +15,7 @@ _$_Partner _$$_PartnerFromJson(Map<String, dynamic> json) => _$_Partner(
       type: json['type'] as String,
     );
 
-Map<String, dynamic> _$$_PartnerToJson(_$_Partner instance) =>
+Map<String, dynamic> _$$PartnerImplToJson(_$PartnerImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'branch': instance.branch,
@@ -23,14 +24,14 @@ Map<String, dynamic> _$$_PartnerToJson(_$_Partner instance) =>
       'type': instance.type,
     };
 
-_$_PartnerList _$$_PartnerListFromJson(Map<String, dynamic> json) =>
-    _$_PartnerList(
+_$PartnerListImpl _$$PartnerListImplFromJson(Map<String, dynamic> json) =>
+    _$PartnerListImpl(
       partners: (json['partners'] as List<dynamic>)
           .map((e) => Partner.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$_PartnerListToJson(_$_PartnerList instance) =>
+Map<String, dynamic> _$$PartnerListImplToJson(_$PartnerListImpl instance) =>
     <String, dynamic>{
       'partners': instance.partners,
     };

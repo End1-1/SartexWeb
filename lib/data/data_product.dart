@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sartex/data/sartex_datagridsource.dart';
 import 'package:sartex/data/sql.dart';
@@ -9,14 +8,12 @@ import 'package:sartex/utils/http_sql.dart';
 import 'package:sartex/utils/translator.dart';
 import 'package:sartex/widgets/edit_widget.dart';
 import 'package:sartex/widgets/form_field.dart';
-import 'package:sartex/widgets/key_value_dropdown.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../utils/consts.dart';
 import '../utils/prefs.dart';
 
 part 'data_product.freezed.dart';
-
 part 'data_product.g.dart';
 
 @freezed

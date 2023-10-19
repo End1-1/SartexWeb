@@ -43,7 +43,7 @@ class DataDepartmentList with _$DataDepartmentList {
 class DepartmentDataSource extends SartexDataGridSource {
   DepartmentDataSource() {
     addColumn(L.tr('Id'));
-    addColumn(L.tr('Branc'));
+    addColumn(L.tr('Branch'));
     addColumn(L.tr('Department'));
     addColumn(L.tr('Responsible'));
     addColumn(L.tr('Short name'));
@@ -89,15 +89,13 @@ class DepartmentEditWidget extends EditWidget {
   final TextEditingController _tecShortName = TextEditingController();
   final TextEditingController _tecType = TextEditingController();
 
-
-
   DepartmentEditWidget({super.key, required String id}) {
     HttpSqlQuery.listDistinctOf('department', 'type').then((value) {
       typeList = value;
       if (id.isNotEmpty) {
         HttpSqlQuery.post({
           'sl':
-          "select id,branch,department,patasxanatu,short_name, type from department where id=${id}"
+              "select id,branch,department,patasxanatu,short_name, type from department where id=${id}"
         }).then((value) {
           dep = DataDepartment.fromJson(value[0]);
           _tecBranch.text = dep.branch;
@@ -112,7 +110,6 @@ class DepartmentEditWidget extends EditWidget {
         }
       }
     });
-
   }
 
   @override
@@ -132,14 +129,32 @@ class DepartmentEditWidget extends EditWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          textFieldColumn(context: context, title: L.tr('Branch'), textEditingController: _tecBranch, onTap: () {
-            valueOfList(context, branchList, _tecBranch);
-          }, list: branchList, enabled: prefs.roleSuperAdmin()),
-          textFieldColumn(context: context, title: L.tr('Department'), textEditingController: _tecDepartment),
-          textFieldColumn(context: context, title: L.tr('Responsible'), textEditingController: _tecPatasxanatu),
-          textFieldColumn(context: context, title: L.tr('Short name'), textEditingController: _tecShortName),
-          textFieldColumn(context: context, title: L.tr('Type'), textEditingController: _tecType,
-            list: typeList),
+          textFieldColumn(
+              context: context,
+              title: L.tr('Branch'),
+              textEditingController: _tecBranch,
+              onTap: () {
+                valueOfList(context, branchList, _tecBranch);
+              },
+              list: branchList,
+              enabled: prefs.roleSuperAdmin()),
+          textFieldColumn(
+              context: context,
+              title: L.tr('Department'),
+              textEditingController: _tecDepartment),
+          textFieldColumn(
+              context: context,
+              title: L.tr('Responsible'),
+              textEditingController: _tecPatasxanatu),
+          textFieldColumn(
+              context: context,
+              title: L.tr('Short name'),
+              textEditingController: _tecShortName),
+          textFieldColumn(
+              context: context,
+              title: L.tr('Type'),
+              textEditingController: _tecType,
+              list: typeList),
           saveWidget(context, dep)
         ]);
   }

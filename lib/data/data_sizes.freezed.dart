@@ -160,10 +160,11 @@ class _$DataSizeCopyWithImpl<$Res, $Val extends DataSize>
 }
 
 /// @nodoc
-abstract class _$$_DataSizeCopyWith<$Res> implements $DataSizeCopyWith<$Res> {
-  factory _$$_DataSizeCopyWith(
-          _$_DataSize value, $Res Function(_$_DataSize) then) =
-      __$$_DataSizeCopyWithImpl<$Res>;
+abstract class _$$DataSizeImplCopyWith<$Res>
+    implements $DataSizeCopyWith<$Res> {
+  factory _$$DataSizeImplCopyWith(
+          _$DataSizeImpl value, $Res Function(_$DataSizeImpl) then) =
+      __$$DataSizeImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -185,11 +186,11 @@ abstract class _$$_DataSizeCopyWith<$Res> implements $DataSizeCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_DataSizeCopyWithImpl<$Res>
-    extends _$DataSizeCopyWithImpl<$Res, _$_DataSize>
-    implements _$$_DataSizeCopyWith<$Res> {
-  __$$_DataSizeCopyWithImpl(
-      _$_DataSize _value, $Res Function(_$_DataSize) _then)
+class __$$DataSizeImplCopyWithImpl<$Res>
+    extends _$DataSizeCopyWithImpl<$Res, _$DataSizeImpl>
+    implements _$$DataSizeImplCopyWith<$Res> {
+  __$$DataSizeImplCopyWithImpl(
+      _$DataSizeImpl _value, $Res Function(_$DataSizeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -211,7 +212,7 @@ class __$$_DataSizeCopyWithImpl<$Res>
     Object? size11 = freezed,
     Object? size12 = freezed,
   }) {
-    return _then(_$_DataSize(
+    return _then(_$DataSizeImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -278,8 +279,8 @@ class __$$_DataSizeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DataSize extends _DataSize {
-  const _$_DataSize(
+class _$DataSizeImpl extends _DataSize {
+  const _$DataSizeImpl(
       {required this.id,
       required this.code,
       required this.name,
@@ -297,8 +298,8 @@ class _$_DataSize extends _DataSize {
       required this.size12})
       : super._();
 
-  factory _$_DataSize.fromJson(Map<String, dynamic> json) =>
-      _$$_DataSizeFromJson(json);
+  factory _$DataSizeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DataSizeImplFromJson(json);
 
   @override
   final String id;
@@ -340,7 +341,7 @@ class _$_DataSize extends _DataSize {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_DataSize &&
+            other is _$DataSizeImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.name, name) || other.name == name) &&
@@ -381,12 +382,12 @@ class _$_DataSize extends _DataSize {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_DataSizeCopyWith<_$_DataSize> get copyWith =>
-      __$$_DataSizeCopyWithImpl<_$_DataSize>(this, _$identity);
+  _$$DataSizeImplCopyWith<_$DataSizeImpl> get copyWith =>
+      __$$DataSizeImplCopyWithImpl<_$DataSizeImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DataSizeToJson(
+    return _$$DataSizeImplToJson(
       this,
     );
   }
@@ -408,10 +409,11 @@ abstract class _DataSize extends DataSize {
       required final String? size09,
       required final String? size10,
       required final String? size11,
-      required final String? size12}) = _$_DataSize;
+      required final String? size12}) = _$DataSizeImpl;
   const _DataSize._() : super._();
 
-  factory _DataSize.fromJson(Map<String, dynamic> json) = _$_DataSize.fromJson;
+  factory _DataSize.fromJson(Map<String, dynamic> json) =
+      _$DataSizeImpl.fromJson;
 
   @override
   String get id;
@@ -445,7 +447,7 @@ abstract class _DataSize extends DataSize {
   String? get size12;
   @override
   @JsonKey(ignore: true)
-  _$$_DataSizeCopyWith<_$_DataSize> get copyWith =>
+  _$$DataSizeImplCopyWith<_$DataSizeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -496,21 +498,22 @@ class _$SizeListCopyWithImpl<$Res, $Val extends SizeList>
 }
 
 /// @nodoc
-abstract class _$$_SizeListCopyWith<$Res> implements $SizeListCopyWith<$Res> {
-  factory _$$_SizeListCopyWith(
-          _$_SizeList value, $Res Function(_$_SizeList) then) =
-      __$$_SizeListCopyWithImpl<$Res>;
+abstract class _$$SizeListImplCopyWith<$Res>
+    implements $SizeListCopyWith<$Res> {
+  factory _$$SizeListImplCopyWith(
+          _$SizeListImpl value, $Res Function(_$SizeListImpl) then) =
+      __$$SizeListImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<DataSize> sizes});
 }
 
 /// @nodoc
-class __$$_SizeListCopyWithImpl<$Res>
-    extends _$SizeListCopyWithImpl<$Res, _$_SizeList>
-    implements _$$_SizeListCopyWith<$Res> {
-  __$$_SizeListCopyWithImpl(
-      _$_SizeList _value, $Res Function(_$_SizeList) _then)
+class __$$SizeListImplCopyWithImpl<$Res>
+    extends _$SizeListCopyWithImpl<$Res, _$SizeListImpl>
+    implements _$$SizeListImplCopyWith<$Res> {
+  __$$SizeListImplCopyWithImpl(
+      _$SizeListImpl _value, $Res Function(_$SizeListImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -518,7 +521,7 @@ class __$$_SizeListCopyWithImpl<$Res>
   $Res call({
     Object? sizes = null,
   }) {
-    return _then(_$_SizeList(
+    return _then(_$SizeListImpl(
       sizes: null == sizes
           ? _value._sizes
           : sizes // ignore: cast_nullable_to_non_nullable
@@ -529,11 +532,11 @@ class __$$_SizeListCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_SizeList implements _SizeList {
-  const _$_SizeList({required final List<DataSize> sizes}) : _sizes = sizes;
+class _$SizeListImpl implements _SizeList {
+  const _$SizeListImpl({required final List<DataSize> sizes}) : _sizes = sizes;
 
-  factory _$_SizeList.fromJson(Map<String, dynamic> json) =>
-      _$$_SizeListFromJson(json);
+  factory _$SizeListImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SizeListImplFromJson(json);
 
   final List<DataSize> _sizes;
   @override
@@ -552,7 +555,7 @@ class _$_SizeList implements _SizeList {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SizeList &&
+            other is _$SizeListImpl &&
             const DeepCollectionEquality().equals(other._sizes, _sizes));
   }
 
@@ -564,26 +567,28 @@ class _$_SizeList implements _SizeList {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SizeListCopyWith<_$_SizeList> get copyWith =>
-      __$$_SizeListCopyWithImpl<_$_SizeList>(this, _$identity);
+  _$$SizeListImplCopyWith<_$SizeListImpl> get copyWith =>
+      __$$SizeListImplCopyWithImpl<_$SizeListImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SizeListToJson(
+    return _$$SizeListImplToJson(
       this,
     );
   }
 }
 
 abstract class _SizeList implements SizeList {
-  const factory _SizeList({required final List<DataSize> sizes}) = _$_SizeList;
+  const factory _SizeList({required final List<DataSize> sizes}) =
+      _$SizeListImpl;
 
-  factory _SizeList.fromJson(Map<String, dynamic> json) = _$_SizeList.fromJson;
+  factory _SizeList.fromJson(Map<String, dynamic> json) =
+      _$SizeListImpl.fromJson;
 
   @override
   List<DataSize> get sizes;
   @override
   @JsonKey(ignore: true)
-  _$$_SizeListCopyWith<_$_SizeList> get copyWith =>
+  _$$SizeListImplCopyWith<_$SizeListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

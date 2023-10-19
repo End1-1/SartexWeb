@@ -189,15 +189,15 @@ class TVScreen extends StatelessWidget {
         OutlinedButton(onPressed: (){
           prefs.setInt(key_tv_page_count, 8);
           _model.setPageNumber(1);
-        }, child: Text('8')),
+        }, child: const Text('8')),
         OutlinedButton(onPressed: (){
           prefs.setInt(key_tv_page_count, 12);
           _model.setPageNumber(1);
-        }, child: Text('12')),
+        }, child: const Text('12')),
         Container(width: 10),
         OutlinedButton(onPressed: (){
           document.documentElement?.requestFullscreen();
-        }, child: Text('Fullscreen')),
+        }, child: const Text('Fullscreen')),
         Expanded(child: Container(
             height: 50,
             padding: _standartPadding,

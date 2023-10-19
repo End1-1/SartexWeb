@@ -3,6 +3,6 @@ import 'package:sartex/screen/departments/departments_model.dart';
 import 'package:sartex/utils/translator.dart';
 
 class DepartmentsScreen extends AppGridScreen {
-  DepartmentsScreen() : super(title: L.tr('Departments'), model: DepartmentsModel());
+  DepartmentsScreen({super.key}) : super(title: L.tr('Departments'), model: DepartmentsModel());
 
 }

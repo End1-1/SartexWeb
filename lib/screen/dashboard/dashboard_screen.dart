@@ -402,13 +402,13 @@ class Dashboard extends App {
   var ds2 = Datasource2();
   var ds4 = Datasource4();
   var ds5 = Datasource4();
-  final dateController = StreamController();
+  final dateController = StreamController.broadcast();
   final camionController = StreamController.broadcast();
   final stockController = StreamController.broadcast();
 
-  final monthController = StreamController();
-  final mtableSartex = StreamController();
-  final mtableItex = StreamController();
+  final monthController = StreamController.broadcast();
+  final mtableSartex = StreamController.broadcast();
+  final mtableItex = StreamController.broadcast();
 
   static const colwidth = 730.0;
 

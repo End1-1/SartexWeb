@@ -80,22 +80,22 @@ class _$ProductStatusCopyWithImpl<$Res, $Val extends ProductStatus>
 }
 
 /// @nodoc
-abstract class _$$_ProductStatusCopyWith<$Res>
+abstract class _$$ProductStatusImplCopyWith<$Res>
     implements $ProductStatusCopyWith<$Res> {
-  factory _$$_ProductStatusCopyWith(
-          _$_ProductStatus value, $Res Function(_$_ProductStatus) then) =
-      __$$_ProductStatusCopyWithImpl<$Res>;
+  factory _$$ProductStatusImplCopyWith(
+          _$ProductStatusImpl value, $Res Function(_$ProductStatusImpl) then) =
+      __$$ProductStatusImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String id, String branch, String checkStatus, String prod_status});
 }
 
 /// @nodoc
-class __$$_ProductStatusCopyWithImpl<$Res>
-    extends _$ProductStatusCopyWithImpl<$Res, _$_ProductStatus>
-    implements _$$_ProductStatusCopyWith<$Res> {
-  __$$_ProductStatusCopyWithImpl(
-      _$_ProductStatus _value, $Res Function(_$_ProductStatus) _then)
+class __$$ProductStatusImplCopyWithImpl<$Res>
+    extends _$ProductStatusCopyWithImpl<$Res, _$ProductStatusImpl>
+    implements _$$ProductStatusImplCopyWith<$Res> {
+  __$$ProductStatusImplCopyWithImpl(
+      _$ProductStatusImpl _value, $Res Function(_$ProductStatusImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -106,7 +106,7 @@ class __$$_ProductStatusCopyWithImpl<$Res>
     Object? checkStatus = null,
     Object? prod_status = null,
   }) {
-    return _then(_$_ProductStatus(
+    return _then(_$ProductStatusImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -129,15 +129,15 @@ class __$$_ProductStatusCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ProductStatus implements _ProductStatus {
-  const _$_ProductStatus(
+class _$ProductStatusImpl implements _ProductStatus {
+  const _$ProductStatusImpl(
       {required this.id,
       required this.branch,
       required this.checkStatus,
       required this.prod_status});
 
-  factory _$_ProductStatus.fromJson(Map<String, dynamic> json) =>
-      _$$_ProductStatusFromJson(json);
+  factory _$ProductStatusImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProductStatusImplFromJson(json);
 
   @override
   final String id;
@@ -157,7 +157,7 @@ class _$_ProductStatus implements _ProductStatus {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ProductStatus &&
+            other is _$ProductStatusImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.branch, branch) || other.branch == branch) &&
             (identical(other.checkStatus, checkStatus) ||
@@ -174,12 +174,12 @@ class _$_ProductStatus implements _ProductStatus {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ProductStatusCopyWith<_$_ProductStatus> get copyWith =>
-      __$$_ProductStatusCopyWithImpl<_$_ProductStatus>(this, _$identity);
+  _$$ProductStatusImplCopyWith<_$ProductStatusImpl> get copyWith =>
+      __$$ProductStatusImplCopyWithImpl<_$ProductStatusImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProductStatusToJson(
+    return _$$ProductStatusImplToJson(
       this,
     );
   }
@@ -190,10 +190,10 @@ abstract class _ProductStatus implements ProductStatus {
       {required final String id,
       required final String branch,
       required final String checkStatus,
-      required final String prod_status}) = _$_ProductStatus;
+      required final String prod_status}) = _$ProductStatusImpl;
 
   factory _ProductStatus.fromJson(Map<String, dynamic> json) =
-      _$_ProductStatus.fromJson;
+      _$ProductStatusImpl.fromJson;
 
   @override
   String get id;
@@ -205,7 +205,7 @@ abstract class _ProductStatus implements ProductStatus {
   String get prod_status;
   @override
   @JsonKey(ignore: true)
-  _$$_ProductStatusCopyWith<_$_ProductStatus> get copyWith =>
+  _$$ProductStatusImplCopyWith<_$ProductStatusImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -257,22 +257,22 @@ class _$ProductStatusListCopyWithImpl<$Res, $Val extends ProductStatusList>
 }
 
 /// @nodoc
-abstract class _$$_ProductStatusListCopyWith<$Res>
+abstract class _$$ProductStatusListImplCopyWith<$Res>
     implements $ProductStatusListCopyWith<$Res> {
-  factory _$$_ProductStatusListCopyWith(_$_ProductStatusList value,
-          $Res Function(_$_ProductStatusList) then) =
-      __$$_ProductStatusListCopyWithImpl<$Res>;
+  factory _$$ProductStatusListImplCopyWith(_$ProductStatusListImpl value,
+          $Res Function(_$ProductStatusListImpl) then) =
+      __$$ProductStatusListImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<ProductStatus> productStatuses});
 }
 
 /// @nodoc
-class __$$_ProductStatusListCopyWithImpl<$Res>
-    extends _$ProductStatusListCopyWithImpl<$Res, _$_ProductStatusList>
-    implements _$$_ProductStatusListCopyWith<$Res> {
-  __$$_ProductStatusListCopyWithImpl(
-      _$_ProductStatusList _value, $Res Function(_$_ProductStatusList) _then)
+class __$$ProductStatusListImplCopyWithImpl<$Res>
+    extends _$ProductStatusListCopyWithImpl<$Res, _$ProductStatusListImpl>
+    implements _$$ProductStatusListImplCopyWith<$Res> {
+  __$$ProductStatusListImplCopyWithImpl(_$ProductStatusListImpl _value,
+      $Res Function(_$ProductStatusListImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -280,7 +280,7 @@ class __$$_ProductStatusListCopyWithImpl<$Res>
   $Res call({
     Object? productStatuses = null,
   }) {
-    return _then(_$_ProductStatusList(
+    return _then(_$ProductStatusListImpl(
       productStatuses: null == productStatuses
           ? _value._productStatuses
           : productStatuses // ignore: cast_nullable_to_non_nullable
@@ -291,13 +291,13 @@ class __$$_ProductStatusListCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ProductStatusList implements _ProductStatusList {
-  const _$_ProductStatusList(
+class _$ProductStatusListImpl implements _ProductStatusList {
+  const _$ProductStatusListImpl(
       {required final List<ProductStatus> productStatuses})
       : _productStatuses = productStatuses;
 
-  factory _$_ProductStatusList.fromJson(Map<String, dynamic> json) =>
-      _$$_ProductStatusListFromJson(json);
+  factory _$ProductStatusListImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProductStatusListImplFromJson(json);
 
   final List<ProductStatus> _productStatuses;
   @override
@@ -316,7 +316,7 @@ class _$_ProductStatusList implements _ProductStatusList {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ProductStatusList &&
+            other is _$ProductStatusListImpl &&
             const DeepCollectionEquality()
                 .equals(other._productStatuses, _productStatuses));
   }
@@ -329,13 +329,13 @@ class _$_ProductStatusList implements _ProductStatusList {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ProductStatusListCopyWith<_$_ProductStatusList> get copyWith =>
-      __$$_ProductStatusListCopyWithImpl<_$_ProductStatusList>(
+  _$$ProductStatusListImplCopyWith<_$ProductStatusListImpl> get copyWith =>
+      __$$ProductStatusListImplCopyWithImpl<_$ProductStatusListImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProductStatusListToJson(
+    return _$$ProductStatusListImplToJson(
       this,
     );
   }
@@ -344,15 +344,15 @@ class _$_ProductStatusList implements _ProductStatusList {
 abstract class _ProductStatusList implements ProductStatusList {
   const factory _ProductStatusList(
           {required final List<ProductStatus> productStatuses}) =
-      _$_ProductStatusList;
+      _$ProductStatusListImpl;
 
   factory _ProductStatusList.fromJson(Map<String, dynamic> json) =
-      _$_ProductStatusList.fromJson;
+      _$ProductStatusListImpl.fromJson;
 
   @override
   List<ProductStatus> get productStatuses;
   @override
   @JsonKey(ignore: true)
-  _$$_ProductStatusListCopyWith<_$_ProductStatusList> get copyWith =>
+  _$$ProductStatusListImplCopyWith<_$ProductStatusListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -85,10 +85,10 @@ class _$PartnerCopyWithImpl<$Res, $Val extends Partner>
 }
 
 /// @nodoc
-abstract class _$$_PartnerCopyWith<$Res> implements $PartnerCopyWith<$Res> {
-  factory _$$_PartnerCopyWith(
-          _$_Partner value, $Res Function(_$_Partner) then) =
-      __$$_PartnerCopyWithImpl<$Res>;
+abstract class _$$PartnerImplCopyWith<$Res> implements $PartnerCopyWith<$Res> {
+  factory _$$PartnerImplCopyWith(
+          _$PartnerImpl value, $Res Function(_$PartnerImpl) then) =
+      __$$PartnerImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -96,10 +96,11 @@ abstract class _$$_PartnerCopyWith<$Res> implements $PartnerCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_PartnerCopyWithImpl<$Res>
-    extends _$PartnerCopyWithImpl<$Res, _$_Partner>
-    implements _$$_PartnerCopyWith<$Res> {
-  __$$_PartnerCopyWithImpl(_$_Partner _value, $Res Function(_$_Partner) _then)
+class __$$PartnerImplCopyWithImpl<$Res>
+    extends _$PartnerCopyWithImpl<$Res, _$PartnerImpl>
+    implements _$$PartnerImplCopyWith<$Res> {
+  __$$PartnerImplCopyWithImpl(
+      _$PartnerImpl _value, $Res Function(_$PartnerImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -111,7 +112,7 @@ class __$$_PartnerCopyWithImpl<$Res>
     Object? name = null,
     Object? type = null,
   }) {
-    return _then(_$_Partner(
+    return _then(_$PartnerImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -138,16 +139,16 @@ class __$$_PartnerCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Partner implements _Partner {
-  const _$_Partner(
+class _$PartnerImpl implements _Partner {
+  const _$PartnerImpl(
       {required this.id,
       required this.branch,
       required this.country,
       required this.name,
       required this.type});
 
-  factory _$_Partner.fromJson(Map<String, dynamic> json) =>
-      _$$_PartnerFromJson(json);
+  factory _$PartnerImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PartnerImplFromJson(json);
 
   @override
   final String id;
@@ -169,7 +170,7 @@ class _$_Partner implements _Partner {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Partner &&
+            other is _$PartnerImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.branch, branch) || other.branch == branch) &&
             (identical(other.country, country) || other.country == country) &&
@@ -184,12 +185,12 @@ class _$_Partner implements _Partner {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PartnerCopyWith<_$_Partner> get copyWith =>
-      __$$_PartnerCopyWithImpl<_$_Partner>(this, _$identity);
+  _$$PartnerImplCopyWith<_$PartnerImpl> get copyWith =>
+      __$$PartnerImplCopyWithImpl<_$PartnerImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PartnerToJson(
+    return _$$PartnerImplToJson(
       this,
     );
   }
@@ -201,9 +202,9 @@ abstract class _Partner implements Partner {
       required final String branch,
       required final String country,
       required final String name,
-      required final String type}) = _$_Partner;
+      required final String type}) = _$PartnerImpl;
 
-  factory _Partner.fromJson(Map<String, dynamic> json) = _$_Partner.fromJson;
+  factory _Partner.fromJson(Map<String, dynamic> json) = _$PartnerImpl.fromJson;
 
   @override
   String get id;
@@ -217,7 +218,7 @@ abstract class _Partner implements Partner {
   String get type;
   @override
   @JsonKey(ignore: true)
-  _$$_PartnerCopyWith<_$_Partner> get copyWith =>
+  _$$PartnerImplCopyWith<_$PartnerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -269,22 +270,22 @@ class _$PartnerListCopyWithImpl<$Res, $Val extends PartnerList>
 }
 
 /// @nodoc
-abstract class _$$_PartnerListCopyWith<$Res>
+abstract class _$$PartnerListImplCopyWith<$Res>
     implements $PartnerListCopyWith<$Res> {
-  factory _$$_PartnerListCopyWith(
-          _$_PartnerList value, $Res Function(_$_PartnerList) then) =
-      __$$_PartnerListCopyWithImpl<$Res>;
+  factory _$$PartnerListImplCopyWith(
+          _$PartnerListImpl value, $Res Function(_$PartnerListImpl) then) =
+      __$$PartnerListImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<Partner> partners});
 }
 
 /// @nodoc
-class __$$_PartnerListCopyWithImpl<$Res>
-    extends _$PartnerListCopyWithImpl<$Res, _$_PartnerList>
-    implements _$$_PartnerListCopyWith<$Res> {
-  __$$_PartnerListCopyWithImpl(
-      _$_PartnerList _value, $Res Function(_$_PartnerList) _then)
+class __$$PartnerListImplCopyWithImpl<$Res>
+    extends _$PartnerListCopyWithImpl<$Res, _$PartnerListImpl>
+    implements _$$PartnerListImplCopyWith<$Res> {
+  __$$PartnerListImplCopyWithImpl(
+      _$PartnerListImpl _value, $Res Function(_$PartnerListImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -292,7 +293,7 @@ class __$$_PartnerListCopyWithImpl<$Res>
   $Res call({
     Object? partners = null,
   }) {
-    return _then(_$_PartnerList(
+    return _then(_$PartnerListImpl(
       partners: null == partners
           ? _value._partners
           : partners // ignore: cast_nullable_to_non_nullable
@@ -303,12 +304,12 @@ class __$$_PartnerListCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_PartnerList implements _PartnerList {
-  const _$_PartnerList({required final List<Partner> partners})
+class _$PartnerListImpl implements _PartnerList {
+  const _$PartnerListImpl({required final List<Partner> partners})
       : _partners = partners;
 
-  factory _$_PartnerList.fromJson(Map<String, dynamic> json) =>
-      _$$_PartnerListFromJson(json);
+  factory _$PartnerListImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PartnerListImplFromJson(json);
 
   final List<Partner> _partners;
   @override
@@ -327,7 +328,7 @@ class _$_PartnerList implements _PartnerList {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PartnerList &&
+            other is _$PartnerListImpl &&
             const DeepCollectionEquality().equals(other._partners, _partners));
   }
 
@@ -339,12 +340,12 @@ class _$_PartnerList implements _PartnerList {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PartnerListCopyWith<_$_PartnerList> get copyWith =>
-      __$$_PartnerListCopyWithImpl<_$_PartnerList>(this, _$identity);
+  _$$PartnerListImplCopyWith<_$PartnerListImpl> get copyWith =>
+      __$$PartnerListImplCopyWithImpl<_$PartnerListImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PartnerListToJson(
+    return _$$PartnerListImplToJson(
       this,
     );
   }
@@ -352,15 +353,15 @@ class _$_PartnerList implements _PartnerList {
 
 abstract class _PartnerList implements PartnerList {
   const factory _PartnerList({required final List<Partner> partners}) =
-      _$_PartnerList;
+      _$PartnerListImpl;
 
   factory _PartnerList.fromJson(Map<String, dynamic> json) =
-      _$_PartnerList.fromJson;
+      _$PartnerListImpl.fromJson;
 
   @override
   List<Partner> get partners;
   @override
   @JsonKey(ignore: true)
-  _$$_PartnerListCopyWith<_$_PartnerList> get copyWith =>
+  _$$PartnerListImplCopyWith<_$PartnerListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -36,6 +36,8 @@ class PreloadingModel {
     'L14',
     'L15',
     'L16',
+    'L17',
+    'L18'
     'Alex'
   ];
   final TextEditingController editDate = TextEditingController();

@@ -47,7 +47,7 @@ class _LoginPinScreen extends State<LoginPinScreen> {
                 OutlinedButton(
                   style: OutlinedButton.styleFrom(
                       fixedSize: const Size(40, 40),
-                      side: BorderSide(color: Colors.black12)),
+                      side: const BorderSide(color: Colors.black12)),
                   onPressed: () {
                     pint('1');
                   },
@@ -144,7 +144,8 @@ class _LoginPinScreen extends State<LoginPinScreen> {
                   child: Text(L.tr('Login')),
                 ),
               ],
-            ))
+            )),
+
       ],
     )));
   }

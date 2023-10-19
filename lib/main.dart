@@ -9,6 +9,7 @@ import 'package:sartex/screen/departments/departments_screen.dart';
 import 'package:sartex/screen/language_editor/language_screen.dart';
 import 'package:sartex/screen/login/login_screen.dart';
 import 'package:sartex/screen/login_pin/login_pin_screen.dart';
+import 'package:sartex/screen/messages/screen.dart';
 import 'package:sartex/screen/partners/partners_screen.dart';
 import 'package:sartex/screen/patver_data/patver_data_screen.dart';
 import 'package:sartex/screen/plan_and_production/plan_and_production_screen.dart';
@@ -16,6 +17,7 @@ import 'package:sartex/screen/product_type_code/product_type_code_screen.dart';
 import 'package:sartex/screen/production_history/production_history_screen.dart';
 import 'package:sartex/screen/products/products_screen.dart';
 import 'package:sartex/screen/remains/remains_screen.dart';
+import 'package:sartex/screen/returning/screen.dart';
 import 'package:sartex/screen/sizes/sizes_screen.dart';
 import 'package:sartex/screen/store_docs/store_docs_sreen.dart';
 import 'package:sartex/screen/t_hashiv/thashiv_screen.dart';
@@ -31,6 +33,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'data/sql.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   prefs = await SharedPreferences.getInstance();
   prefs.resetRoles();
@@ -148,9 +151,11 @@ class MyApp extends StatelessWidget {
               create: (_) => AppBloc(GSIdle()), child: ProductionHistoryScreen()),
           route_product_type_code: (_) => BlocProvider(
               create: (_) => AppBloc(GSIdle()), child: ProductTypeCodeScreen()),
+          route_notice: (_) => BlocProvider(create: (_) => AppBloc(GSIdle()), child: MessagesScreen()),
           // route_thashiv: (_) => BlocProvider(
           //     create: (_) => AppBloc(GSIdle()), child: THashivScreen(ModalRoute.of(context)?.settings.arguments as String?)),
-          route_login_pin: (context) => LoginPinScreen()
+          route_login_pin: (context) => LoginPinScreen(),
+          route_returning: (_) => BlocProvider(create: (_) => AppBloc(GSIdle()), child: ReturningScreen())
         });
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:sartex/screen/production_history/production_history_screen.dart';
 import 'package:sartex/screen/store_docs/store_docs_sreen.dart';
@@ -230,6 +228,16 @@ class _LeftMenu extends State<LeftMenu> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: [
+                        TextMouseButton(
+                            onTap: () {
+                              Navigator.pushNamed(context, route_notice);
+                            },
+                            caption: L.tr('Notice')),
+                        TextMouseButton(
+                            onTap: () {
+                              Navigator.pushNamed(context, route_returning);
+                            },
+                            caption: L.tr('Returning')),
                         if (prefs.roleRead("6"))
                           TextMouseButton(
                               onTap: () {

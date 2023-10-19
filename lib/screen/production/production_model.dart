@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:html';
 
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -285,6 +284,9 @@ class ProductionItem {
     }
     l = await HttpSqlQuery.post(
         {'sl': "select * from Sizes where code='$sizeStandart'"});
+    if ( l[0].isEmpty) {
+      return;
+    }
     for (int i = 1; i < 13; i++) {
       sizes[i - 1].text = l[0]['size${i.toString().padLeft(2, '0')}'];
     }

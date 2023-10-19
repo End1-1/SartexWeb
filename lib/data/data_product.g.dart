@@ -6,7 +6,8 @@ part of 'data_product.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
+_$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
+    _$ProductImpl(
       id: json['id'] as String,
       branch: json['branch'] as String?,
       brand: json['brand'] as String?,
@@ -20,7 +21,7 @@ _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
       Brutto: json['Brutto'] as String?,
     );
 
-Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
+Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'branch': instance.branch,
@@ -35,14 +36,14 @@ Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
       'Brutto': instance.Brutto,
     };
 
-_$_ProductList _$$_ProductListFromJson(Map<String, dynamic> json) =>
-    _$_ProductList(
+_$ProductListImpl _$$ProductListImplFromJson(Map<String, dynamic> json) =>
+    _$ProductListImpl(
       products: (json['products'] as List<dynamic>)
           .map((e) => Product.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$_ProductListToJson(_$_ProductList instance) =>
+Map<String, dynamic> _$$ProductListImplToJson(_$ProductListImpl instance) =>
     <String, dynamic>{
       'products': instance.products,
     };

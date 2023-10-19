@@ -76,7 +76,7 @@ class TVModel {
       streamController.add(rows);
       return;
     }
-    pageNumCount = prefs.getInt(key_tv_page_count)!;
+    pageNumCount = prefs.getInt(key_tv_page_count) ?? 1;
     final List<ModelRow> r = [];
     for (int i = 0; i < rows.length; i++) {
       int num = int.tryParse(rows[i].line!.substring(1, rows[i].line!.length)) ?? 0;

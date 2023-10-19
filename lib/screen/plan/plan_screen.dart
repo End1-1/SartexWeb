@@ -261,6 +261,13 @@ class PlanScreen extends StatelessWidget {
                   Container(
                       decoration: decor,
                       height: 60 * scale_factor,
+                      width: 100,
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: Text(L.tr('Comesa'), style: ts))),
+                  Container(
+                      decoration: decor,
+                      height: 60 * scale_factor,
                       width: 50,
                       child: Align(
                           alignment: Alignment.center,
@@ -396,6 +403,21 @@ class PlanScreen extends StatelessWidget {
                                                 style: ts,
                                                 controller: e.editTot,
                                               )),
+                                              BlocBuilder<PPBloc, PPState>(
+    builder: (context, state) {
+    return Container(
+                                              decoration: e.editMode
+                                                  ? decor2
+                                                  : decor1,
+                                              width: 120,
+                                              height: rowHeight,
+                                              child: TextFormField(
+                                                readOnly: !e.editMode,
+                                                decoration: inputDecor1,
+                                                style: ts,
+                                                controller: e.editComesa,
+                                              ));}
+                                              ),
                                           BlocBuilder<PPBloc, PPState>(
                                               builder: (context, state) {
                                             return Container(

@@ -24,7 +24,8 @@ class PlanRow with _$PlanRow {
       required String? fr,
       required String? sa,
       required String? su,
-      required String? tot}) = _PlanRow;
+      required String? tot,
+      required String? comesa}) = _PlanRow;
 
   factory PlanRow.fromJson(Map<String, Object?> json) =>
       _$PlanRowFromJson(json);
@@ -43,6 +44,7 @@ class PlanRowEdit {
   final editSa = STextEditingController();
   final editSu = STextEditingController();
   final editTot = STextEditingController();
+  final editComesa  = STextEditingController();
   final List<STextEditingController> days = [];
   bool editMode = false;
 
@@ -79,7 +81,8 @@ class PlanModel {
   int rowOnEdit = -1;
 
   PlanModel() {
-    for (int i = 0; i < 16; i++) {
+    int lc = prefs.branch() == 'Sartex' ? 18 : 22;
+    for (int i = 0; i < lc; i++) {
       lines.add('L${i + 1}');
     }
     for (var l in lines) {
@@ -110,7 +113,8 @@ class PlanModel {
   }
   
   Future<String> getPlanIdForDate(DateTime d, String line, String model, String brand) async {
-      var e = await HttpSqlQuery.post({'sl': "select id from Plan where plan>0 and date='${DateFormat('yyyy-MM-dd').format(d)}' and model='$model' and brand='$brand' and line='$line' and branch='${prefs.getString(key_user_branch)}'"});
+      var e = await HttpSqlQuery.post({'sl': "select id from Plan where plan>0 and date='${DateFormat('yyyy-MM-dd').format(d)}' "
+          "and model='$model' and brand='$brand' and line='$line' and branch='${prefs.getString(key_user_branch)}'"});
       if (e.isEmpty) {
         return '';
       }
@@ -121,59 +125,69 @@ class PlanModel {
     String id = await getPlanIdForDate(dateOfWeekDay(1), e.line, e.editModel.text, e.editBrand.text);
     int qty = int.tryParse(e.editMo.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', "
-          "'${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(1))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan, comesa) values ('${prefs.getString(key_user_branch)}', "
+          "'${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(1))}', '${e.editBrand.text}', '${e.editModel.text}', $qty, '${e.editComesa.text}')"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty, comesa='${e.editComesa.text}' where id=$id"});
     }
 
     id = await getPlanIdForDate(dateOfWeekDay(2),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editTo.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date,brand, model, plan) values ('${prefs.getString(key_user_branch)}', "
-          "'${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(2))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date,brand, model, plan, comesa) values ('${prefs.getString(key_user_branch)}', "
+          "'${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(2))}', '${e.editBrand.text}', '${e.editModel.text}', $qty, '${e.editComesa.text}')"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty, comesa='${e.editComesa.text}' where id=$id"});
     }
 
     id = await getPlanIdForDate(dateOfWeekDay(3),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editWe.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(3))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan, comesa) "
+          "values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(3))}', "
+          "'${e.editBrand.text}', '${e.editModel.text}', $qty, '${e.editComesa.text}')"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty, comesa='${e.editComesa.text}' where id=$id"});
     }
 
     id = await getPlanIdForDate(dateOfWeekDay(4),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editTh.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(4))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan, comesa) "
+          "values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(4))}', "
+          "'${e.editBrand.text}', '${e.editModel.text}', $qty, '${e.editComesa.text}')"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty, comesa='${e.editComesa.text}' where id=$id"});
     }
 
     id = await getPlanIdForDate(dateOfWeekDay(5),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editFr.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(5))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan, comesa) "
+          "values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(5))}', '${e.editBrand.text}', "
+          "'${e.editModel.text}', $qty, '${e.editComesa.text}')"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty, comesa='${e.editComesa.text}' where id=$id"});
     }
 
     id = await getPlanIdForDate(dateOfWeekDay(6),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editSa.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(6))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan, comesa) "
+          "values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(6))}', '${e.editBrand.text}', "
+          "'${e.editModel.text}', $qty, '${e.editComesa.text}')"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty, comesa='${e.editComesa.text}' where id=$id"});
     }
 
     id = await getPlanIdForDate(dateOfWeekDay(7),  e.line, e.editModel.text, e.editBrand.text);
     qty = int.tryParse(e.editSu.text) ?? 0;
     if (id.isEmpty) {
-      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan) values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(7))}', '${e.editBrand.text}', '${e.editModel.text}', $qty)"});
+      await HttpSqlQuery.post({'sl':"insert into Plan (branch, line, date, brand, model, plan, comesa) "
+          "values ('${prefs.getString(key_user_branch)}', '${e.line}', '${DateFormat('yyyy-MM-dd').format(dateOfWeekDay(7))}', '${e.editBrand.text}', "
+          "'${e.editModel.text}', $qty, '${e.editComesa.text}')"});
     } else {
-      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty where id=$id"});
+      await HttpSqlQuery.post({'sl':"update Plan set plan=$qty, comesa='${e.editComesa.text}' where id=$id"});
     }
   }
 
@@ -213,9 +227,13 @@ class PlanModel {
         e.editFr.clear();
         e.editSa.clear();
         e.editSu.clear();
+        e.editComesa.clear();
       }
     });
-    var l = await HttpSqlQuery.post({'sl': " select brand, model, plan, date, line from Plan where plan>0 and branch='${prefs.getString(key_user_branch)}' and date between '${DateFormat('yyyy-MM-dd').format(firstDate())}' and '${DateFormat('yyyy-MM-dd').format(endDate())}'"});
+    var l = await HttpSqlQuery.post({'sl': " select brand, model, plan, date, line, comesa "
+        "from Plan "
+        "where plan>0 and branch='${prefs.getString(key_user_branch)}' "
+        "and date between '${DateFormat('yyyy-MM-dd').format(firstDate())}' and '${DateFormat('yyyy-MM-dd').format(endDate())}'"});
     for (var e in l) {
       List<PlanRowEdit>? prl = linesData[e['line']];
       if (prl == null) {
@@ -223,6 +241,7 @@ class PlanModel {
       }
       for (var pr in prl) {
         if ((pr.editModel.text == e['model']) && (pr.editBrand.text == e['brand'])) {
+          pr.editComesa.text = e['comesa'];
           STextEditingController? t;
           switch (DateFormat('yyyy-MM-dd').parse(e['date']).weekday) {
             case 1:

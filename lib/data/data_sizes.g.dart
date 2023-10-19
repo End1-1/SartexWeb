@@ -6,7 +6,8 @@ part of 'data_sizes.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_DataSize _$$_DataSizeFromJson(Map<String, dynamic> json) => _$_DataSize(
+_$DataSizeImpl _$$DataSizeImplFromJson(Map<String, dynamic> json) =>
+    _$DataSizeImpl(
       id: json['id'] as String,
       code: json['code'] as String?,
       name: json['name'] as String?,
@@ -24,7 +25,7 @@ _$_DataSize _$$_DataSizeFromJson(Map<String, dynamic> json) => _$_DataSize(
       size12: json['size12'] as String?,
     );
 
-Map<String, dynamic> _$$_DataSizeToJson(_$_DataSize instance) =>
+Map<String, dynamic> _$$DataSizeImplToJson(_$DataSizeImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'code': instance.code,
@@ -43,13 +44,14 @@ Map<String, dynamic> _$$_DataSizeToJson(_$_DataSize instance) =>
       'size12': instance.size12,
     };
 
-_$_SizeList _$$_SizeListFromJson(Map<String, dynamic> json) => _$_SizeList(
+_$SizeListImpl _$$SizeListImplFromJson(Map<String, dynamic> json) =>
+    _$SizeListImpl(
       sizes: (json['sizes'] as List<dynamic>)
           .map((e) => DataSize.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$_SizeListToJson(_$_SizeList instance) =>
+Map<String, dynamic> _$$SizeListImplToJson(_$SizeListImpl instance) =>
     <String, dynamic>{
       'sizes': instance.sizes,
     };

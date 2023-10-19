@@ -169,7 +169,7 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
       }
     }
 
-    data = await HttpSqlQuery.post({"sl": "select h.apr_id, sum(h.qanak) - coalesce(yqanak, 0) as mnac "
+    data = await HttpSqlQuery.post({"sl": "select h.apr_id, coalesce(sum(h.qanak), 0) - coalesce(yqanak, 0) as mnac "
         "from History h " ""
         "left join (select apr_id, sum(yqanak) as yqanak "
           "from Docs d "

@@ -184,7 +184,7 @@ class SizesEdit extends EditWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children:[
-        Row(children: [textFieldColumn(context: context, title: L.tr('ID'), textEditingController: editId),
+        Row(children: [textFieldColumn(context: context, title: L.tr('ID'), textEditingController: editId, enabled: false),
         textFieldColumn(context: context, title: L.tr('Name'), textEditingController: editName),
         textFieldColumn(context: context, title: L.tr('Code'), textEditingController: editCode),
         ]),

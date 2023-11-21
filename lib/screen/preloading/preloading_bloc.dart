@@ -11,6 +11,7 @@ part 'preloading_bloc.freezed.dart';
 abstract class PreloadingState {}
 
 class PreloadingStateIdle extends PreloadingState {}
+
 class PreloadingStateInProgress extends PreloadingState {}
 
 @freezed
@@ -22,8 +23,10 @@ class PreloadingStateOpenDoc extends PreloadingState
 }
 
 @freezed
-class PreloadingStateSummary extends PreloadingState with _$PreloadingStateSummary {
-  const factory PreloadingStateSummary({required dynamic data}) = _PreloadingState;
+class PreloadingStateSummary extends PreloadingState
+    with _$PreloadingStateSummary {
+  const factory PreloadingStateSummary({required dynamic data}) =
+      _PreloadingState;
 }
 
 abstract class PreloadingEvent {}
@@ -36,8 +39,10 @@ class PreloadingEventOpenDoc extends PreloadingEvent
 }
 
 @freezed
-class PreloadingEventSummary extends PreloadingEvent with _$PreloadingEventSummary {
-  const factory PreloadingEventSummary({required String docnum}) = _PreloadingEventSummary;
+class PreloadingEventSummary extends PreloadingEvent
+    with _$PreloadingEventSummary {
+  const factory PreloadingEventSummary({required String docnum}) =
+      _PreloadingEventSummary;
 }
 
 class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
@@ -51,35 +56,44 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
     result['bybrand'] = [];
     result['byline'] = [];
     result['bycommesa'] = [];
-    dynamic d = await HttpSqlQuery.post({"sl":"select pd.brand, sum(d.qanak) as pqanak , sum(m.mnacord) as mqanak, "
-      "sum(d.qanak)-sum(m.mnacord) as diff "
-      "from Docs d "
-      "left join Apranq a on a.apr_id=d.apr_id "
-      "left join patver_data pd on pd.id=a.pid "
-      "left join Mnacord m on m.apr_id=a.apr_id "
-      "where docnum ='$docnum' "
-      "group by pd.brand"});
+    dynamic d = await HttpSqlQuery.post({
+      "sl":
+          "select pd.brand, sum(d.qanak) as pqanak , sum(m.mnacord) as mqanak, "
+              "sum(d.qanak)-sum(m.mnacord) as diff "
+              "from Docs d "
+              "left join Apranq a on a.apr_id=d.apr_id "
+              "left join patver_data pd on pd.id=a.pid "
+              "left join Mnacord m on m.apr_id=a.apr_id "
+              "where docnum ='$docnum' "
+              "group by pd.brand"
+    });
     for (final e in d) {
       result['bybrand']!.add(e);
     }
-    d = await HttpSqlQuery.post({"sl":"select d.line, sum(d.qanak) as pqanak , sum(m.mnacord) as mqanak, sum(d.qanak)-sum(m.mnacord) as diff "
-        "from Docs d "
-        "left join Apranq a on a.apr_id=d.apr_id "
-        "left join patver_data pd on pd.id=a.pid "
-        "left join Mnacord m on m.apr_id=a.apr_id "
-        "where docnum ='$docnum' "
-        "group by d.line"});
+    d = await HttpSqlQuery.post({
+      "sl":
+          "select d.line, sum(d.qanak) as pqanak , sum(m.mnacord) as mqanak, sum(d.qanak)-sum(m.mnacord) as diff "
+              "from Docs d "
+              "left join Apranq a on a.apr_id=d.apr_id "
+              "left join patver_data pd on pd.id=a.pid "
+              "left join Mnacord m on m.apr_id=a.apr_id "
+              "where docnum ='$docnum' "
+              "group by d.line"
+    });
     for (final e in d) {
       result['byline']!.add(e);
     }
-    d = await HttpSqlQuery.post({"sl":"select pd.PatverN as commesa, pd.Model, pd.country, sum(d.qanak) as pqanak , sum(coalesce(m.mnacord, 0)) as mqanak, "
-        "sum(coalesce(d.qanak, 0))-sum(coalesce(m.mnacord, 0)) as diff "
-        "from Docs d "
-        "left join Apranq a on a.apr_id=d.apr_id "
-        "left join patver_data pd on pd.id=a.pid "
-        "left join Mnacord m on m.apr_id=a.apr_id "
-        "where docnum ='$docnum' "
-        "group by 1,2,3 "});
+    d = await HttpSqlQuery.post({
+      "sl":
+          "select pd.PatverN as commesa, pd.Model, pd.country, sum(d.qanak) as pqanak , sum(coalesce(m.mnacord, 0)) as mqanak, "
+              "sum(coalesce(d.qanak, 0))-sum(coalesce(m.mnacord, 0)) as diff "
+              "from Docs d "
+              "left join Apranq a on a.apr_id=d.apr_id "
+              "left join patver_data pd on pd.id=a.pid "
+              "left join Mnacord m on m.apr_id=a.apr_id "
+              "where docnum ='$docnum' "
+              "group by 1,2,3 "
+    });
     for (final e in d) {
       result['bycommesa']!.add(e);
     }
@@ -89,12 +103,14 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
   Future<void> _openDoc(String? docnum) async {
     emit(PreloadingStateInProgress());
 
-    List<dynamic> lines = await HttpSqlQuery.post({"sl": "select short_name from department where type='Հոսքագիծ' and branch='${prefs.branch()}' "});
+    List<dynamic> lines = await HttpSqlQuery.post({
+      "sl":
+          "select short_name from department where type='Հոսքագիծ' and branch='${prefs.branch()}' "
+    });
     PreloadingModel.lines.clear();
     PreloadingModel.lines.add('');
     PreloadingModel.lines.addAll(lines.map((e) => e['short_name']));
     print(lines);
-
 
     Map<String, String> header = {};
     List<PreloadingFullItem> items = [];
@@ -169,14 +185,17 @@ class PreloadingBloc extends Bloc<PreloadingEvent, PreloadingState> {
       }
     }
 
-    data = await HttpSqlQuery.post({"sl": "select h.apr_id, coalesce(sum(h.qanak), 0) - coalesce(yqanak, 0) as mnac "
-        "from History h " ""
-        "left join (select apr_id, sum(yqanak) as yqanak "
+    data = await HttpSqlQuery.post({
+      "sl": "select h.apr_id, coalesce(sum(h.qanak), 0) - coalesce(yqanak, 0) as mnac "
+          "from History h "
+          "left join (select apr_id, sum(yqanak) as yqanak "
           "from Docs d "
           "where d.type in ('INP', 'OINP') "
           "group by 1) d on d.apr_id=h.apr_id "
-        "where h.action='NOH_YND' "
-        "group by 1"});
+          "where h.action='NOH_YND' "
+          "and h.apr_id in (select apr_id from Docs where docnum='${docnum}')"
+          "group by 1"
+    });
     Map<String, String> mnacMap = {};
     for (final e in data) {
       mnacMap[e['apr_id']] = e['mnac'];

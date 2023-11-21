@@ -163,13 +163,13 @@ class PreloadingScreen extends EditWidget {
               DefaultTabController(
                   length: loaded != null
                       ? 1
-                      : (model.docNumber ?? '').length == 0 ||
+                      : (model.docNumber ?? '').isEmpty ||
                               prefs.roleWrite("2")
                           ? 2
                           : 1,
                   initialIndex: loaded != null
                       ? 0
-                      : (model.docNumber ?? '').length == 0
+                      : (model.docNumber ?? '').isEmpty
                           ? 0
                           : 1,
                   child: SizedBox(
@@ -339,7 +339,7 @@ class PreloadingLines extends StatefulWidget {
   final bool line1;
   final bool readyOnly;
 
-  PreloadingLines({super.key, required this.model, required this.line1, required this.readyOnly});
+  const PreloadingLines({super.key, required this.model, required this.line1, required this.readyOnly});
 
   @override
   State<StatefulWidget> createState() => _PreloadingLines();

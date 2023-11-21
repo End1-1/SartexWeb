@@ -168,7 +168,7 @@ class PreloadingData {
   }
 
   Future<void> getSizes(
-      String brand, String model, String commesa, String country, String color, PreloadingItem s, String pahest) async {
+      String brand, String model, String commesa, String country, String color, String variant, PreloadingItem s, String pahest) async {
 
     List<dynamic> notZero = await await HttpSqlQuery.post({
       "sl":
@@ -178,7 +178,7 @@ class PreloadingData {
           "left join patver_data pd on pd.id=a.pid "
           "where pd.status='inProgress' "
           "and brand='$brand' and Model='$model' and PatverN='$commesa' "
-          "and country='$country' and Colore='$color' and a.branch='${prefs.branch()}' "
+          "and country='$country' and Colore='$color' and variant_prod='$variant' and a.branch='${prefs.branch()}' "
           "group by 1 "
           "having sum(a.pat_mnac)>0 "
     });

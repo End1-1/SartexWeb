@@ -32,7 +32,6 @@ class BarcumModel extends AppModel<BarcumDatasource> {
         "and d.date between '${DateFormat('yyyy-MM-dd').format(d1)}' and '${DateFormat('yyyy-MM-dd').format(d2)}' "
         "and d.status in (${((loaded ?? 0) == 0) || ((loaded ?? 0) == 2) ? getStatuses() : "'ok'"}) $f "
         "group by d.docnum order by d.date ";
-
   }
 
   @override

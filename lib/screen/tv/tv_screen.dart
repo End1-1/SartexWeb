@@ -316,7 +316,7 @@ class TVScreen extends StatelessWidget {
             padding: _standartPadding,
             decoration: _t3,
             alignment: Alignment.center,
-            child: Text(L.tr("Prod"), style: _textHeader2)),
+            child: Text(prefs.branch().toUpperCase() == "SARTEX" ? L.tr("Prod") : L.tr('MAG'), style: _textHeader2)),
         //Stock
         Container(
             height: headerHeight,

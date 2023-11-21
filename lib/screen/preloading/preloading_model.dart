@@ -85,6 +85,9 @@ class PreloadingModel {
             continue;
           }
         }
+        final List<Map<String, String>> sqlList = [];
+        String sqlKyes = 'insert into Docs (branch, type, mutq_elq, date, docnum, apr_id, pahest, qanak,'
+                          'status, avto, line, partner) values';
         for (int i = 0; i < 12; i++) {
           int qty = int.tryParse(item.newvalues[i].text) ?? 0;
 
@@ -115,7 +118,21 @@ class PreloadingModel {
           bind['line'] = pr.prLine;
           bind['partner'] = editReceipant.text;
           String insertSql = Sql.insert('Docs', bind);
-          await HttpSqlQuery.post({'sl': insertSql});
+          sqlList.add(bind);
+        }
+        if (sqlList.isNotEmpty) {
+          bool first = true;
+          for (final ms in sqlList) {
+            if (first) {
+              first = false;
+            } else {
+              sqlKyes += ",";
+            }
+            sqlKyes += "('${ms['branch']}', 'OUT', 'elq', '${ms['date']}', '${ms['docnum']}', "
+                "'${ms['apr_id']}', '${ms['pahest']}', '${ms['qanak']}', 'draft', '${ms['avto']}', "
+                "'${ms['line']}', '${ms['partner']}')";
+          }
+          await HttpSqlQuery.post({'sl': sqlKyes});
         }
       }
     }

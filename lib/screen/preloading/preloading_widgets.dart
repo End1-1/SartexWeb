@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:sartex/data/sql.dart';
 import 'package:sartex/screen/preloading/preloading_item.dart';
 import 'package:sartex/screen/preloading/preloading_model.dart';
 import 'package:sartex/utils/consts.dart';
@@ -73,6 +75,10 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
   final BoxDecoration headerDecor1 = const BoxDecoration(
       color: Colors.black45,
       border: Border.fromBorderSide(BorderSide(width: 0.1)));
+  final BoxDecoration headerRedDecor1 = const BoxDecoration(
+      color: Colors.redAccent,
+      border: Border.fromBorderSide(BorderSide(width: 0.1)));
+
   final BoxDecoration headerDecor2 = const BoxDecoration(
       color: Colors.yellow,
       border: Border.fromBorderSide(BorderSide(width: 0.1)));
@@ -92,6 +98,12 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
   final InputDecoration labelDecor = const InputDecoration(
       isDense: true,
       border: InputBorder.none,
+      contentPadding: EdgeInsets.fromLTRB(3, 5, 3, 5));
+
+  final InputDecoration labelRedDecor = const InputDecoration(
+      isDense: true,
+      border: InputBorder.none,
+      fillColor: Colors.deepOrange,
       contentPadding: EdgeInsets.fromLTRB(3, 5, 3, 5));
 
   final TextStyle headerLeft =  TextStyle(
@@ -493,6 +505,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                             e.commesa.text,
                                             e.country.text,
                                             e.color.text,
+                                            e.variant.text,
                                             e,
                                             widget.model!.editStore.text)
                                         .then((value) {});
@@ -512,6 +525,7 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                                 e.commesa.text,
                                                 e.country.text,
                                                 e.color.text,
+                                                e.variant.text,
                                                 e,
                                                 widget.model!.editStore.text)
                                             .then((value) {
@@ -531,11 +545,58 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                   Row(
                     children: [
                       for (int i = 1; i < 13; i++) ...[
+                        //header
+                        if (e.remains[i - 1].text.isEmpty)
+                          InkWell(
+                            onTap: () async {
+                              HttpSqlQuery.post({"sl":"select a.apr_id as a, d.apr_id as d from Apranq a "
+    "left join Docs d on a.apr_id=d.apr_id and docnum='${widget.model?.docNumber ?? ''}' and type='OUT' "
+    "where a.pid in (Select id from patver_data "
+                                  "where Brand='${e.brand.text}' and Model='${e.model.text}' and Country='${e.country.text}' and PatverN='${e.commesa.text}' "
+                                  "and Colore='${e.color.text}' and variant_prod='${e.variant.text}') "}).then((value) async {
+                                for (final eee in value) {
+                                  if (eee['d'] == null) {
+                                    Map<String, String> bind = {};
+                                    bind['branch'] = prefs.getString(key_user_branch)!;
+                                    bind['type'] = 'OUT';
+                                    bind['mutq_elq'] = 'elq';
+                                    bind['date'] = DateFormat('yyyy-MM-dd')
+                                        .format(DateFormat('dd/MM/yyyy').parse(widget.model!.editDate.text));
+                                    bind['docnum'] = widget.model!.docNumber!;
+                                    bind['apr_id'] = eee['a'];
+                                    bind['pahest'] = widget.model!.editStore.text;
+                                    bind['qanak'] = '0';
+                                    bind['status'] = 'draft';
+                                    bind['avto'] = widget.model!.editTruck.text;
+                                    bind['line'] = widget.item.prLine;
+                                    bind['partner'] = widget.model!.editReceipant.text;
+                                    String insertSql = Sql.insert('Docs', bind);
+                                    await HttpSqlQuery.post({'sl': insertSql});
+                                    //appDialog(context, eee['a']);
+                                  }
+                                }
+                              });
+                            },
+                              child: SizedBox(
+                            width: sizeColWidth,
+                            child: Container(
+                            padding: padding,
+                            decoration: e.remains[i - 1].text.isEmpty ? headerRedDecor1 : headerDecor1,
+                            child: Row(children: [
+                            Expanded(
+                            child: TextFormField(
+                            textAlign: TextAlign.center,
+                            readOnly: true,
+                            decoration: labelDecor,
+                            controller: e.sizes[i - 1],
+                            style: headerLeft))
+                          ]))))
+                        else
                         SizedBox(
                             width: sizeColWidth,
                             child: Container(
                                 padding: padding,
-                                decoration: headerDecor1,
+                                decoration: e.remains[i - 1].text.isEmpty ? headerRedDecor1 : headerDecor1,
                                 child: Row(children: [
                                   Expanded(
                                       child: TextFormField(

@@ -53,6 +53,17 @@ class Sql {
       return 'insert into $table ($keys) values ($vals)';
    }
 
+   static String insertKeys(String table, Map<String, dynamic> values) {
+      String keys = '';
+      values.forEach((key, value) {
+         if (keys.isNotEmpty) {
+            keys += ',';
+         }
+         keys += key;
+      });
+      return 'insert into $table ($keys) values ';
+   }
+
    static String update(String table, Map<String, dynamic> values) {
       String sql = '';
       values.forEach((key, value) {

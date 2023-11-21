@@ -40,6 +40,7 @@ class DampexRow with _$DampexRow {
       sPlan,
       sdif,
       sPERF,
+        sProd,
       i10_30,
       i12_30,
       i15_30,
@@ -50,6 +51,7 @@ class DampexRow with _$DampexRow {
       iPlan,
       idif,
       iPERF,
+        iProd,
       smProd,
       imProd,
       smPlan,
@@ -102,12 +104,13 @@ class Datasource1 extends SartexDataGridSource {
     addColumn('Plan ');
     addColumn('Diff ');
     addColumn('%');
+    addColumn('Prod');
 
     sumRows.add(GridTableSummaryRow(
         title: L.tr('Summary'),
         showSummaryInRow: false,
         columns: [
-          for (int i = 3; i < 12; i++) ...[
+          for (int i = 3; i < 14; i++) ...[
             GridSummaryColumn(
                 name: columnNames[i],
                 columnName: columnNames[i],
@@ -162,7 +165,10 @@ class Datasource1 extends SartexDataGridSource {
             value: double.tryParse(e.sdif ?? '0') ?? 0),
         DataGridCell(
             columnName: columnNames[i++],
-            value: '${(double.tryParse(e.sPERF ?? '0') ?? 0) * 100}%'),
+            value: '${(double.tryParse(e.sPERF ?? '0') ?? 0).truncate() * 100}%'),
+        DataGridCell(
+            columnName: columnNames[i++],
+            value: double.tryParse(e.sProd ?? '0') ?? 0),
       ]);
     }));
   }
@@ -183,12 +189,13 @@ class Datasource2 extends SartexDataGridSource {
     addColumn('Plan ');
     addColumn('Diff ');
     addColumn('%');
+    addColumn('Prod');
 
     sumRows.add(GridTableSummaryRow(
         title: L.tr('Summary'),
         showSummaryInRow: false,
         columns: [
-          for (int i = 3; i < 12; i++) ...[
+          for (int i = 3; i < 14; i++) ...[
             GridSummaryColumn(
                 name: columnNames[i],
                 columnName: columnNames[i],
@@ -244,6 +251,9 @@ class Datasource2 extends SartexDataGridSource {
         DataGridCell(
             columnName: columnNames[i++],
             value: '${(double.tryParse(e.iPERF ?? '0') ?? 0) * 100}%'),
+        DataGridCell(
+            columnName: columnNames[i++],
+            value: double.tryParse(e.iProd ?? '0') ?? 0),
       ]);
     }));
   }
@@ -264,12 +274,13 @@ class Datasource3 extends SartexDataGridSource {
     addColumn('Plan ');
     addColumn('Diff ');
     addColumn('%');
+    addColumn('Prod');
 
     sumRows.add(GridTableSummaryRow(
         title: L.tr('Summary'),
         showSummaryInRow: false,
         columns: [
-          for (int i = 3; i < 12; i++) ...[
+          for (int i = 3; i < 13; i++) ...[
             GridSummaryColumn(
                 name: columnNames[i],
                 columnName: columnNames[i],
@@ -321,6 +332,9 @@ class Datasource3 extends SartexDataGridSource {
         DataGridCell(
             columnName: columnNames[i++],
             value: '${(double.tryParse(e.iPERF ?? '0') ?? 0) * 100}%'),
+        DataGridCell(
+            columnName: columnNames[i++],
+            value: double.tryParse(e.iProd ?? '0') ?? 0),
       ]);
     }));
   }
@@ -410,7 +424,7 @@ class Dashboard extends App {
   final mtableSartex = StreamController.broadcast();
   final mtableItex = StreamController.broadcast();
 
-  static const colwidth = 730.0;
+  static const colwidth = 830.0;
 
   Dashboard() : super(title: '', model: DashboardModel());
 

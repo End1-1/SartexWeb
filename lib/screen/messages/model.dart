@@ -45,7 +45,6 @@ class MessagesModel extends AppModel {
     fontSizeController.text = (double.tryParse(r[0]['fontsize'] ?? '0')).toString();
     id = int.tryParse(r[0]['id'] ?? '0') ?? 0;
     str.add('');
-    print(r);
   }
 
   Future<void> saveNotice() async {
@@ -54,6 +53,7 @@ class MessagesModel extends AppModel {
     d["2"] = txt2.text;
     d["fontsize"] = fontSizeController.text;
     String msg = base64.encode(utf8.encode(jsonEncode(d)));
+    msg = base64.encode(utf8.encode(jsonEncode(d)));
     await HttpSqlQuery.post({"sl":"update messages set fontsize=${int.tryParse(fontSizeController.text) ?? 30}, message='$msg' where id=$id"});
     await getNotice();
   }

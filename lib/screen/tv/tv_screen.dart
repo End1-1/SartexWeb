@@ -1,6 +1,6 @@
 import 'dart:html';
 
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sartex/screen/tv/tv_model.dart';
@@ -8,16 +8,22 @@ import 'package:sartex/utils/consts.dart';
 import 'package:sartex/utils/prefs.dart';
 import 'package:sartex/utils/translator.dart';
 
-class TVScreen extends StatelessWidget {
-  final bool pcVersion;
-  TVScreen(this.pcVersion) {
-    _textHeader1 = TextStyle(
-      color: Colors.white,
-      height: 1.52,
-      fontSize: pcVersion ? 20 : 28,
-      fontFamily: 'Agency FB',
-    );
-  }
+class TVScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => TVScreenState();
+
+}
+
+class TVScreenState extends State<TVScreen> {
+
+
+
+ final _textHeader1 = const TextStyle(
+   color: Colors.white,
+   height: 1.52,
+   fontSize: 20,
+   fontFamily: 'Agency FB',
+ );
 
   var page = true;
   final List<ModelRow> modelRows = [];
@@ -26,14 +32,15 @@ class TVScreen extends StatelessWidget {
     100,
     200,
     200,
-    100,
-    100,
-    100,
-    100,
-    100,
-    100,
-    100,
-    100,
+    80,
+    80,
+    80,
+    80,
+    80,
+    80,
+    80,
+    80,
+    80,
     100,
     100,
     110
@@ -46,7 +53,7 @@ class TVScreen extends StatelessWidget {
   static const _color1 = Color(0xff6bc26a);
   static const _color2 = Color(0xff565656);
   final _standartPadding = const EdgeInsets.all(5);
-  late final TextStyle _textHeader1 ;
+
   final _textHeader2 = const TextStyle(
       color: Colors.black87,
       fontSize: 22,
@@ -308,6 +315,14 @@ class TVScreen extends StatelessWidget {
             decoration: _t2,
             alignment: Alignment.center,
             child: Text("Plan", style: _textHeader1)),
+        //OTK
+        Container(
+            height: headerHeight,
+            width: cw[i++],
+            padding: _standartPadding,
+            decoration: _t2,
+            alignment: Alignment.center,
+            child: Text("OTK", style: _textHeader1)),
         Expanded(child: Container()),
         //Prod
         Container(
@@ -429,6 +444,14 @@ class TVScreen extends StatelessWidget {
             decoration: _t8,
             alignment: Alignment.center,
             child: Text(r.Plan!, style: _textPlan)),
+        //OTK
+        Container(
+            width: cw[i++],
+            height: rowHeight,
+            padding: _standartPadding,
+            decoration: _t8,
+            alignment: Alignment.center,
+            child: Text(r.otk!, style: _textPlan)),
         Expanded(child: Container()),
         //PAST
         Container(
@@ -463,13 +486,16 @@ class TVScreen extends StatelessWidget {
     return Row(
       children: [
         //line
+        InkWell(onTap:(){
+          Navigator.pushNamed(context, route_dashboard);
+        }, child:
         Container(
             height: headerHeight,
             width: cw[0] + cw[1] + cw[2],
             padding: _standartPadding,
             decoration: _t4,
             alignment: Alignment.center,
-            child: Text(L.tr("Grand total"), style: _textHeader3)),
+            child: Text(L.tr("Grand total"), style: _textHeader3))),
 
         //10.30
         Container(
@@ -535,8 +561,18 @@ class TVScreen extends StatelessWidget {
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(_model.totalRow.Plan!, style: _textHeader3)),
+        //otk
+        Container(
+            height: headerHeight,
+            width: cw[i++],
+            padding: _standartPadding,
+            decoration: _t4,
+            alignment: Alignment.center,
+            child: Text(_model.totalRow.otk!, style: _textHeader3)),
         Expanded(child: Container()),
-        //PAST
+
+
+        //Prod
         Container(
             height: headerHeight,
             width: cw[i++],
@@ -544,7 +580,7 @@ class TVScreen extends StatelessWidget {
             decoration: _t4,
             alignment: Alignment.center,
             child: Text(_model.totalRow.Prod!, style: _textHeader3)),
-        //plan
+        //Stock
         Container(
             height: headerHeight,
             width: cw[i++],
@@ -562,5 +598,11 @@ class TVScreen extends StatelessWidget {
             child: Text(_model.totalRow.Pref!, style: _textHeader3)),
       ],
     );
+  }
+
+ @override
+  void dispose() {
+    _model.t.cancel();
+    super.dispose();
   }
 }

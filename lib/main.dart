@@ -117,7 +117,7 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(
                 settings: settings,
                 builder: (context) {
-                  return TVScreen((settings.arguments ?? false) as bool);
+                  return TVScreen();
                 });
           }
           return null;

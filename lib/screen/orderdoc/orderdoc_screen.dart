@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
+
 import 'package:sartex/screen/orderdoc/orderdoc_bloc.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_event.dart';
 import 'package:sartex/screen/orderdoc/orderdoc_header.dart';
@@ -73,15 +71,18 @@ class OrderDocScreen extends EditWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocProvider<OrderDocBloc>(
-        create: (_) => OrderDocBloc(OrderDocStateNone())
+        create: (_) =>
+        OrderDocBloc(OrderDocStateNone())
           ..add(model.orderId!.isEmpty
               ? OrderDocEventIdle()
               : OrderDocEventOpen(model.orderId!)),
         child: SizedBox(
             key: scaffoldKey,
-            height: MediaQuery.of(context).size.height * 0.8,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height * 0.8,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -120,7 +121,7 @@ class OrderDocScreen extends EditWidget {
                 const Divider(height: 30, color: Colors.transparent),
                 BlocBuilder<OrderDocBloc, OrderDocState>(
                     buildWhen: (previos, current) =>
-                        current is OrderDocStateSizes,
+                    current is OrderDocStateSizes,
                     builder: (context, state) {
                       model.sizesOfModel.clear();
                       if (state is OrderDocStateSizes) {
@@ -147,7 +148,7 @@ class OrderDocScreen extends EditWidget {
                 Expanded(
                   child: BlocBuilder<OrderDocBloc, OrderDocState>(
                       buildWhen: (previous, current) =>
-                          current is OrderDocStateNewRow ||
+                      current is OrderDocStateNewRow ||
                           current is OrderDocSubRowState ||
                           current is OrderDocStateLoaded,
                       builder: (context, state) {
@@ -162,9 +163,9 @@ class OrderDocScreen extends EditWidget {
                                   child: SingleChildScrollView(
                                       child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children:
-                                              _orderDetails(context, state)))),
+                                          _orderDetails(context, state)))),
                               _detailsTotals(context)
                             ]);
                       }),
@@ -173,23 +174,24 @@ class OrderDocScreen extends EditWidget {
                 prefs.roleWrite("1")
                     ? saveWidget(context, Object())
                     : Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: OutlinedButton(
-                            style: outlined_button_style,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child:
-                                Text(L.tr('Close'), style: const TextStyle()))),
+                    padding: const EdgeInsets.all(5),
+                    child: OutlinedButton(
+                        style: outlined_button_style,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child:
+                        Text(L.tr('Close'), style: const TextStyle()))),
               ],
             )));
   }
 
   Widget _detailsHeader(BuildContext context, List<String> values) {
     final double rowheight = 45 * scale_factor;
-    final TextStyle ts = TextStyle(color: Colors.white, fontSize: 18 * scale_factor);
+    final TextStyle ts = TextStyle(
+        color: Colors.white, fontSize: 18 * scale_factor);
     const Border border =
-        Border.fromBorderSide(BorderSide(color: Color(0x00cccccc)));
+    Border.fromBorderSide(BorderSide(color: Color(0x00cccccc)));
     const decoration = BoxDecoration(gradient: bg_gradient, border: border);
     List<Widget> r = [];
     for (int i = 0; i < columnWidths.length; i++) {
@@ -258,53 +260,53 @@ class OrderDocScreen extends EditWidget {
               child: Wrap(children: [
                 if (prefs.roleWrite("1"))
                   SvgButton(
-                        onTap: () {
-                          model.details.add(OrderRow(
-                              main: '0',
-                              id: '',
-                              branch: 'branch',
-                              action: 'add',
-                              User: 'User',
-                              date: model.dateCreateController.text,
-                              IDPatver: model.orderId,
-                              status: 'inProgress',
-                              PatverN: model.orderIdController.text,
-                              PatverDate: model.dateCreateController.text,
-                              parent_id: '0',
-                              Katarox: model.executorController.text,
-                              Patviratu: '',
-                              Model: model.modelController.text,
-                              ModelCod: model.modelCodeController.text,
-                              brand: model.brandController.text,
-                              short_code: '',
-                              size_standart: model.sizeStandartController.text,
-                              country: model.countryController.text,
-                              variant_prod: '',
-                              Colore: '',
-                              line: '',
-                              Size01: '',
-                              Size02: '',
-                              Size03: '',
-                              Size04: '',
-                              Size05: '',
-                              Size06: '',
-                              Size07: '',
-                              Size08: '',
-                              Size09: '',
-                              Size10: '',
-                              Size11: '',
-                              Size12: '',
-                              Total: '0',
-                              executed: '0',
-                              nextload: '0',
-                              discarded: '',
-                              appended: ''));
-                          model.rowEditMode = model.details.length - 1;
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        assetPath: 'svg/plusfolder.svg',
-                      ),
+                    onTap: () {
+                      model.details.add(OrderRow(
+                          main: '0',
+                          id: '',
+                          branch: 'branch',
+                          action: 'add',
+                          User: 'User',
+                          date: model.dateCreateController.text,
+                          IDPatver: model.orderId,
+                          status: 'inProgress',
+                          PatverN: model.orderIdController.text,
+                          PatverDate: model.dateCreateController.text,
+                          parent_id: '0',
+                          Katarox: model.executorController.text,
+                          Patviratu: '',
+                          Model: model.modelController.text,
+                          ModelCod: model.modelCodeController.text,
+                          brand: model.brandController.text,
+                          short_code: '',
+                          size_standart: model.sizeStandartController.text,
+                          country: model.countryController.text,
+                          variant_prod: '',
+                          Colore: '',
+                          line: '',
+                          Size01: '',
+                          Size02: '',
+                          Size03: '',
+                          Size04: '',
+                          Size05: '',
+                          Size06: '',
+                          Size07: '',
+                          Size08: '',
+                          Size09: '',
+                          Size10: '',
+                          Size11: '',
+                          Size12: '',
+                          Total: '0',
+                          executed: '0',
+                          nextload: '0',
+                          discarded: '',
+                          appended: ''));
+                      model.rowEditMode = model.details.length - 1;
+                      BlocProvider.of<OrderDocBloc>(context)
+                          .add(OrderDocNewRow());
+                    },
+                    assetPath: 'svg/plusfolder.svg',
+                  ),
                 SvgButton(
                   onTap: () {
                     BlocProvider.of<OrderDocBloc>(context)
@@ -318,7 +320,8 @@ class OrderDocScreen extends EditWidget {
     }
     //r.add(const Divider(height: 2, color: Colors.transparent));
     return Padding(
-        padding: EdgeInsets.only(left: 22 * scale_factor, bottom: 2 * scale_factor),
+        padding: EdgeInsets.only(
+            left: 22 * scale_factor, bottom: 2 * scale_factor),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: r));
   }
 
@@ -345,7 +348,7 @@ class OrderDocScreen extends EditWidget {
     const EdgeInsets padding = EdgeInsets.all(0);
     const TextStyle ts = TextStyle(color: Colors.white, fontSize: 18);
     const Border border =
-        Border.fromBorderSide(BorderSide(color: Color(0x00cccccc), width: 0.3));
+    Border.fromBorderSide(BorderSide(color: Color(0x00cccccc), width: 0.3));
     const double rowheight = 40;
     final List<Widget> l = [];
 
@@ -377,7 +380,7 @@ class OrderDocScreen extends EditWidget {
         final TextStyle ts = TextStyle(color: fontColor, fontSize: 18);
 
         final BoxDecoration boxDecoration =
-            BoxDecoration(color: bgcolor, border: border);
+        BoxDecoration(color: bgcolor, border: border);
         if (i == model.rowEditMode) {
           model.detailsControllers[1].text = or.variant_prod!;
           model.detailsControllers[1].selection = TextSelection.fromPosition(
@@ -443,16 +446,16 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(variant_prod: text);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        controller: model.detailsControllers[j],
-                      )
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    model.details[i] = or.copyWith(variant_prod: text);
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocNewRow());
+                  },
+                  controller: model.detailsControllers[j],
+                )
                     : Text(or.main == '0' ? or.variant_prod! : or.date!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 2:
             onerow.add(Container(
@@ -463,15 +466,15 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Colore: text);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        controller: model.detailsControllers[j])
+                    textAlign: TextAlign.center,
+                    onChanged: (text) {
+                      model.details[i] = or.copyWith(Colore: text);
+                      BlocProvider.of<OrderDocBloc>(context)
+                          .add(OrderDocNewRow());
+                    },
+                    controller: model.detailsControllers[j])
                     : Text(or.Colore!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 3:
             onerow.add(Container(
@@ -482,20 +485,20 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Size01: text);
-                          model.countTotalOfDetailsRow(i);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: model.detailsControllers[j])
+                    textAlign: TextAlign.center,
+                    onChanged: (text) {
+                      model.details[i] = or.copyWith(Size01: text);
+                      model.countTotalOfDetailsRow(i);
+                      BlocProvider.of<OrderDocBloc>(context)
+                          .add(OrderDocNewRow());
+                    },
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    controller: model.detailsControllers[j])
                     : Text(or.Size01!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 4:
             onerow.add(Container(
@@ -506,21 +509,21 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Size02: text);
-                          model.countTotalOfDetailsRow(i);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: model.detailsControllers[j],
-                      )
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    model.details[i] = or.copyWith(Size02: text);
+                    model.countTotalOfDetailsRow(i);
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocNewRow());
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: model.detailsControllers[j],
+                )
                     : Text(or.Size02!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 5:
             onerow.add(Container(
@@ -531,21 +534,21 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Size03: text);
-                          model.countTotalOfDetailsRow(i);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: model.detailsControllers[j],
-                      )
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    model.details[i] = or.copyWith(Size03: text);
+                    model.countTotalOfDetailsRow(i);
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocNewRow());
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: model.detailsControllers[j],
+                )
                     : Text(or.Size03!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 6:
             onerow.add(Container(
@@ -556,21 +559,21 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Size04: text);
-                          model.countTotalOfDetailsRow(i);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: model.detailsControllers[j],
-                      )
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    model.details[i] = or.copyWith(Size04: text);
+                    model.countTotalOfDetailsRow(i);
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocNewRow());
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: model.detailsControllers[j],
+                )
                     : Text(or.Size04!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 7:
             onerow.add(Container(
@@ -581,21 +584,21 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Size05: text);
-                          model.countTotalOfDetailsRow(i);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: model.detailsControllers[j],
-                      )
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    model.details[i] = or.copyWith(Size05: text);
+                    model.countTotalOfDetailsRow(i);
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocNewRow());
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: model.detailsControllers[j],
+                )
                     : Text(or.Size05!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 8:
             onerow.add(Container(
@@ -606,21 +609,21 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Size06: text);
-                          model.countTotalOfDetailsRow(i);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: model.detailsControllers[j],
-                      )
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    model.details[i] = or.copyWith(Size06: text);
+                    model.countTotalOfDetailsRow(i);
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocNewRow());
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: model.detailsControllers[j],
+                )
                     : Text(or.Size06!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 9:
             onerow.add(Container(
@@ -631,21 +634,21 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Size07: text);
-                          model.countTotalOfDetailsRow(i);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: model.detailsControllers[j],
-                      )
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    model.details[i] = or.copyWith(Size07: text);
+                    model.countTotalOfDetailsRow(i);
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocNewRow());
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: model.detailsControllers[j],
+                )
                     : Text(or.Size07!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 10:
             onerow.add(Container(
@@ -656,21 +659,21 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Size08: text);
-                          model.countTotalOfDetailsRow(i);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: model.detailsControllers[j],
-                      )
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    model.details[i] = or.copyWith(Size08: text);
+                    model.countTotalOfDetailsRow(i);
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocNewRow());
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: model.detailsControllers[j],
+                )
                     : Text(or.Size08!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 11:
             onerow.add(Container(
@@ -681,21 +684,21 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Size09: text);
-                          model.countTotalOfDetailsRow(i);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: model.detailsControllers[j],
-                      )
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    model.details[i] = or.copyWith(Size09: text);
+                    model.countTotalOfDetailsRow(i);
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocNewRow());
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: model.detailsControllers[j],
+                )
                     : Text(or.Size09!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 12:
             onerow.add(Container(
@@ -706,21 +709,21 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Size10: text);
-                          model.countTotalOfDetailsRow(i);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: model.detailsControllers[j],
-                      )
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    model.details[i] = or.copyWith(Size10: text);
+                    model.countTotalOfDetailsRow(i);
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocNewRow());
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: model.detailsControllers[j],
+                )
                     : Text(or.Size10!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 13:
             onerow.add(Container(
@@ -731,21 +734,21 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Size11: text);
-                          model.countTotalOfDetailsRow(i);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: model.detailsControllers[j],
-                      )
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    model.details[i] = or.copyWith(Size11: text);
+                    model.countTotalOfDetailsRow(i);
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocNewRow());
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: model.detailsControllers[j],
+                )
                     : Text(or.Size11!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 14:
             onerow.add(Container(
@@ -756,21 +759,21 @@ class OrderDocScreen extends EditWidget {
                 decoration: boxDecoration,
                 child: model.rowEditMode == i
                     ? TextFormField(
-                        textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          model.details[i] = or.copyWith(Size12: text);
-                          model.countTotalOfDetailsRow(i);
-                          BlocProvider.of<OrderDocBloc>(context)
-                              .add(OrderDocNewRow());
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: model.detailsControllers[j],
-                      )
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    model.details[i] = or.copyWith(Size12: text);
+                    model.countTotalOfDetailsRow(i);
+                    BlocProvider.of<OrderDocBloc>(context)
+                        .add(OrderDocNewRow());
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  controller: model.detailsControllers[j],
+                )
                     : Text(or.Size12!,
-                        textAlign: TextAlign.center, style: ts)));
+                    textAlign: TextAlign.center, style: ts)));
             break;
           case 15:
             onerow.add(BlocBuilder<OrderDocBloc, OrderDocState>(
@@ -813,123 +816,124 @@ class OrderDocScreen extends EditWidget {
                   child: or.main == '1'
                       ? Container(child: Text(or.action ?? ''))
                       : Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                              or.id.isEmpty
-                                  ? SizedBox(
-                                      height: rowheight,
-                                      child: SvgButton(
-                                          onTap: () {
-                                            model.rowEditMode = i;
-                                            BlocProvider.of<OrderDocBloc>(
-                                                    context)
-                                                .add(OrderDocNewRow());
-                                          },
-                                          assetPath: 'svg/edit.svg',
-                                          darkMode: false))
-                                  : prefs.roleWrite("1")
-                                      ? SizedBox(
-                                          height: rowheight,
-                                          child: SvgButton(
-                                              width: 20,
-                                              onTap: () {
-                                                OrderRow r = or.copyWith(
-                                                    id: '',
-                                                    main: '',
-                                                    date: DateFormat(
-                                                            'dd/MM/yyyy')
-                                                        .format(DateTime.now()),
-                                                    Size01: '',
-                                                    Size02: '',
-                                                    Size03: '',
-                                                    Size04: '',
-                                                    Size05: '',
-                                                    Size06: '',
-                                                    Size07: '',
-                                                    Size08: '',
-                                                    Size09: '',
-                                                    Size10: '',
-                                                    Size11: '',
-                                                    Size12: '',
-                                                    Total: '',
-                                                    Colore: or.Colore,
-                                                    parent_id: or.id,
-                                                    variant_prod:
-                                                        or.variant_prod);
-                                                model.details.insert(i + 1, r);
-                                                model.rowEditMode = i + 1;
-                                                BlocProvider.of<OrderDocBloc>(
-                                                        context)
-                                                    .add(OrderDocNewRow());
-                                              },
-                                              assetPath: 'svg/plus.svg',
-                                              darkMode: false))
-                                      : Container(),
-                              prefs.roleWrite("1")
-                                  ? SizedBox(
-                                      height: rowheight,
-                                      child: SvgButton(
-                                          width: 20,
-                                          onTap: () {
-                                            if (or.id.isEmpty) {
-                                              model.details.removeAt(i);
-                                              model.rowEditMode = -1;
-                                            } else {
-                                              model.details.insert(
-                                                  i + 1,
-                                                  or.copyWith(
-                                                      main: '',
-                                                      id: '',
-                                                      action: 'cancel',
-                                                      parent_id: or.id,
-                                                      Size01: '',
-                                                      Size02: '',
-                                                      Size03: '',
-                                                      Size04: '',
-                                                      Size05: '',
-                                                      Size06: '',
-                                                      Size07: '',
-                                                      Size08: '',
-                                                      Size09: '',
-                                                      Size10: '',
-                                                      Size11: '',
-                                                      Size12: '',
-                                                      Total: '',
-                                                      Colore: or.Colore,
-                                                      variant_prod:
-                                                          or.variant_prod));
-                                              model.rowEditMode = i + 1;
-                                            }
-                                            BlocProvider.of<OrderDocBloc>(
-                                                    context)
-                                                .add(OrderDocNewRow());
-                                          },
-                                          assetPath: 'svg/minus.svg',
-                                          darkMode: false))
-                                  : Container(),
-                              SizedBox(
-                                  height: rowheight,
-                                  child: SvgButton(
-                                      width: 20,
-                                      onTap: () {
-                                        BlocProvider.of<OrderDocBloc>(context)
-                                            .add(OrderDocSubRow(
-                                                row: showRow.isEmpty ||
-                                                        or.parent_id != showRow
-                                                    ? or.id
-                                                    : ''));
-                                      },
-                                      assetPath: 'svg/eye.svg',
-                                      darkMode: false))
-                            ])));
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        or.id.isEmpty
+                            ? SizedBox(
+                            height: rowheight,
+                            child: SvgButton(
+                                onTap: () {
+                                  model.rowEditMode = i;
+                                  BlocProvider.of<OrderDocBloc>(
+                                      context)
+                                      .add(OrderDocNewRow());
+                                },
+                                assetPath: 'svg/edit.svg',
+                                darkMode: false))
+                            : prefs.roleWrite("1")
+                            ? SizedBox(
+                            height: rowheight,
+                            child: SvgButton(
+                                width: 20,
+                                onTap: () {
+                                  OrderRow r = or.copyWith(
+                                      id: '',
+                                      main: '',
+                                      date: DateFormat(
+                                          'dd/MM/yyyy')
+                                          .format(DateTime.now()),
+                                      Size01: '',
+                                      Size02: '',
+                                      Size03: '',
+                                      Size04: '',
+                                      Size05: '',
+                                      Size06: '',
+                                      Size07: '',
+                                      Size08: '',
+                                      Size09: '',
+                                      Size10: '',
+                                      Size11: '',
+                                      Size12: '',
+                                      Total: '',
+                                      Colore: or.Colore,
+                                      parent_id: or.id,
+                                      variant_prod:
+                                      or.variant_prod);
+                                  model.details.insert(i + 1, r);
+                                  model.rowEditMode = i + 1;
+                                  BlocProvider.of<OrderDocBloc>(
+                                      context)
+                                      .add(OrderDocNewRow());
+                                },
+                                assetPath: 'svg/plus.svg',
+                                darkMode: false))
+                            : Container(),
+                        prefs.roleWrite("1")
+                            ? SizedBox(
+                            height: rowheight,
+                            child: SvgButton(
+                                width: 20,
+                                onTap: () {
+                                  if (or.id.isEmpty) {
+                                    model.details.removeAt(i);
+                                    model.rowEditMode = -1;
+                                  } else {
+                                    model.details.insert(
+                                        i + 1,
+                                        or.copyWith(
+                                            main: '',
+                                            id: '',
+                                            action: 'cancel',
+                                            parent_id: or.id,
+                                            Size01: '',
+                                            Size02: '',
+                                            Size03: '',
+                                            Size04: '',
+                                            Size05: '',
+                                            Size06: '',
+                                            Size07: '',
+                                            Size08: '',
+                                            Size09: '',
+                                            Size10: '',
+                                            Size11: '',
+                                            Size12: '',
+                                            Total: '',
+                                            Colore: or.Colore,
+                                            variant_prod:
+                                            or.variant_prod));
+                                    model.rowEditMode = i + 1;
+                                  }
+                                  BlocProvider.of<OrderDocBloc>(
+                                      context)
+                                      .add(OrderDocNewRow());
+                                },
+                                assetPath: 'svg/minus.svg',
+                                darkMode: false))
+                            : Container(),
+                        SizedBox(
+                            height: rowheight,
+                            child: SvgButton(
+                                width: 20,
+                                onTap: () {
+                                  BlocProvider.of<OrderDocBloc>(context)
+                                      .add(OrderDocSubRow(
+                                      row: showRow.isEmpty ||
+                                          or.parent_id != showRow
+                                          ? or.id
+                                          : ''));
+                                },
+                                assetPath: 'svg/eye.svg',
+                                darkMode: false))
+                      ])));
             }
             break;
         }
       }
 
       l.add(Padding(
-          padding: EdgeInsets.only(left: 22 * scale_factor, bottom: 2 * scale_factor),
+          padding: EdgeInsets.only(
+              left: 22 * scale_factor, bottom: 2 * scale_factor),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -952,8 +956,8 @@ class OrderDocScreen extends EditWidget {
       double m = or.main == '0'
           ? 1
           : or.action == 'add'
-              ? 1
-              : -1;
+          ? 1
+          : -1;
       totals[0] += m * (double.tryParse(or.Size01 ?? '') ?? 0);
       totals[1] += m * (double.tryParse(or.Size02 ?? '') ?? 0);
       totals[2] += m * (double.tryParse(or.Size03 ?? '') ?? 0);
@@ -967,13 +971,14 @@ class OrderDocScreen extends EditWidget {
       totals[10] += m * (double.tryParse(or.Size11 ?? '') ?? 0);
       totals[11] += m * (double.tryParse(or.Size12 ?? '') ?? 0);
     }
-    for (int i = 0; i< 12; i++) {
+    for (int i = 0; i < 12; i++) {
       totals[12] += totals[i];
     }
     const double rowheight = 45;
-    final TextStyle ts = TextStyle(color: Colors.white, fontSize: 18 * scale_factor);
+    final TextStyle ts = TextStyle(
+        color: Colors.white, fontSize: 18 * scale_factor);
     const Border border =
-        Border.fromBorderSide(BorderSide(color: Color(0x00cccccc)));
+    Border.fromBorderSide(BorderSide(color: Color(0x00cccccc)));
     const decoration = BoxDecoration(gradient: bg_gradient, border: border);
     List<Widget> r = [];
     for (int i = 0; i < columnWidths.length; i++) {
@@ -984,7 +989,7 @@ class OrderDocScreen extends EditWidget {
             width: columnWidths[i],
             decoration: decoration,
             child:
-                Align(alignment: Alignment.center, child: Text("", style: ts)),
+            Align(alignment: Alignment.center, child: Text("", style: ts)),
           ));
           break;
         case 1:
@@ -1032,7 +1037,8 @@ class OrderDocScreen extends EditWidget {
               width: columnWidths[i],
               decoration: decoration,
               child: Align(
-                  alignment: Alignment.center, child: Text(totals[12].toString(), style: ts))));
+                  alignment: Alignment.center,
+                  child: Text(totals[12].toString(), style: ts))));
           break;
         case 16:
           r.add(Container(
@@ -1045,7 +1051,8 @@ class OrderDocScreen extends EditWidget {
     }
     //r.add(const Divider(height: 2, color: Colors.transparent));
     return Padding(
-        padding: EdgeInsets.only(left: 22  * scale_factor, bottom: 2 * scale_factor),
+        padding: EdgeInsets.only(
+            left: 22 * scale_factor, bottom: 2 * scale_factor),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: r));
   }
 
@@ -1108,7 +1115,7 @@ class OrderDocScreen extends EditWidget {
         Patviratu: '',
         date: isNew
             ? DateFormat('yyyy-MM-dd').format(
-                DateFormat('dd/MM/yyyy').parse(model.dateCreateController.text))
+            DateFormat('dd/MM/yyyy').parse(model.dateCreateController.text))
             : DateFormat('yyyy-MM-dd').format(DateTime.now()),
         PatverDate: DateFormat('yyyy-MM-dd').format(
             DateFormat('dd/MM/yyyy').parse(model.dateCreateController.text)),
@@ -1201,223 +1208,11 @@ class OrderDocScreen extends EditWidget {
         context: context,
         builder: (context) {
           return Dialog(
-              child: PdfPreview(
-            canDebug: kDebugMode,
-            pageFormats: {'A4': PdfPageFormat.a4},
-            allowSharing: false,
-            build: (format) => _generatePdf(
-                format, '${L.tr('Order')} #${model.orderIdController.text}'),
-          ));
+              child: Container());
         });
   }
-
-  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {
-    final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
-    final font = await rootBundle.load('assets/fonts/Sylfaen.ttf');
-    final ttf = pw.Font.ttf(font);
-    final ts1 = pw.TextStyle(font: ttf, fontSize: 18);
-    final ts2 = pw.TextStyle(font: ttf, fontSize: 12);
-    final tdecor = pw.BoxDecoration(
-        border: pw.Border.fromBorderSide(
-            pw.BorderSide(color: PdfColor.fromHex("#165a72"), width: 0.01)));
-    int i1 = 0, i2 = 0;
-    double rowHeight = 20;
-    const padding = pw.EdgeInsets.fromLTRB(2, 2, 0, 0);
-
-    pdf.addPage(
-      pw.Page(
-        pageFormat: PdfPageFormat.a4,
-        orientation: pw.PageOrientation.portrait,
-        build: (context) {
-          return pw.Column(
-            children: [
-              pw.SizedBox(
-                width: double.infinity,
-                child: pw.Align(
-                    alignment: pw.Alignment.center,
-                    child: pw.Text(title, style: ts1)),
-              ),
-              pw.SizedBox(height: 20),
-              pw.Row(children: [
-                pw.Container(
-                    width: 120, child: pw.Text(L.tr('Date'), style: ts2)),
-                pw.Container(
-                    width: 120,
-                    child:
-                        pw.Text(model.dateCreateController.text, style: ts2)),
-                pw.Expanded(child: pw.Container()),
-                pw.Container(
-                    width: 120,
-                    child: pw.Text(L.tr('Execute date'), style: ts2)),
-                pw.Container(
-                    width: 120,
-                    child: pw.Text(model.dateForController.text, style: ts2)),
-              ]),
-              pw.SizedBox(height: 20),
-              pw.Row(children: [
-                pw.Container(
-                    width: 120, child: pw.Text(L.tr('Executor'), style: ts2)),
-                pw.Container(
-                    width: 120,
-                    child: pw.Text(model.executorController.text, style: ts2)),
-                pw.Expanded(child: pw.Container()),
-                pw.Container(
-                    width: 120, child: pw.Text(L.tr('Country'), style: ts2)),
-                pw.Container(
-                    width: 120,
-                    child: pw.Text(model.countryController.text, style: ts2)),
-              ]),
-              pw.SizedBox(height: 20),
-              pw.Row(children: [
-                pw.Container(
-                    padding: padding,
-                    decoration: tdecor,
-                    width: printColumnWidths[i1++],
-                    height: rowHeight,
-                    child: pw.Text(L.tr('+/-'), style: ts2)),
-                pw.Container(
-                    padding: padding,
-                    decoration: tdecor,
-                    width: printColumnWidths[i1++] / 2,
-                    height: rowHeight,
-                    child: pw.Text(L.tr('Type'), style: ts2)),
-                pw.Container(
-                    padding: padding,
-                    decoration: tdecor,
-                    width: printColumnWidths[i1++] / 2,
-                    height: rowHeight,
-                    child: pw.Text(L.tr('Color'), style: ts2)),
-                for (int s = 0; s < 12; s++) ...[
-                  pw.Container(
-                      padding: padding,
-                      decoration: tdecor,
-                      width: printColumnWidths[i1++] / 3,
-                      height: rowHeight,
-                      child: pw.Text(model.sizesOfModel[s], style: ts2))
-                ],
-                pw.Container(
-                    padding: padding,
-                    decoration: tdecor,
-                    width: printColumnWidths[i1++] / 3,
-                    height: rowHeight,
-                    child: pw.Text(L.tr('Tot.'), style: ts2))
-              ]),
-              for (var e in model.details) ...[
-                if (e.main! == "1")
-                  pw.Row(children: [
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[i2 = 0],
-                        height: rowHeight,
-                        child: pw.Text(
-                            e.action! == 'add'
-                                ? '+'
-                                : e.action! == 'cancel'
-                                    ? '-'
-                                    : '?',
-                            style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 2,
-                        height: rowHeight,
-                        child: pw.Text(e.variant_prod!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 2,
-                        height: rowHeight,
-                        child: pw.Text(e.Colore!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Size01!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Size02!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Size03!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Size04!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Size05!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Size06!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Size07!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Size08!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Size09!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Size10!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Size11!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Size12!, style: ts2)),
-                    pw.Container(
-                        padding: padding,
-                        decoration: tdecor,
-                        width: printColumnWidths[++i2] / 3,
-                        height: rowHeight,
-                        child: pw.Text(e.Total!, style: ts2)),
-                  ]),
-              ]
-            ],
-          );
-        },
-      ),
-    );
-
-    return pdf.save();
-  }
 }
+
 
 class AnimatedContainerWithRow extends AnimatedContainer {
   final int row;

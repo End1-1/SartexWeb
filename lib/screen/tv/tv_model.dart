@@ -25,6 +25,7 @@ class ModelRow with _$ModelRow {
       required String? Total,
       required String? Past,
       required String? Plan,
+        required String? otk,
       required String? Prod,
       required String? Magaz,
       required String? Pref}) = _ModelRow;
@@ -51,18 +52,18 @@ class TVModel {
       Total: '',
       Past: '',
       Plan: '',
+      otk: '',
       Prod: '',
       Magaz: '',
       Pref: '');
 
+  late Timer t;
+
   TVModel() {
     _refreshData();
-    Timer.periodic(const Duration(seconds: 60), (timer) {
+    t = Timer.periodic(const Duration(seconds: 60), (timer) {
       _refreshData();
     });
-    // Timer.periodic(const Duration(seconds: 10), (timer) {
-    //   _showData();
-    // });
   }
 
   setPageNumber(int num) {
@@ -101,6 +102,7 @@ class TVModel {
           tt = 0,
           text = 0,
           tplan = 0,
+          otk = 0,
           tpast = 0,
           tprod = 0,
           tmagaz = 0;
@@ -111,6 +113,7 @@ class TVModel {
         t17 += int.tryParse(e['17:30'] ?? '') ?? 0;
         text += int.tryParse(e['Ext'] ?? '') ?? 0;
         tplan += int.tryParse(e['Plan'] ?? '') ?? 0;
+        otk += int.tryParse(e['otk'] ?? '') ?? 0;
         tpast += int.tryParse(e['Past'] ?? '') ?? 0;
         tprod += int.tryParse(e['Prod'] ?? '') ?? 0;
         tt += int.tryParse(e['Total'] ?? '') ?? 0;
@@ -128,6 +131,7 @@ class TVModel {
             Total: e['Total'] ?? '',
             Past: e['Past'] ?? '',
             Plan: e['Plan'] ?? '',
+            otk: e['otk'] ?? '',
             Prod: e['Prod'] ?? '',
             Magaz: e['Magaz'] ?? '',
             Pref: e['PERF(%)'] ?? ''));
@@ -144,6 +148,7 @@ class TVModel {
           Total: tt.toString(),
           Past: tpast.toString(),
           Plan: tplan.toString(),
+          otk: otk.toString(),
           Prod: tprod.toString(),
           Magaz: tmagaz.toString(),
           Pref: (tplan == 0 ? 0 : (tprod / (tplan) * 100)).truncate().toString());

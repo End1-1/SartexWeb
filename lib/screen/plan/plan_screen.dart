@@ -26,20 +26,18 @@ class PlanScreen extends StatelessWidget {
             header(context),
             week(context),
             tableHeader(context),
-             BlocListener<PlanBloc, PlanState>(
-                listener: (previouse, current) {
-                  if (current is PlanSRefresh) {
-                    if (current.planModel == null) {
-                      BlocProvider.of<PlanBloc>(context).add(PlanERefresh(model));
-                    } else {
-                      model = current.planModel!;
-                    }
-                  }
-                },
-                    child:
-                    BlocBuilder<PlanBloc, PlanState>(builder: (context, state) {
-                  return Expanded(child: lines(context));
-                }))
+            BlocListener<PlanBloc, PlanState>(listener: (previouse, current) {
+              if (current is PlanSRefresh) {
+                if (current.planModel == null) {
+                  BlocProvider.of<PlanBloc>(context).add(PlanERefresh(model));
+                } else {
+                  model = current.planModel!;
+                }
+              }
+            }, child:
+                BlocBuilder<PlanBloc, PlanState>(builder: (context, state) {
+              return Expanded(child: lines(context));
+            }))
           ],
         ));
   }
@@ -288,8 +286,8 @@ class PlanScreen extends StatelessWidget {
         border: Border.fromBorderSide(BorderSide(color: Color(0xffcbcbcb))));
     const ts = TextStyle(fontSize: 14);
     const inputDecor1 = InputDecoration(
-
-        contentPadding: EdgeInsets.fromLTRB(5, 0, 5, 0), border: InputBorder.none);
+        contentPadding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+        border: InputBorder.none);
     const inputDecor2 = InputDecoration(
         contentPadding: EdgeInsets.all(4), border: InputBorder.none);
     return SingleChildScrollView(
@@ -305,7 +303,7 @@ class PlanScreen extends StatelessWidget {
                           children: [
                             //LINE
                             Container(
-                              alignment: Alignment.center,
+                                alignment: Alignment.center,
                                 decoration: decor1,
                                 padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                                 height: rowHeight *
@@ -322,11 +320,13 @@ class PlanScreen extends StatelessWidget {
                                               line: model.lines[i],
                                               open: true));
                                     },
-                                    child: Text(model.lines[i], style: ts, textAlign: TextAlign.center))),
+                                    child: Text(model.lines[i],
+                                        style: ts,
+                                        textAlign: TextAlign.center))),
                             //REMAIN
                             Expanded(
                                 child: Container(
-                                  alignment: Alignment.center,
+                              alignment: Alignment.center,
                               //decoration: decor1,
                               height: rowHeight *
                                   (model.linesData[model.lines[i]]!.isEmpty
@@ -378,19 +378,27 @@ class PlanScreen extends StatelessWidget {
                                             BlocBuilder<PPBloc, PPState>(
                                                 builder: (context, state) {
                                               return Container(
-                                                alignment: Alignment.center,
+                                                  alignment: Alignment.center,
                                                   decoration: e.editMode
                                                       ? decor2
                                                       : decor1,
                                                   width: 100,
                                                   height: rowHeight,
-                                                  child: TextFormField(
+                                                  child: Row(children: [Expanded(child: TextFormField(
                                                     readOnly: !e.editMode,
                                                     textAlign: TextAlign.center,
                                                     decoration: inputDecor1,
                                                     style: ts,
                                                     controller: e.days[d],
-                                                  ));
+                                                  )),
+                                                    Expanded(child: TextFormField(
+                                                      readOnly: !e.editMode,
+                                                      textAlign: TextAlign.center,
+                                                      decoration: inputDecor1,
+                                                      style: ts,
+                                                      controller: e.otks[d],
+                                                    )),
+                                                  ]));
                                             }),
                                           ],
                                           Container(
@@ -403,21 +411,21 @@ class PlanScreen extends StatelessWidget {
                                                 style: ts,
                                                 controller: e.editTot,
                                               )),
-                                              BlocBuilder<PPBloc, PPState>(
-    builder: (context, state) {
-    return Container(
-                                              decoration: e.editMode
-                                                  ? decor2
-                                                  : decor1,
-                                              width: 120,
-                                              height: rowHeight,
-                                              child: TextFormField(
-                                                readOnly: !e.editMode,
-                                                decoration: inputDecor1,
-                                                style: ts,
-                                                controller: e.editComesa,
-                                              ));}
-                                              ),
+                                          BlocBuilder<PPBloc, PPState>(
+                                              builder: (context, state) {
+                                            return Container(
+                                                decoration: e.editMode
+                                                    ? decor2
+                                                    : decor1,
+                                                width: 120,
+                                                height: rowHeight,
+                                                child: TextFormField(
+                                                  readOnly: !e.editMode,
+                                                  decoration: inputDecor1,
+                                                  style: ts,
+                                                  controller: e.editComesa,
+                                                ));
+                                          }),
                                           BlocBuilder<PPBloc, PPState>(
                                               builder: (context, state) {
                                             return Container(
@@ -445,8 +453,6 @@ class PlanScreen extends StatelessWidget {
                                 ],
                               ),
                             )),
-
-
                           ])
                     ]
                   ]);

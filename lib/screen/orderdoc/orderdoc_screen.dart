@@ -497,7 +497,7 @@ class OrderDocScreen extends EditWidget {
                       FilteringTextInputFormatter.digitsOnly
                     ],
                     controller: model.detailsControllers[j])
-                    : Text(or.Size01!,
+                    : Text(or.Size01 ?? '-0',
                     textAlign: TextAlign.center, style: ts)));
             break;
           case 4:
@@ -522,7 +522,7 @@ class OrderDocScreen extends EditWidget {
                   ],
                   controller: model.detailsControllers[j],
                 )
-                    : Text(or.Size02!,
+                    : Text(or.Size02 ?? '-0',
                     textAlign: TextAlign.center, style: ts)));
             break;
           case 5:
@@ -547,7 +547,7 @@ class OrderDocScreen extends EditWidget {
                   ],
                   controller: model.detailsControllers[j],
                 )
-                    : Text(or.Size03!,
+                    : Text(or.Size03 ?? '-0',
                     textAlign: TextAlign.center, style: ts)));
             break;
           case 6:
@@ -572,7 +572,7 @@ class OrderDocScreen extends EditWidget {
                   ],
                   controller: model.detailsControllers[j],
                 )
-                    : Text(or.Size04!,
+                    : Text(or.Size04 ?? '-0',
                     textAlign: TextAlign.center, style: ts)));
             break;
           case 7:
@@ -597,7 +597,7 @@ class OrderDocScreen extends EditWidget {
                   ],
                   controller: model.detailsControllers[j],
                 )
-                    : Text(or.Size05!,
+                    : Text(or.Size05 ?? '-0',
                     textAlign: TextAlign.center, style: ts)));
             break;
           case 8:
@@ -622,7 +622,7 @@ class OrderDocScreen extends EditWidget {
                   ],
                   controller: model.detailsControllers[j],
                 )
-                    : Text(or.Size06!,
+                    : Text(or.Size06 ?? '-0',
                     textAlign: TextAlign.center, style: ts)));
             break;
           case 9:
@@ -647,7 +647,7 @@ class OrderDocScreen extends EditWidget {
                   ],
                   controller: model.detailsControllers[j],
                 )
-                    : Text(or.Size07!,
+                    : Text(or.Size07 ?? '-0',
                     textAlign: TextAlign.center, style: ts)));
             break;
           case 10:
@@ -672,7 +672,7 @@ class OrderDocScreen extends EditWidget {
                   ],
                   controller: model.detailsControllers[j],
                 )
-                    : Text(or.Size08!,
+                    : Text(or.Size08 ?? '-0',
                     textAlign: TextAlign.center, style: ts)));
             break;
           case 11:
@@ -697,7 +697,7 @@ class OrderDocScreen extends EditWidget {
                   ],
                   controller: model.detailsControllers[j],
                 )
-                    : Text(or.Size09!,
+                    : Text(or.Size09 ?? '-0',
                     textAlign: TextAlign.center, style: ts)));
             break;
           case 12:
@@ -722,7 +722,7 @@ class OrderDocScreen extends EditWidget {
                   ],
                   controller: model.detailsControllers[j],
                 )
-                    : Text(or.Size10!,
+                    : Text(or.Size10 ?? '-0',
                     textAlign: TextAlign.center, style: ts)));
             break;
           case 13:
@@ -747,7 +747,7 @@ class OrderDocScreen extends EditWidget {
                   ],
                   controller: model.detailsControllers[j],
                 )
-                    : Text(or.Size11!,
+                    : Text(or.Size11 ?? '-0',
                     textAlign: TextAlign.center, style: ts)));
             break;
           case 14:
@@ -772,7 +772,7 @@ class OrderDocScreen extends EditWidget {
                   ],
                   controller: model.detailsControllers[j],
                 )
-                    : Text(or.Size12!,
+                    : Text(or.Size12 ?? '-0',
                     textAlign: TextAlign.center, style: ts)));
             break;
           case 15:
@@ -1125,18 +1125,18 @@ class OrderDocScreen extends EditWidget {
         Model: model.modelController.text,
         ModelCod: model.modelCodeController.text,
         size_standart: model.sizeStandartController.text,
-        Size01: e.Size01!.isEmpty ? '0' : e.Size01,
-        Size02: e.Size02!.isEmpty ? '0' : e.Size02,
-        Size03: e.Size03!.isEmpty ? '0' : e.Size03,
-        Size04: e.Size04!.isEmpty ? '0' : e.Size04,
-        Size05: e.Size05!.isEmpty ? '0' : e.Size05,
-        Size06: e.Size06!.isEmpty ? '0' : e.Size06,
-        Size07: e.Size07!.isEmpty ? '0' : e.Size07,
-        Size08: e.Size08!.isEmpty ? '0' : e.Size08,
-        Size09: e.Size09!.isEmpty ? '0' : e.Size09,
-        Size10: e.Size10!.isEmpty ? '0' : e.Size10,
-        Size11: e.Size11!.isEmpty ? '0' : e.Size11,
-        Size12: e.Size12!.isEmpty ? '0' : e.Size12,
+        Size01: (e.Size01 ?? '').isEmpty ? '0' : e.Size01,
+        Size02: (e.Size02 ?? '').isEmpty ? '0' : e.Size02,
+        Size03: (e.Size03 ?? '').isEmpty ? '0' : e.Size03,
+        Size04: (e.Size04 ?? '').isEmpty ? '0' : e.Size04,
+        Size05: (e.Size05 ?? '').isEmpty ? '0' : e.Size05,
+        Size06: (e.Size06 ?? '').isEmpty ? '0' : e.Size06,
+        Size07: (e.Size07 ?? '').isEmpty ? '0' : e.Size07,
+        Size08: (e.Size08 ?? '').isEmpty ? '0' : e.Size08,
+        Size09: (e.Size09 ?? '').isEmpty ? '0' : e.Size09,
+        Size10: (e.Size10 ?? '').isEmpty ? '0' : e.Size10,
+        Size11: (e.Size11 ?? '').isEmpty ? '0' : e.Size11,
+        Size12: (e.Size12 ?? '').isEmpty ? '0' : e.Size12,
       );
       String sql = '';
       Map<String, dynamic> s = or.toJson();

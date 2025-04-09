@@ -36,8 +36,12 @@ mixin _$DataSize {
   String? get size11 => throw _privateConstructorUsedError;
   String? get size12 => throw _privateConstructorUsedError;
 
+  /// Serializes this DataSize to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DataSize
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DataSizeCopyWith<DataSize> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -75,6 +79,8 @@ class _$DataSizeCopyWithImpl<$Res, $Val extends DataSize>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DataSize
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -193,6 +199,8 @@ class __$$DataSizeImplCopyWithImpl<$Res>
       _$DataSizeImpl _value, $Res Function(_$DataSizeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DataSize
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -359,7 +367,7 @@ class _$DataSizeImpl extends _DataSize {
             (identical(other.size12, size12) || other.size12 == size12));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -379,7 +387,9 @@ class _$DataSizeImpl extends _DataSize {
       size11,
       size12);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DataSize
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DataSizeImplCopyWith<_$DataSizeImpl> get copyWith =>
@@ -445,8 +455,11 @@ abstract class _DataSize extends DataSize {
   String? get size11;
   @override
   String? get size12;
+
+  /// Create a copy of DataSize
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataSizeImplCopyWith<_$DataSizeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -459,8 +472,12 @@ SizeList _$SizeListFromJson(Map<String, dynamic> json) {
 mixin _$SizeList {
   List<DataSize> get sizes => throw _privateConstructorUsedError;
 
+  /// Serializes this SizeList to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SizeList
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SizeListCopyWith<SizeList> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -483,6 +500,8 @@ class _$SizeListCopyWithImpl<$Res, $Val extends SizeList>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SizeList
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -516,6 +535,8 @@ class __$$SizeListImplCopyWithImpl<$Res>
       _$SizeListImpl _value, $Res Function(_$SizeListImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SizeList
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -559,12 +580,14 @@ class _$SizeListImpl implements _SizeList {
             const DeepCollectionEquality().equals(other._sizes, _sizes));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_sizes));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SizeList
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SizeListImplCopyWith<_$SizeListImpl> get copyWith =>
@@ -587,8 +610,11 @@ abstract class _SizeList implements SizeList {
 
   @override
   List<DataSize> get sizes;
+
+  /// Create a copy of SizeList
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SizeListImplCopyWith<_$SizeListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

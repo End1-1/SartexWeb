@@ -26,8 +26,12 @@ mixin _$Partner {
   String get name => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
 
+  /// Serializes this Partner to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Partner
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PartnerCopyWith<Partner> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -50,6 +54,8 @@ class _$PartnerCopyWithImpl<$Res, $Val extends Partner>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Partner
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -103,6 +109,8 @@ class __$$PartnerImplCopyWithImpl<$Res>
       _$PartnerImpl _value, $Res Function(_$PartnerImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Partner
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -178,11 +186,13 @@ class _$PartnerImpl implements _Partner {
             (identical(other.type, type) || other.type == type));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, branch, country, name, type);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Partner
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PartnerImplCopyWith<_$PartnerImpl> get copyWith =>
@@ -216,8 +226,11 @@ abstract class _Partner implements Partner {
   String get name;
   @override
   String get type;
+
+  /// Create a copy of Partner
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PartnerImplCopyWith<_$PartnerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -230,8 +243,12 @@ PartnerList _$PartnerListFromJson(Map<String, dynamic> json) {
 mixin _$PartnerList {
   List<Partner> get partners => throw _privateConstructorUsedError;
 
+  /// Serializes this PartnerList to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PartnerList
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PartnerListCopyWith<PartnerList> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -255,6 +272,8 @@ class _$PartnerListCopyWithImpl<$Res, $Val extends PartnerList>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PartnerList
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -288,6 +307,8 @@ class __$$PartnerListImplCopyWithImpl<$Res>
       _$PartnerListImpl _value, $Res Function(_$PartnerListImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PartnerList
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -332,12 +353,14 @@ class _$PartnerListImpl implements _PartnerList {
             const DeepCollectionEquality().equals(other._partners, _partners));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_partners));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PartnerList
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PartnerListImplCopyWith<_$PartnerListImpl> get copyWith =>
@@ -360,8 +383,11 @@ abstract class _PartnerList implements PartnerList {
 
   @override
   List<Partner> get partners;
+
+  /// Create a copy of PartnerList
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PartnerListImplCopyWith<_$PartnerListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

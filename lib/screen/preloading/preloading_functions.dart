@@ -168,21 +168,19 @@ class PreloadingFunction {
 
         cell = sheetObject.cell(CellIndex.indexByString('O$r'));
         cell.cellStyle = cellGray;
-        cell.value =TextCellValue( m.preSize!.size[7]);
+        cell.value =TextCellValue( m.preSize!.size[8]);
 
         cell = sheetObject.cell(CellIndex.indexByString('P$r'));
         cell.cellStyle = cellGray;
-        cell.value =TextCellValue( m.preSize!.size[8]);
+        cell.value =TextCellValue( m.preSize!.size[9]);
 
         cell = sheetObject.cell(CellIndex.indexByString('Q$r'));
         cell.cellStyle = cellGray;
-        cell.value =TextCellValue( m.preSize!.size[10]);
+        cell.value =TextCellValue( m.preSize!.size[11]);
+
+
 
         cell = sheetObject.cell(CellIndex.indexByString('R$r'));
-        cell.cellStyle = cellGray;
-        cell.value = TextCellValue(m.preSize!.size[11]);
-
-        cell = sheetObject.cell(CellIndex.indexByString('S$r'));
         cell.cellStyle = cellGray;
         cell.value = TextCellValue(L.tr('Total'));
         r++;

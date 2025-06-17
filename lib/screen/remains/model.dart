@@ -14,7 +14,7 @@ class RemainsModel extends AppModel<RemainsDatasource> {
   String sql() {
     String f = prefs.roleSuperAdmin()
         ? ""
-        : "and pd.branch='${prefs.getString(key_user_branch)}'";
+        : "and m.branch='${prefs.getString(key_user_branch)}'";
     return "select a.apr_id, pd.branch, m.pahest, pd.brand, pd.Model, "
         "pd.ModelCod, pd.country, pd.variant_prod, pd.Colore, "
         "a.size, m.mnacord, pd.PatverN as commesa "

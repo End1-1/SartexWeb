@@ -699,9 +699,10 @@ class _PreloadingItemsContainer extends State<PreloadingItemsContainer> {
                                               int remain = int.tryParse(
                                                       e.remains[i - 1].text) ??
                                                   0;
-                                              if (newvalue > remain) {
-                                                e.newvalues[i - 1].clear();
-                                              }
+                                              //REMOVE CHECK FOR INPUT FROM ITEX TO SARTEX
+                                              // if (newvalue > remain) {
+                                              //   e.newvalues[i - 1].clear();
+                                              // }
                                               e
                                                   .newvalues[
                                                       e.newvalues.length - 1]

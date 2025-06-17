@@ -14,6 +14,7 @@ class BarcumScreen extends AppGridScreen {
             filterButton: true,
             plusButton: prefs.roleWrite("2") && loaded == null);
 
+  @override
   void showFilter(BuildContext context) {
     BarcumFilter.filter(context, model).then((value) {
       if (value != null) {

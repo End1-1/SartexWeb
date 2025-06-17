@@ -302,8 +302,8 @@ class ProductionItem {
               e['size_number'].substring(e['size_number'].length - 2)) ??
           -1;
       index--;
-      preSize!.aprId[index] = e['apr_id'];
-      preSize!.size[index] = e['pat_mnac'] ?? '0';
+      preSize.aprId[index] = e['apr_id'];
+      preSize.size[index] = e['pat_mnac'] ?? '0';
       remains[index].text = e['pat_mnac'] ?? '0';
       pahest[index].text = e['pahest_mnac'] ?? '0';
     }
